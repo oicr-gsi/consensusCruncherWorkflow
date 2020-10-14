@@ -66,9 +66,9 @@ workflow consensusCruncher {
   }
 
   meta {
-    author: "Alexander Fortuna"
-    email: "alexander.fortuna@oicr.on.ca"
-    description: "Workflow to run extract UMI from fastq and generate consensus Bams"
+    author: "Alexander Fortuna and Rishi Shah"
+    email: "alexander.fortuna@oicr.on.ca and rshah@oicr.on.ca"
+    description: "Workflow to run extract UMI from fastq and generate consensus Bams as well as run it through mutect2 and combine variants"
     dependencies: [
      {
       name: "hg19-bwa-index/0.7.12",
@@ -247,8 +247,9 @@ input {
  String outputPrefix 
  String modules
  String priority
- Int jobMemory = 12
+ Int jobMemory = 24
  Int timeout = 20
+ Int threads = 8
 }
 
 parameter_meta {
@@ -261,6 +262,7 @@ parameter_meta {
  priority: "Comma-separated list defining priority of workflows when combining variants"
  jobMemory: "memory allocated to preprocessing, in GB"
  timeout: "timeout in hours"
+ threads: "number of cpu threads to be used"
 }
 
 command <<<
@@ -298,6 +300,7 @@ command <<<
 runtime {
   memory:  "~{jobMemory} GB"
   modules: "~{modules}"
+  cpu:     "~{threads}"
   timeout: "~{timeout}"
 }
 
