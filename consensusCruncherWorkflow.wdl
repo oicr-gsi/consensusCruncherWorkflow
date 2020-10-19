@@ -163,18 +163,32 @@ task align {
     modules: "~{modules}"
     cpu:     "~{threads}"
     timeout: "~{timeout}"
+
   }
 
   output {
     File? sortedBam = "bamfiles/~{outputFileNamePrefix}.bam"
-    File? sortedBai = "bamfiles/~{outputFileNamtumorBamUNCHER_ROOT/bin/ConsensusCruncher.py"
+    File? sortedBai = "bamfiles/~{outputFileNamePrefix}.bam.bai"
+  }
+}
+task consensus {
+
+
+
+  input {
+    File? inputBam
+    File? inputBai
+    String consensusCruncherPy = "$CONSENSUS_CRUNCHER_ROOT/bin/ConsensusCruncher.py"
+    String basePrefix
     String samtools = "$SAMTOOLS_ROOT/bin/samtools"
     String cytoband = "$DATA_HG19_CONSENSUS_CRUNCHER_ROOT/hg19_cytoBand.txt"
     String genome   = "hg19"
+    String ccDir = basePrefix + ".consensuscruncher"
     Float cutoff  = 0.7
     Int threads = 8
     Int jobMemory = 16
     Int timeout = 72
+    String modules = "consensus-cruncher/5.0 data-hg19-consensus-cruncher/1.0 hg19-bwa-index/0.7.12 samtools/1.9"
   }
 
   parameter_meta {
@@ -191,7 +205,6 @@ task align {
     cutoff: "Cutoff to use to call a consenus of reads"
   }
 
-  String ccDir = basePrefix + ".consensuscruncher"
 
   command <<<
   set -euo pipefail
