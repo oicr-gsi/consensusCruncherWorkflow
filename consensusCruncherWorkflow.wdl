@@ -38,28 +38,25 @@ workflow consensusCruncher {
   call mutect2.mutect2 as mutectRun1 {
     input:
       tumorBam = consensus.dcsScBam,
-      tumorBai = consensus.dcsScBamIndex,
-      intervalProvided = false
+      tumorBai = consensus.dcsScBamIndex
   }
 
   call mutect2.mutect2 as mutectRun2 {
     input:
       tumorBam = consensus.allUniqueBam,
-      tumorBai = consensus.allUniqueBamIndex,
-      intervalProvided = false
+      tumorBai = consensus.allUniqueBamIndex
   }
 
   call mutect2.mutect2 as mutectRun3 {
     input:
       tumorBam = consensus.sscsScBam,
-      tumorBai = consensus.sscsScBamIndex,
-      intervalProvided = false
+      tumorBai = consensus.sscsScBamIndex
   }
 
   call combineVariants {
     input: 
-      inputVcfs = [mutectRun1.mergeVCFs.mergedVcf,mutectRun2.mergeVCFs.mergedVcf, mutectRun3.mergeVCFs.mergedVcf],
-      inputIndexes = [mutectRun1.mergeVCFs.mergedVcfIdx,mutectRun2.mergeVCFs.mergedVcfIdx, mutectRun3.mergeVCFs.mergedVcfIdx],
+      inputVcfs = [mutectRun1.mergedVcfFile,mutectRun2.mergedVcfFile, mutectRun3.mergedVcfFile],
+      inputIndexes = [mutectRun1.mergedVcfIdxFile,mutectRun2.mergedVcfIdxFile, mutectRun3.mergedVcfIdxFile],
       priority = "mutect2, consensusCruncher",
       outputPrefix = outputFileNamePrefix
 

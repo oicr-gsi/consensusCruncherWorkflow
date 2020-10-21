@@ -148,6 +148,8 @@ workflow mutect2 {
     File filteredVcfIndex = filter.filteredVcfTbi
     File mergedUnfilteredStats = mergeStats.mergedStats
     File filteringStats = filter.filteringStats
+    File mergedVcfFile = mergeVCFs.mergedVcf
+    File mergedVcfIdxFile = mergeVCFs.mergedVcfIdx
   }
 }
 
