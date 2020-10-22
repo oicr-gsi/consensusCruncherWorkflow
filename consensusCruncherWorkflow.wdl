@@ -12,7 +12,7 @@ workflow consensusCruncher {
   }
 
   parameter_meta {
-    fastqR1: "First Fastq File"
+    fastqR1: "First Fastq Files"
     fastqR2: "Second Fastq File"
     sortedBam: "Bam file from bwamem"
     sortedBai: "Bai file from bwamem"
