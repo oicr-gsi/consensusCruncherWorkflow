@@ -28,7 +28,7 @@
             "consensusCruncher.consensus.cytoband": "$DATA_HG38_CONSENSUS_CRUNCHER_ROOT/hg38_cytoBand.txt",
             "consensusCruncher.combineVariants.modules": "gatk/3.6-0 tabix/0.2.6 hg38/p12",
             "consensusCruncher.combineVariants.referenceFasta": "$HG38_ROOT/hg38_random.fa",
-            "consensusCruncher.combineVariants.workflows": ["mutect2", "consensusCruncher"],
+            "consensusCruncher.combineVariants.workflows": ["mutect2", "consensusCruncher", "mutect"],
             "consensusCruncher.mutectRun1.filter_refDict": "$HG38_ROOT/hg38_random.dict",
             "consensusCruncher.mutectRun1.filter_refFai": "$HG38_ROOT/hg38_random.fa.fai",
             "consensusCruncher.mutectRun1.filter_refFasta": "$HG38_ROOT/hg38_random.fa",
