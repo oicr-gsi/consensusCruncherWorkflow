@@ -57,7 +57,7 @@ workflow consensusCruncher {
     input: 
       inputVcfs = [mutectRun1.mergedVcfFile,mutectRun2.mergedVcfFile, mutectRun3.mergedVcfFile],
       inputIndexes = [mutectRun1.mergedVcfIdxFile,mutectRun2.mergedVcfIdxFile, mutectRun3.mergedVcfIdxFile],
-      priority = "mutect2,consensusCruncher",
+      priority = "mutect2,consensusCruncher,mutect",
       outputPrefix = outputFileNamePrefix
 
   }
