@@ -1,6 +1,7 @@
 version 1.0
 
 import "imports/pull_mutect2.wdl" as mutect2
+import "imports/pull_variantEffectPredictor.wdl" as vep
 
 workflow consensusCruncher {
   input {
@@ -55,11 +56,18 @@ workflow consensusCruncher {
 
   call combineVariants {
     input: 
-      inputVcfs = [mutectRun1.mergedVcfFile,mutectRun2.mergedVcfFile, mutectRun3.mergedVcfFile],
-      inputIndexes = [mutectRun1.mergedVcfIdxFile,mutectRun2.mergedVcfIdxFile, mutectRun3.mergedVcfIdxFile],
+      inputVcfs = [mutectRun1.filteredVcfFile,mutectRun2.filteredVcfFile, mutectRun3.filteredVcfFile],
+      inputIndexes = [mutectRun1.filteredVcfIndex,mutectRun2.filteredVcfIndex, mutectRun3.filteredVcfIndex],
       priority = "mutect2,consensusCruncher,mutect",
       outputPrefix = outputFileNamePrefix
-
+  }
+  
+  call vep.variantEffectPredictor {
+    input: 
+      vcfFile = combineVariants.combinedVcf,
+      vcfIndex = combineVariants.combinedIndex,
+      toMAF = true,
+      onlyTumor = true
   }
 
   meta {
@@ -102,6 +110,7 @@ workflow consensusCruncher {
     File sscsScBam = consensus.sscsScBam
     File sscsScBamIndex = consensus.sscsScBamIndex
     File ccFolder = consensus.ccFolder
+    File? mafOutput = variantEffectPredictor.outputMaf
   }
 }
 
@@ -169,9 +178,6 @@ task align {
   }
 }
 task consensus {
-
-
-
   input {
     File? inputBam
     File? inputBai
