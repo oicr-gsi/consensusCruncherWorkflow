@@ -89,6 +89,7 @@ workflow mutect2 {
         refFai = runMutect2_refFai,
         refFasta = runMutect2_refFasta,
         modules = runMutect2_modules,
+        alleles = runMutect2_alleles,
         intervals = subintervals,
         intervalsProvided = intervalsProvided,
         intervalFile = intervalFile,

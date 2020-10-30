@@ -189,7 +189,7 @@ task consensus {
     String ccDir = basePrefix + ".consensuscruncher"
     Float cutoff  = 0.7
     Int threads = 8
-    Int jobMemory = 16
+    Int jobMemory = 32
     Int timeout = 72
     String modules = "consensus-cruncher/5.0 data-hg19-consensus-cruncher/1.0 hg19-bwa-index/0.7.12 samtools/1.9"
   }
