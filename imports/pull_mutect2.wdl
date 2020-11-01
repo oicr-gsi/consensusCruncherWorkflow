@@ -238,7 +238,7 @@ task runMutect2 {
     ~{"--germline-resource " + gnomad} \
     ~{"-pon " + pon} \
     $intervals_command_line \
-    -O "~{outputVcf}" "~{alleles}" \
+    -O "~{outputVcf}"~{alleles} \
     ~{mutect2ExtraArgs}
   >>>
 
