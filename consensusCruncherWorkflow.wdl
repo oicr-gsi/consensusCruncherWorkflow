@@ -158,7 +158,7 @@ task align {
          --skipcheck \
          --blist ~{blist}
 
-    # Necessary for bam files to be named according to merged library name
+    # Necessary for if bam files to be named according to merged library name
     # Additionally if ".sorted" isn't omitted here, file names from align include ".sorted" twice
     mv bamfiles/*.bam bamfiles/"~{outputFileNamePrefix}.bam"
     mv bamfiles/*.bai bamfiles/"~{outputFileNamePrefix}.bam.bai"
