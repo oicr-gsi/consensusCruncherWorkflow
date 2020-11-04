@@ -20,7 +20,8 @@ workflow mutect2 {
     Int runMutect2_memory = 32
     Int runMutect2_threads = 4
     String? runMutect2_mutect2ExtraArgs
-    String? runMutect2_alleles
+    File? runMutect2_alleles
+    Boolean? runMutect2_allelesProvided
     String runMutect2_mutectTag = "mutect2"
     String runMutect2_refDict = "$HG19_ROOT/hg19_random.dict"
     String runMutect2_refFai = "$HG19_ROOT/hg19_random.fa.fai"
@@ -89,6 +90,7 @@ workflow mutect2 {
         refFai = runMutect2_refFai,
         refFasta = runMutect2_refFasta,
         modules = runMutect2_modules,
+        allelesProvided = runMutect2_allelesProvided,
         alleles = runMutect2_alleles,
         intervals = subintervals,
         intervalsProvided = intervalsProvided,
@@ -192,7 +194,8 @@ task runMutect2 {
     File? gnomad
     File? gnomadIdx
     String? mutect2ExtraArgs
-    String? alleles
+    Boolean? allelesProvided
+    File? alleles
     String outputBasename
     Int threads = 4
     Int memory = 32
@@ -231,6 +234,10 @@ task runMutect2 {
       fi
     fi
 
+    if ~{allelesProvided} ; then
+        alleles_command_line="~{"--alleles " + alleles}"
+    fi
+
     gatk --java-options "-Xmx~{memory-8}g" Mutect2 \
     -R ~{refFasta} \
     $tumor_command_line \
@@ -238,7 +245,8 @@ task runMutect2 {
     ~{"--germline-resource " + gnomad} \
     ~{"-pon " + pon} \
     $intervals_command_line \
-    -O "~{outputVcf}"~{alleles} \
+    $alleles_command_line \
+    -O "~{outputVcf}" \
     ~{mutect2ExtraArgs}
   >>>
 

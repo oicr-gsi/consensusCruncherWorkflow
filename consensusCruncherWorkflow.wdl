@@ -44,28 +44,38 @@ workflow consensusCruncher {
 
   call mutect2.mutect2 as mutectRun2 {
     input:
-      tumorBam = consensus.allUniqueBam,
-      tumorBai = consensus.allUniqueBamIndex
-  }
-
-  call mutect2.mutect2 as mutectRun3 {
-    input:
       tumorBam = consensus.sscsScBam,
       tumorBai = consensus.sscsScBamIndex
   }
 
+  call mutect2.mutect2 as mutectRun3 {
+    input:
+      tumorBam = consensus.allUniqueBam,
+      tumorBai = consensus.allUniqueBamIndex
+  }
+
+
   call combineVariants {
     input: 
-      inputVcfs = [mutectRun1.filteredVcfFile,mutectRun2.filteredVcfFile, mutectRun3.filteredVcfFile],
-      inputIndexes = [mutectRun1.filteredVcfIndex,mutectRun2.filteredVcfIndex, mutectRun3.filteredVcfIndex],
-      priority = "mutect2,consensusCruncher,mutect",
+      inputVcfs = [mutectRun1.filteredVcfFile,mutectRun2.filteredVcfFile],
+      inputIndexes = [mutectRun1.filteredVcfIndex,mutectRun2.filteredVcfIndex],
+      priority = "mutect2-dcsSc,mutect2-sscsSc",
+      outputPrefix = outputFileNamePrefix
+  }
+
+  call annotation {
+    input: 
+      uniqueVcf = mutectRun3.filteredVcfFile,
+      uniqueVcfIndex = mutectRun3.filteredVcfIndex,
+      mergedVcf = combineVariants.combinedVcf,
+      mergedVcfIndex = combineVariants.combinedIndex,
       outputPrefix = outputFileNamePrefix
   }
   
   call vep.variantEffectPredictor {
     input: 
-      vcfFile = combineVariants.combinedVcf,
-      vcfIndex = combineVariants.combinedIndex,
+      vcfFile = annotation.annotatedCombinedVcf,
+      vcfIndex = annotation.annotatedCombinedIndex,
       toMAF = true,
       onlyTumor = true
   }
@@ -325,3 +335,50 @@ output {
   File combinedIndex = "~{outputPrefix}_combined.vcf.gz.tbi"
 }
 }
+
+task annotation {
+input {
+ File uniqueVcf 
+ File uniqueVcfIndex
+ File mergedVcf
+ File mergedVcfIndex
+ String outputPrefix 
+ String modules = "samtools/1.9 bcftools/1.9 htslib/1.9 tabix/1.9"
+ Int jobMemory = 24
+ Int timeout = 20
+ Int threads = 8
+}
+
+parameter_meta {
+ uniqueVcf: "input unique vcf files"
+ uniqueVcfIndex: "input unique tabix indexes for vcf files"
+ mergedVcf: "input merged vcf"
+ mergedVcfIndex: "input merged vcf index"
+ outputPrefix: "prefix for output file"
+ modules: "modules for running preprocessing"
+ jobMemory: "memory allocated to preprocessing, in GB"
+ timeout: "timeout in hours"
+ threads: "number of cpu threads to be used"
+}
+
+command <<<
+  bcftools annotate -a ~{uniqueVcf} \
+ -c FMT/AD,FMT/DP ~{mergedVcf} -Oz \
+ -o "~{outputPrefix}.merge_temp.vcf.gz"
+
+ tabix -p vcf "~{outputPrefix}.merge_temp.vcf.gz"
+>>>
+
+runtime {
+  memory:  "~{jobMemory} GB"
+  modules: "~{modules}"
+  cpu:     "~{threads}"
+  timeout: "~{timeout}"
+}
+
+output {
+  File annotatedCombinedVcf = "~{outputPrefix}.merge_temp.vcf.gz"
+  File annotatedCombinedIndex = "~{outputPrefix}.merge_temp.vcf.gz.tbi"
+}
+}
+
