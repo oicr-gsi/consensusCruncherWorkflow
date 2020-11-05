@@ -236,18 +236,30 @@ task runMutect2 {
 
     if ~{allelesProvided} ; then
         alleles_command_line="~{"--alleles " + alleles}"
+      
+        gatk --java-options "-Xmx~{memory-8}g" Mutect2 \
+        -R ~{refFasta} \
+        $tumor_command_line \
+        $normal_command_line \
+        ~{"--germline-resource " + gnomad} \
+        ~{"-pon " + pon} \
+        $intervals_command_line \
+        $alleles_command_line \
+        -O "~{outputVcf}" \
+        ~{mutect2ExtraArgs}
+    
+    else
+       gatk --java-options "-Xmx~{memory-8}g" Mutect2 \
+        -R ~{refFasta} \
+        $tumor_command_line \
+        $normal_command_line \
+        ~{"--germline-resource " + gnomad} \
+        ~{"-pon " + pon} \
+        $intervals_command_line \
+        -O "~{outputVcf}" \
+        ~{mutect2ExtraArgs}
     fi
 
-    gatk --java-options "-Xmx~{memory-8}g" Mutect2 \
-    -R ~{refFasta} \
-    $tumor_command_line \
-    $normal_command_line \
-    ~{"--germline-resource " + gnomad} \
-    ~{"-pon " + pon} \
-    $intervals_command_line \
-    $alleles_command_line \
-    -O "~{outputVcf}" \
-    ~{mutect2ExtraArgs}
   >>>
 
   runtime {
