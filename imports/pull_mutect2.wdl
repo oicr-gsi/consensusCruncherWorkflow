@@ -21,7 +21,7 @@ workflow mutect2 {
     Int runMutect2_threads = 4
     String? runMutect2_mutect2ExtraArgs
     File? runMutect2_alleles
-    Boolean? runMutect2_allelesProvided
+    Boolean runMutect2_allelesProvided = false
     String runMutect2_mutectTag = "mutect2"
     String runMutect2_refDict = "$HG19_ROOT/hg19_random.dict"
     String runMutect2_refFai = "$HG19_ROOT/hg19_random.fa.fai"
@@ -194,7 +194,7 @@ task runMutect2 {
     File? gnomad
     File? gnomadIdx
     String? mutect2ExtraArgs
-    Boolean? allelesProvided
+    Boolean allelesProvided = false
     File? alleles
     String outputBasename
     Int threads = 4
