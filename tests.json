@@ -17,9 +17,9 @@
       "parameters": {
     "wdl_deps_zip": "${workflow_bundle_dir}/Workflow_Bundle_consensusCruncherWorkflow/1.0.0/lib/imports.zip",
         "wdl_inputs": {
-          "consensusCruncher.fastqR1": "/.mounts/labs/gsiprojects/gsi/rshah/SWID_15901346_TGL40_0008_Pl_P_PE_434_TS_651_P_200114_NB551051_0145_AHTMTCBGXC_CGGCTAAT-CTCGTTCT_L001_R1_001.fastq.gz",
-          "consensusCruncher.fastqR2": "/.mounts/labs/gsiprojects/gsi/rshah/SWID_15901346_TGL40_0008_Pl_P_PE_434_TS_651_P_200114_NB551051_0145_AHTMTCBGXC_CGGCTAAT-CTCGTTCT_L001_R2_001.fastq.gz",
-          "consensusCruncher.outputFileNamePrefix":"SWID_15901346_TGL40_0008_Pl_P_PE_434_TS_651_P_200114_NB551051_0145_AHTMTCBGXC_CGGCTAAT-CTCGTTCT_L001",
+          "consensusCruncher.fastqR1": "/.mounts/labs/gsiprojects/gsi/rshah/SWID_15409584_TGL49_0032_Cf_U_PE_381_TS_LFS_4042_87782-1_191126_NB551056_0130_AHTMW5BGXC_CGTGTGTA-CCAACGAA_L001_R1_001.fastq.gz",
+          "consensusCruncher.fastqR2": "/.mounts/labs/gsiprojects/gsi/rshah/SWID_15409584_TGL49_0032_Cf_U_PE_381_TS_LFS_4042_87782-1_191126_NB551056_0130_AHTMW5BGXC_CGTGTGTA-CCAACGAA_L001_R2_001.fastq.gz",
+          "consensusCruncher.outputFileNamePrefix": "SWID_15409584_TGL49_0032_Cf_U_PE_381_TS_LFS_4042_87782-1_191126_NB551056_0130_AHTMW5BGXC_CGTGTGTA-CCAACGAA_L001",
           "consensusCruncher.align.modules": "consensus-cruncher/5.0 data-hg38-consensus-cruncher/1.0 hg38-bwa-index/0.7.12 samtools/1.9",
           "consensusCruncher.align.bwaref": "$HG38_BWA_INDEX_ROOT/hg38_random.fa",
           "consensusCruncher.align.blist": "$DATA_HG38_CONSENSUS_CRUNCHER_ROOT/IDT_duplex_sequencing_barcodes.list",
@@ -39,6 +39,7 @@
           "consensusCruncher.mutectRun1.runMutect2_refFai": "$HG38_ROOT/hg38_random.fa.fai",
           "consensusCruncher.mutectRun1.runMutect2_refFasta": "$HG38_ROOT/hg38_random.fa",
           "consensusCruncher.mutectRun1.runMutect2_modules": "gatk/4.1.6.0 hg38/p12",
+          "consensusCruncher.mutectRun1.intervalFile": "/.mounts/labs/gsiprojects/gsi/rshah/TGL49_CHARM_designed-probe-coords_All_curated_minimal.GRCh38.bed",
           "consensusCruncher.mutectRun1.intervalsToParallelizeBy": "chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20,chr21,chr22,chrX,chrY",
           "consensusCruncher.mutectRun2.filter_refDict": "$HG38_ROOT/hg38_random.dict",
           "consensusCruncher.mutectRun2.filter_refFai": "$HG38_ROOT/hg38_random.fa.fai",
@@ -50,6 +51,7 @@
           "consensusCruncher.mutectRun2.runMutect2_refFai": "$HG38_ROOT/hg38_random.fa.fai",
           "consensusCruncher.mutectRun2.runMutect2_refFasta": "$HG38_ROOT/hg38_random.fa",
           "consensusCruncher.mutectRun2.runMutect2_modules": "gatk/4.1.6.0 hg38/p12",
+          "consensusCruncher.mutectRun2.intervalFile": "/.mounts/labs/gsiprojects/gsi/rshah/TGL49_CHARM_designed-probe-coords_All_curated_minimal.GRCh38.bed",
           "consensusCruncher.mutectRun2.intervalsToParallelizeBy": "chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20,chr21,chr22,chrX,chrY",
           "consensusCruncher.mutectRun3.filter_refDict": "$HG38_ROOT/hg38_random.dict",
           "consensusCruncher.mutectRun3.filter_refFai": "$HG38_ROOT/hg38_random.fa.fai",
@@ -61,6 +63,7 @@
           "consensusCruncher.mutectRun3.runMutect2_refFai": "$HG38_ROOT/hg38_random.fa.fai",
           "consensusCruncher.mutectRun3.runMutect2_refFasta": "$HG38_ROOT/hg38_random.fa",
           "consensusCruncher.mutectRun3.runMutect2_modules": "gatk/4.1.6.0 hg38/p12",
+          "consensusCruncher.mutectRun3.intervalFile": "/.mounts/labs/gsiprojects/gsi/rshah/TGL49_CHARM_designed-probe-coords_All_curated_minimal.GRCh38.bed",
           "consensusCruncher.mutectRun3.intervalsToParallelizeBy": "chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20,chr21,chr22,chrX,chrY",
           "consensusCruncher.variantEffectPredictor.targetBed": "/.mounts/labs/gsiprojects/gsi/rshah/TGL49_CHARM_designed-probe-coords_All_curated_minimal.GRCh38.bed",
           "consensusCruncher.variantEffectPredictor.vep_modules": "vep/92.0 tabix/0.2.6 vep-hg38-cache/92 hg38/p12",
@@ -75,6 +78,38 @@
           
         }
       }
+    },
+    {
+      "id": "consensusCruncher_dataset2",
+      "parameters": {
+    "wdl_deps_zip": "${workflow_bundle_dir}/Workflow_Bundle_consensusCruncherWorkflow/1.0.0/lib/imports.zip",
+        "wdl_inputs": {
+          "consensusCruncher.fastqR1": "/.mounts/labs/gsiprojects/gsi/rshah/SWID_15901346_TGL40_0008_Pl_P_PE_434_TS_651_P_200114_NB551051_0145_AHTMTCBGXC_CGGCTAAT-CTCGTTCT_L001_R1_001.fastq.gz",
+          "consensusCruncher.fastqR2": "/.mounts/labs/gsiprojects/gsi/rshah/SWID_15901346_TGL40_0008_Pl_P_PE_434_TS_651_P_200114_NB551051_0145_AHTMTCBGXC_CGGCTAAT-CTCGTTCT_L001_R2_001.fastq.gz",
+          "consensusCruncher.outputFileNamePrefix":"SWID_15901346_TGL40_0008_Pl_P_PE_434_TS_651_P_200114_NB551051_0145_AHTMTCBGXC_CGGCTAAT-CTCGTTCT_L001",
+          "consensusCruncher.combineVariants.modules": "gatk/3.6-0 tabix/0.2.6 hg19/p13",
+          "consensusCruncher.combineVariants.referenceFasta": "$HG19_ROOT/hg19_random.fa",
+          "consensusCruncher.combineVariants.workflows": ["mutect2-dcsSc", "mutect2-sscsSc"],
+          "consensusCruncher.mutectRun1.intervalFile": "/.mounts/labs/gsiprojects/gsi/rshah/MA38_designed-probe-coords_pad50.bed",
+          "consensusCruncher.mutectRun1.intervalsToParallelizeBy": "chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20,chr21,chr22,chrX",
+          "consensusCruncher.mutectRun2.intervalFile": "/.mounts/labs/gsiprojects/gsi/rshah/MA38_designed-probe-coords_pad50.bed",
+          "consensusCruncher.mutectRun2.intervalsToParallelizeBy": "chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20,chr21,chr22,chrX",
+          "consensusCruncher.mutectRun3.intervalFile": "/.mounts/labs/gsiprojects/gsi/rshah/MA38_designed-probe-coords_pad50.bed",
+          "consensusCruncher.mutectRun3.intervalsToParallelizeBy": "chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20,chr21,chr22,chrX",
+          "consensusCruncher.variantEffectPredictor.targetBed": "/.mounts/labs/gsiprojects/gsi/rshah/MA38_designed-probe-coords_pad50.bed",
+          "consensusCruncher.variantEffectPredictor.vep_modules": "vep/92.0 tabix/0.2.6 vep-hg19-cache/92 hg38/p13",
+          "consensusCruncher.variantEffectPredictor.vep_referenceFasta": "$HG19_ROOT/hg19_random.fa",
+          "consensusCruncher.variantEffectPredictor.vep_vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep",
+          "consensusCruncher.variantEffectPredictor.vcf2maf_modules": "vcf2maf/1.6.17 tabix/0.2.6 hg19/p13 vep-hg19-cache/92 vep-hg19-exac/0.3.1",
+          "consensusCruncher.variantEffectPredictor.vcf2maf_referenceFasta": "$HG19_ROOT/hg19_random.fa",
+          "consensusCruncher.variantEffectPredictor.vcf2maf_vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep",
+          "consensusCruncher.variantEffectPredictor.vcf2maf_vepPath": "$VEP_ROOT/bin/",
+          "consensusCruncher.variantEffectPredictor.vcf2maf_vcfFilter": "$VEP_HG19_EXAC_ROOT/ExAC_nonTCGA.r0.3.1.somatic.sites.vep.vcf.gz",
+          "consensusCruncher.variantEffectPredictor.vcf2maf_ncbiBuild": "GRCh37"
+          
+        }
+      }
     }
   ]
 }
+
