@@ -23,6 +23,7 @@ workflow variantEffectPredictor {
     String vcf2maf_ncbiBuild
     String vcf2maf_referenceFasta
     String vcf2maf_species = "homo_sapiens"
+    Boolean vcf2maf_retainInfoProvided = true
     String vcf2maf_modules
     String vcf2maf_basename = basename("~{vcfFile}",".vcf.gz")
     Int tumorOnlyAlign_timeout = 6
@@ -173,6 +174,8 @@ workflow variantEffectPredictor {
              minHomVaf = vcf2maf_minHomVaf,
              
              maxfilterAC = vcf2maf_maxfilterAC,
+
+	     retainInfoProvided = vcf2maf_retainInfoProvided,
              
              vcfFilter = vcf2maf_vcfFilter,
              
@@ -627,6 +630,7 @@ task vcf2maf {
     String vepPath
     String vepCacheDir
     String vcfFilter
+    Boolean retainInfoProvided
     Int maxfilterAC = 10
     Float minHomVaf = 0.7
     Int bufferSize = 200
@@ -661,12 +665,21 @@ task vcf2maf {
     NORM=$(sed -n 2p ~{tumorNormalNames} )
 
     bgzip -c -d ~{vcfFile} > ~{basename}
-
-    vcf2maf --ref-fasta ~{referenceFasta} --species ~{species} --ncbi-build ~{ncbiBuild} \
-            --input-vcf ~{basename} --output-maf ~{basename}.maf \
-            --tumor-id $TUMR --normal-id $NORM --vcf-tumor-id $TUMR --vcf-normal-id $NORM \
-            --filter-vcf ~{vcfFilter} --vep-path ~{vepPath} --vep-data ~{vepCacheDir} \
-            --max-filter-ac ~{maxfilterAC} --min-hom-vaf ~{minHomVaf} --buffer-size ~{bufferSize}
+    
+    if ~{retainInfoProvided} ; then
+ 
+         vcf2maf --ref-fasta ~{referenceFasta} --species ~{species} --ncbi-build ~{ncbiBuild} \
+                 --input-vcf ~{basename} --output-maf ~{basename}.maf \
+                 --tumor-id $TUMR --normal-id $NORM --vcf-tumor-id $TUMR --vcf-normal-id $NORM \
+                 --filter-vcf ~{vcfFilter} --vep-path ~{vepPath} --vep-data ~{vepCacheDir} \
+                 --max-filter-ac ~{maxfilterAC} --min-hom-vaf ~{minHomVaf} --buffer-size ~{bufferSize} --retain-info MBQ,MMQ,TLOD,set
+    else     
+          vcf2maf --ref-fasta ~{referenceFasta} --species ~{species} --ncbi-build ~{ncbiBuild} \
+                   --input-vcf ~{basename} --output-maf ~{basename}.maf \
+                --tumor-id $TUMR --normal-id $NORM --vcf-tumor-id $TUMR --vcf-normal-id $NORM \
+                --filter-vcf ~{vcfFilter} --vep-path ~{vepPath} --vep-data ~{vepCacheDir} \
+                --max-filter-ac ~{maxfilterAC} --min-hom-vaf ~{minHomVaf} --buffer-size ~{bufferSize}
+    fi
   >>>
 
   runtime {
