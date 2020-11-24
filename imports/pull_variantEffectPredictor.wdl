@@ -359,7 +359,7 @@ task targetBedTask {
   command <<<
     set -euo pipefail
 
-    bedtools intersect -header \
+    bedtools intersect -header -u \
                        -a ~{vcfFile} \
                        -b ~{targetBed} \
                        > ~{basename}.targeted.vcf
