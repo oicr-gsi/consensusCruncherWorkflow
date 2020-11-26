@@ -355,7 +355,7 @@ parameter_meta {
  mergedVcf: "input merged vcf"
  mergedVcfIndex: "input merged vcf index"
  outputPrefix: "prefix for output file"
- modules: "modules for running preprocessing"
+ modules: "module for running preprocessing"
  jobMemory: "memory allocated to preprocessing, in GB"
  timeout: "timeout in hours"
  threads: "number of cpu threads to be used"
