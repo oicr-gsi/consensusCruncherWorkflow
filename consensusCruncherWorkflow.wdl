@@ -2,6 +2,7 @@ version 1.0
 
 import "imports/pull_mutect2.wdl" as mutect2
 import "imports/pull_variantEffectPredictor.wdl" as vep
+import "imports/pull_bamQC.wdl" as bamQC
 
 workflow consensusCruncher {
   input {
@@ -10,6 +11,7 @@ workflow consensusCruncher {
     File? sortedBam
     File? sortedBai
     String outputFileNamePrefix
+    Map[String, String] inputMetadata
   }
 
   parameter_meta {
@@ -52,6 +54,30 @@ workflow consensusCruncher {
     input:
       tumorBam = consensus.allUniqueBam,
       tumorBai = consensus.allUniqueBamIndex
+  }
+
+  call bamQC.bamQC as bamQCRun1 {
+    input: 
+      bamFile = consensus.dcsScBam,
+      metadata = inputMetadata,
+      outputFileNamePrefix = "dcsSc-bamqc",
+      bamQCMetrics_workflowVersion = "4.0.0"
+  }
+
+  call bamQC.bamQC as bamQCRun2 {
+    input: 
+      bamFile = consensus.sscsScBam,
+      metadata = inputMetadata,
+      outputFileNamePrefix = "sscsScBam-bamqc",
+      bamQCMetrics_workflowVersion = "4.0.0"
+  }
+
+  call bamQC.bamQC as bamQCRun3 {
+    input: 
+      bamFile = consensus.allUniqueBam,
+      metadata = inputMetadata,
+      outputFileNamePrefix = "allUnique-bamqc",
+      bamQCMetrics_workflowVersion = "4.0.0"
   }
 
 
@@ -121,6 +147,9 @@ workflow consensusCruncher {
     File sscsScBamIndex = consensus.sscsScBamIndex
     File ccFolder = consensus.ccFolder
     File? mafOutput = variantEffectPredictor.outputMaf
+    File dcsScBamQC = bamQCRun1.result
+    File sscsScBamQC = bamQCRun2.result
+    File allUniqueBamQC = bamQCRun3.result
   }
 }
 
