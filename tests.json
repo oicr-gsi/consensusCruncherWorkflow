@@ -15,7 +15,7 @@
     {
       "id": "consensusCruncher_dataset1",
       "parameters": {
-    "wdl_deps_zip": "${workflow_bundle_dir}/Workflow_Bundle_consensusCruncherWorkflow/1.0.0/lib/imports.zip",
+    "wdl_deps_zip": "${workflow_bundle_dir}/Workflow_Bundle_consensusCruncherWorkflow/1.1.0/lib/imports.zip",
         "wdl_inputs": {
           "consensusCruncher.fastqR1": "/.mounts/labs/gsiprojects/gsi/rshah/SWID_15409584_TGL49_0032_Cf_U_PE_381_TS_LFS_4042_87782-1_191126_NB551056_0130_AHTMW5BGXC_CGTGTGTA-CCAACGAA_L001_R1_001.fastq.gz",
           "consensusCruncher.fastqR2": "/.mounts/labs/gsiprojects/gsi/rshah/SWID_15409584_TGL49_0032_Cf_U_PE_381_TS_LFS_4042_87782-1_191126_NB551056_0130_AHTMW5BGXC_CGTGTGTA-CCAACGAA_L001_R2_001.fastq.gz",
@@ -94,7 +94,7 @@
     {
       "id": "consensusCruncher_dataset2",
       "parameters": {
-    "wdl_deps_zip": "${workflow_bundle_dir}/Workflow_Bundle_consensusCruncherWorkflow/1.0.0/lib/imports.zip",
+    "wdl_deps_zip": "${workflow_bundle_dir}/Workflow_Bundle_consensusCruncherWorkflow/1.1.0/lib/imports.zip",
         "wdl_inputs": {
           "consensusCruncher.fastqR1": "/.mounts/labs/gsiprojects/gsi/rshah/SWID_15901346_TGL40_0008_Pl_P_PE_434_TS_651_P_200114_NB551051_0145_AHTMTCBGXC_CGGCTAAT-CTCGTTCT_L001_R1_001.fastq.gz",
           "consensusCruncher.fastqR2": "/.mounts/labs/gsiprojects/gsi/rshah/SWID_15901346_TGL40_0008_Pl_P_PE_434_TS_651_P_200114_NB551051_0145_AHTMTCBGXC_CGGCTAAT-CTCGTTCT_L001_R2_001.fastq.gz",
