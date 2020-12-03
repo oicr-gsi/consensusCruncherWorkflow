@@ -2,7 +2,7 @@ version 1.0
 
 import "imports/pull_mutect2.wdl" as mutect2
 import "imports/pull_variantEffectPredictor.wdl" as vep
-import "imports/pull_bamQC.wdl" as bamQC
+import "imports/pull_hsMetrics.wdl" as hsMetrics
 
 workflow consensusCruncher {
   input {
@@ -11,7 +11,7 @@ workflow consensusCruncher {
     File? sortedBam
     File? sortedBai
     String outputFileNamePrefix
-    Map[String, String] inputMetadata
+    String intervalFile
   }
 
   parameter_meta {
@@ -56,30 +56,29 @@ workflow consensusCruncher {
       tumorBai = consensus.allUniqueBamIndex
   }
 
-  call bamQC.bamQC as bamQCRun1 {
+  call hsMetrics.hsMetrics as hsMetricsRun1 {
     input: 
-      bamFile = consensus.dcsScBam,
-      metadata = inputMetadata,
-      outputFileNamePrefix = "dcsSc-bamqc",
-      bamQCMetrics_workflowVersion = "4.0.0"
+      inputBam = consensus.dcsScBam,
+      outputFileNamePrefix = "dcsSc-hsMetrics",
+      baitBed = intervalFile, 
+      targetBed = intervalFile
   }
 
-  call bamQC.bamQC as bamQCRun2 {
+  call hsMetrics.hsMetrics as hsMetricsRun2 {
     input: 
-      bamFile = consensus.sscsScBam,
-      metadata = inputMetadata,
-      outputFileNamePrefix = "sscsScBam-bamqc",
-      bamQCMetrics_workflowVersion = "4.0.0"
+      inputBam = consensus.dcsScBam,
+      outputFileNamePrefix = "sscsSc-hsMetrics",
+      baitBed = intervalFile, 
+      targetBed = intervalFile
   }
 
-  call bamQC.bamQC as bamQCRun3 {
+  call hsMetrics.hsMetrics as hsMetricsRun3 {
     input: 
-      bamFile = consensus.allUniqueBam,
-      metadata = inputMetadata,
-      outputFileNamePrefix = "allUnique-bamqc",
-      bamQCMetrics_workflowVersion = "4.0.0"
+      inputBam = consensus.dcsScBam,
+      outputFileNamePrefix = "allUnique-hsMetrics",
+      baitBed = intervalFile, 
+      targetBed = intervalFile
   }
-
 
   call combineVariants {
     input: 
@@ -147,9 +146,9 @@ workflow consensusCruncher {
     File sscsScBamIndex = consensus.sscsScBamIndex
     File ccFolder = consensus.ccFolder
     File? mafOutput = variantEffectPredictor.outputMaf
-    File dcsScBamQC = bamQCRun1.result
-    File sscsScBamQC = bamQCRun2.result
-    File allUniqueBamQC = bamQCRun3.result
+    File dcsScHsMetrics = hsMetricsRun1.outputHSMetrics
+    File sscsScHsMetrics = hsMetricsRun2.outputHSMetrics
+    File allUniqueHsMetrics = hsMetricsRun3.outputHSMetrics
   }
 }
 

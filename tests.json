@@ -20,13 +20,7 @@
           "consensusCruncher.fastqR1": "/.mounts/labs/gsiprojects/gsi/rshah/SWID_15409584_TGL49_0032_Cf_U_PE_381_TS_LFS_4042_87782-1_191126_NB551056_0130_AHTMW5BGXC_CGTGTGTA-CCAACGAA_L001_R1_001.fastq.gz",
           "consensusCruncher.fastqR2": "/.mounts/labs/gsiprojects/gsi/rshah/SWID_15409584_TGL49_0032_Cf_U_PE_381_TS_LFS_4042_87782-1_191126_NB551056_0130_AHTMW5BGXC_CGTGTGTA-CCAACGAA_L001_R2_001.fastq.gz",
           "consensusCruncher.outputFileNamePrefix": "SWID_15409584_TGL49_0032_Cf_U_PE_381_TS_LFS_4042_87782-1_191126_NB551056_0130_AHTMW5BGXC_CGTGTGTA-CCAACGAA_L001",
-          "consensusCruncher.inputMetadata": {
-            "donor": "test_hg38_input",
-            "group id": "test_groupid",
-            "library design": "test_library_design",
-            "tissue origin": "test_tissue_origin",
-            "tissue type": "test_tissue_type"
-          },
+          "consensusCruncher.intervalFile": "/.mounts/labs/gsiprojects/gsi/rshah/TGL49_CHARM_designed-probe-coords_All_curated_minimal.GRCh38.bed",
           "consensusCruncher.align.modules": "consensus-cruncher/5.0 data-hg38-consensus-cruncher/1.0 hg38-bwa-index/0.7.12 samtools/1.9",
           "consensusCruncher.align.bwaref": "$HG38_BWA_INDEX_ROOT/hg38_random.fa",
           "consensusCruncher.align.blist": "$DATA_HG38_CONSENSUS_CRUNCHER_ROOT/IDT_duplex_sequencing_barcodes.list",
@@ -82,12 +76,24 @@
           "consensusCruncher.variantEffectPredictor.vcf2maf_vepPath": "$VEP_ROOT/bin/",
           "consensusCruncher.variantEffectPredictor.vcf2maf_vcfFilter": "$VEP_HG38_EXAC_ROOT/ExAC.r0.3.sites.minus_somatic.hg38.vcf.gz",
           "consensusCruncher.variantEffectPredictor.vcf2maf_ncbiBuild": "GRCh38",
-          "consensusCruncher.bamQCRun1.bamQCMetrics_refSizesBed": "/.mounts/labs/gsi/modulator/sw/data/hg38-p12/hg38.chrom.sizes.bed",
-          "consensusCruncher.bamQCRun1.bamQCMetrics_refFasta": "/.mounts/labs/gsi/modulator/sw/data/hg38-p12/hg38_random.fa",
-          "consensusCruncher.bamQCRun2.bamQCMetrics_refSizesBed": "/.mounts/labs/gsi/modulator/sw/data/hg38-p12/hg38.chrom.sizes.bed",
-          "consensusCruncher.bamQCRun2.bamQCMetrics_refFasta": "/.mounts/labs/gsi/modulator/sw/data/hg38-p12/hg38_random.fa",
-          "consensusCruncher.bamQCRun3.bamQCMetrics_refSizesBed": "/.mounts/labs/gsi/modulator/sw/data/hg38-p12/hg38.chrom.sizes.bed",
-          "consensusCruncher.bamQCRun3.bamQCMetrics_refFasta": "/.mounts/labs/gsi/modulator/sw/data/hg38-p12/hg38_random.fa"
+          "consensusCruncher.hsMetricsRun1.collectHSmetrics_modules": "picard/2.21.2 hg38/p12",
+          "consensusCruncher.hsMetricsRun1.collectHSmetrics_refFasta": "$HG38_ROOT/hg38_random.fa",
+          "consensusCruncher.hsMetricsRun1.bedToBaitIntervals_refDict": "HG38_ROOT/hg38_random.dict",
+          "consensusCruncher.hsMetricsRun1.bedToBaitIntervals_modules": "picard/2.21.2 hg38/p12",
+          "consensusCruncher.hsMetricsRun1.bedToTargetIntervals_refDict": "HG38_ROOT/hg38_random.dict",
+          "consensusCruncher.hsMetricsRun1.bedToTargetIntervals_modules": "picard/2.21.2 hg38/p12",
+          "consensusCruncher.hsMetricsRun2.collectHSmetrics_modules": "picard/2.21.2 hg38/p12",
+          "consensusCruncher.hsMetricsRun2.collectHSmetrics_refFasta": "$HG38_ROOT/hg38_random.fa",
+          "consensusCruncher.hsMetricsRun2.bedToBaitIntervals_refDict": "HG38_ROOT/hg38_random.dict",
+          "consensusCruncher.hsMetricsRun2.bedToBaitIntervals_modules": "picard/2.21.2 hg38/p12",
+          "consensusCruncher.hsMetricsRun2.bedToTargetIntervals_refDict": "HG38_ROOT/hg38_random.dict",
+          "consensusCruncher.hsMetricsRun2.bedToTargetIntervals_modules": "picard/2.21.2 hg38/p12",
+          "consensusCruncher.hsMetricsRun3.collectHSmetrics_modules": "picard/2.21.2 hg38/p12",
+          "consensusCruncher.hsMetricsRun3.collectHSmetrics_refFasta": "$HG38_ROOT/hg38_random.fa",
+          "consensusCruncher.hsMetricsRun3.bedToBaitIntervals_refDict": "HG38_ROOT/hg38_random.dict",
+          "consensusCruncher.hsMetricsRun3.bedToBaitIntervals_modules": "picard/2.21.2 hg38/p12",
+          "consensusCruncher.hsMetricsRun3.bedToTargetIntervals_refDict": "HG38_ROOT/hg38_random.dict",
+          "consensusCruncher.hsMetricsRun3.bedToTargetIntervals_modules": "picard/2.21.2 hg38/p12"
         }
       }
     },
@@ -99,13 +105,7 @@
           "consensusCruncher.fastqR1": "/.mounts/labs/gsiprojects/gsi/rshah/SWID_15901346_TGL40_0008_Pl_P_PE_434_TS_651_P_200114_NB551051_0145_AHTMTCBGXC_CGGCTAAT-CTCGTTCT_L001_R1_001.fastq.gz",
           "consensusCruncher.fastqR2": "/.mounts/labs/gsiprojects/gsi/rshah/SWID_15901346_TGL40_0008_Pl_P_PE_434_TS_651_P_200114_NB551051_0145_AHTMTCBGXC_CGGCTAAT-CTCGTTCT_L001_R2_001.fastq.gz",
           "consensusCruncher.outputFileNamePrefix":"SWID_15901346_TGL40_0008_Pl_P_PE_434_TS_651_P_200114_NB551051_0145_AHTMTCBGXC_CGGCTAAT-CTCGTTCT_L001",
-          "consensusCruncher.inputMetadata": {
-            "donor": "test_hg19_input",
-            "group id": "test_groupid",
-            "library design": "test_library_design",
-            "tissue origin": "test_tissue_origin",
-            "tissue type": "test_tissue_type"
-          },
+          "consensusCruncher.intervalFile": "/.mounts/labs/gsiprojects/gsi/rshah/MA38_designed-probe-coords_pad50_sorted.bed",
           "consensusCruncher.combineVariants.modules": "gatk/3.6-0 tabix/0.2.6 hg19/p13",
           "consensusCruncher.combineVariants.referenceFasta": "$HG19_ROOT/hg19_random.fa",
           "consensusCruncher.combineVariants.workflows": ["mutect2-dcsSc", "mutect2-sscsSc"],
@@ -124,13 +124,7 @@
           "consensusCruncher.variantEffectPredictor.vcf2maf_vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep",
           "consensusCruncher.variantEffectPredictor.vcf2maf_vepPath": "$VEP_ROOT/bin/",
           "consensusCruncher.variantEffectPredictor.vcf2maf_vcfFilter": "$VEP_HG19_EXAC_ROOT/ExAC_nonTCGA.r0.3.1.somatic.sites.vep.vcf.gz",
-          "consensusCruncher.variantEffectPredictor.vcf2maf_ncbiBuild": "GRCh37",
-          "consensusCruncher.bamQCRun1.bamQCMetrics_refSizesBed": "/.mounts/labs/gsi/modulator/sw/data/hg19-p13/hg19.chrom.sizes.bed",
-          "consensusCruncher.bamQCRun1.bamQCMetrics_refFasta": "/.mounts/labs/gsi/modulator/sw/data/hg19-p13/hg19_random.fa",
-          "consensusCruncher.bamQCRun2.bamQCMetrics_refSizesBed": "/.mounts/labs/gsi/modulator/sw/data/hg19-p13/hg19.chrom.sizes.bed",
-          "consensusCruncher.bamQCRun2.bamQCMetrics_refFasta": "/.mounts/labs/gsi/modulator/sw/data/hg19-p13/hg19_random.fa",
-          "consensusCruncher.bamQCRun3.bamQCMetrics_refSizesBed": "/.mounts/labs/gsi/modulator/sw/data/hg19-p13/hg19.chrom.sizes.bed",
-          "consensusCruncher.bamQCRun3.bamQCMetrics_refFasta": "/.mounts/labs/gsi/modulator/sw/data/hg19-p13/hg19_random.fa"
+          "consensusCruncher.variantEffectPredictor.vcf2maf_ncbiBuild": "GRCh37"
         }
       }
     }
