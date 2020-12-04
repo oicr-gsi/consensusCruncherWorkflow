@@ -144,6 +144,8 @@ workflow consensusCruncher {
     File allUniqueBamIndex = consensus.allUniqueBamIndex
     File sscsScBam = consensus.sscsScBam
     File sscsScBamIndex = consensus.sscsScBamIndex
+    File outputCCStats = consensus.statsCCFile
+    File outputCCReadFamilies = consensus.readFamiliesCCFile
     File ccFolder = consensus.ccFolder
     File? mafOutput = variantEffectPredictor.outputMaf
     File dcsScHsMetrics = hsMetricsRun1.outputHSMetrics
@@ -276,7 +278,10 @@ task consensus {
     File allUniqueBamIndex = "~{basePrefix}/dcs_sc/~{basePrefix}.all.unique.dcs.sorted.bam.bai"
     File sscsScBam = "~{basePrefix}/sscs_sc/~{basePrefix}.sscs.sc.sorted.bam"
     File sscsScBamIndex = "~{basePrefix}/sscs_sc/~{basePrefix}.sscs.sc.sorted.bam.bai"
+    File statsCCFile = "~{basePrefix}/~{basePrefix}.stats.txt"
+    File readFamiliesCCFile = "~{basePrefix}/~{basePrefix}.read_families.txt"
     File ccFolder = "~{ccDir}.tar.gz"
+    
   }
 
   meta {
