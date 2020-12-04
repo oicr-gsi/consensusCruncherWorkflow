@@ -392,9 +392,9 @@ parameter_meta {
 command <<<
   bcftools annotate -a ~{uniqueVcf} \
  -c FMT/AD,FMT/DP ~{mergedVcf} -Oz \
- -o "~{outputPrefix}.merge_temp.vcf.gz"
+ -o "~{outputPrefix}.merged.vcf.gz"
 
- tabix -p vcf "~{outputPrefix}.merge_temp.vcf.gz"
+ tabix -p vcf "~{outputPrefix}.merged.vcf.gz"
 >>>
 
 runtime {
@@ -405,8 +405,8 @@ runtime {
 }
 
 output {
-  File annotatedCombinedVcf = "~{outputPrefix}.merge_temp.vcf.gz"
-  File annotatedCombinedIndex = "~{outputPrefix}.merge_temp.vcf.gz.tbi"
+  File annotatedCombinedVcf = "~{outputPrefix}.merged.vcf.gz"
+  File annotatedCombinedIndex = "~{outputPrefix}.merged.vcf.gz.tbi"
 }
 }
 
