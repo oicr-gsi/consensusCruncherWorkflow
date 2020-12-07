@@ -108,7 +108,7 @@ workflow consensusCruncher {
   meta {
     author: "Alexander Fortuna and Rishi Shah"
     email: "alexander.fortuna@oicr.on.ca and rshah@oicr.on.ca"
-    description: "Workflow to run extract UMIs from fastq and generate consensus Bams as well as run it through mutect2 and combine variants"
+    description: "Workflow to run extract UMIs from fastq and generate consensus Bams as well as run it thru mutect2 and combine variants"
     dependencies: [
      {
       name: "hg19-bwa-index/0.7.12",
