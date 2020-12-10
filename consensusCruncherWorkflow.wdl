@@ -105,7 +105,13 @@ workflow consensusCruncher {
       inputBam = consensus.dcsScBam,
       outputFileNamePrefix = "dcsSc-hsMetrics",
       baitBed = intervalFile, 
-      targetBed = intervalFile
+      targetBed = intervalFile,
+      collectHSmetrics_modules = inputHSMetricsModules,
+      collectHSmetrics_refFasta = inputRefFasta,
+      bedToBaitIntervals_refDict = inputRefDict,
+      bedToBaitIntervals_modules = inputHSMetricsModules,
+      bedToTargetIntervals_refDict = inputRefDict,
+      bedToTargetIntervals_modules = inputHSMetricsModules
   }
 
   call hsMetrics.hsMetrics as hsMetricsRunSSCSSC {
@@ -113,7 +119,13 @@ workflow consensusCruncher {
       inputBam = consensus.dcsScBam,
       outputFileNamePrefix = "sscsSc-hsMetrics",
       baitBed = intervalFile, 
-      targetBed = intervalFile
+      targetBed = intervalFile,
+      collectHSmetrics_modules = inputHSMetricsModules,
+      collectHSmetrics_refFasta = inputRefFasta,
+      bedToBaitIntervals_refDict = inputRefDict,
+      bedToBaitIntervals_modules = inputHSMetricsModules,
+      bedToTargetIntervals_refDict = inputRefDict,
+      bedToTargetIntervals_modules = inputHSMetricsModules
   }
 
   call hsMetrics.hsMetrics as hsMetricsRunAllUnique {
@@ -121,7 +133,13 @@ workflow consensusCruncher {
       inputBam = consensus.dcsScBam,
       outputFileNamePrefix = "allUnique-hsMetrics",
       baitBed = intervalFile, 
-      targetBed = intervalFile
+      targetBed = intervalFile,
+      collectHSmetrics_modules = inputHSMetricsModules,
+      collectHSmetrics_refFasta = inputRefFasta,
+      bedToBaitIntervals_refDict = inputRefDict,
+      bedToBaitIntervals_modules = inputHSMetricsModules,
+      bedToTargetIntervals_refDict = inputRefDict,
+      bedToTargetIntervals_modules = inputHSMetricsModules
   }
 
   call combineVariants {
@@ -462,4 +480,5 @@ output {
   File annotatedCombinedIndex = "~{outputPrefix}.merged.vcf.gz.tbi"
 }
 }
+
 
