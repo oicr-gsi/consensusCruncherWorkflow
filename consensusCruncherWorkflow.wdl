@@ -11,7 +11,14 @@ workflow consensusCruncher {
     File? sortedBam
     File? sortedBai
     String outputFileNamePrefix
-    String intervalFile
+    File intervalFile
+    String inputRefDict 
+    String inputRefFai
+    String inputRefFasta
+    String inputMutectModules
+    String inputIntervalsToParalellizeBy
+    String inputHSMetricsModules
+
   }
 
   parameter_meta {
@@ -28,6 +35,7 @@ workflow consensusCruncher {
         fastqR1 = select_first([fastqR1]),
         fastqR2 = select_first([fastqR2]),
         outputFileNamePrefix = outputFileNamePrefix
+
     }
   }
 
@@ -38,25 +46,61 @@ workflow consensusCruncher {
       basePrefix = outputFileNamePrefix
   }
 
-  call mutect2.mutect2 as mutectRun1 {
+  call mutect2.mutect2 as mutectRunDCSSC {
     input:
       tumorBam = consensus.dcsScBam,
-      tumorBai = consensus.dcsScBamIndex
+      tumorBai = consensus.dcsScBamIndex,
+      filter_refDict = inputRefDict,
+      filter_refFai = inputRefFai,
+      filter_refFasta = inputRefFasta,
+      filter_modules = inputMutectModules,
+      mergeVCFs_refFasta = inputRefFasta,
+      mergeVCFs_modules = inputMutectModules,
+      runMutect2_refDict = inputRefDict,
+      runMutect2_refFai = inputRefFasta,
+      runMutect2_refFasta = inputRefFasta,
+      runMutect2_modules = inputMutectModules,
+      intervalFile = intervalFile,
+      intervalsToParallelizeBy = inputIntervalsToParalellizeBy
   }
 
-  call mutect2.mutect2 as mutectRun2 {
+  call mutect2.mutect2 as mutectRunSSCSSC {
     input:
-      tumorBam = consensus.sscsScBam,
-      tumorBai = consensus.sscsScBamIndex
+      tumorBam = consensus.dcsScBam,
+      tumorBai = consensus.dcsScBamIndex,
+      filter_refDict = inputRefDict,
+      filter_refFai = inputRefFai,
+      filter_refFasta = inputRefFasta,
+      filter_modules = inputMutectModules,
+      mergeVCFs_refFasta = inputRefFasta,
+      mergeVCFs_modules = inputMutectModules,
+      runMutect2_refDict = inputRefDict,
+      runMutect2_refFai = inputRefFasta,
+      runMutect2_refFasta = inputRefFasta,
+      runMutect2_modules = inputMutectModules,
+      intervalFile = intervalFile,
+      intervalsToParallelizeBy = inputIntervalsToParalellizeBy
   }
 
-  call mutect2.mutect2 as mutectRun3 {
+  call mutect2.mutect2 as mutectRunAllUnique {
     input:
-      tumorBam = consensus.allUniqueBam,
-      tumorBai = consensus.allUniqueBamIndex
+      tumorBam = consensus.dcsScBam,
+      tumorBai = consensus.dcsScBamIndex,
+      filter_refDict = inputRefDict,
+      filter_refFai = inputRefFai,
+      filter_refFasta = inputRefFasta,
+      filter_modules = inputMutectModules,
+      mergeVCFs_refFasta = inputRefFasta,
+      mergeVCFs_modules = inputMutectModules,
+      runMutect2_refDict = inputRefDict,
+      runMutect2_refFai = inputRefFasta,
+      runMutect2_refFasta = inputRefFasta,
+      runMutect2_modules = inputMutectModules,
+      intervalFile = intervalFile,
+      intervalsToParallelizeBy = inputIntervalsToParalellizeBy
   }
 
-  call hsMetrics.hsMetrics as hsMetricsRun1 {
+  call hsMetrics.hsMetrics as hsMetricsRunDCSSC {
     input: 
       inputBam = consensus.dcsScBam,
       outputFileNamePrefix = "dcsSc-hsMetrics",
@@ -64,7 +108,7 @@ workflow consensusCruncher {
       targetBed = intervalFile
   }
 
-  call hsMetrics.hsMetrics as hsMetricsRun2 {
+  call hsMetrics.hsMetrics as hsMetricsRunSSCSSC {
     input: 
       inputBam = consensus.dcsScBam,
       outputFileNamePrefix = "sscsSc-hsMetrics",
@@ -72,7 +116,7 @@ workflow consensusCruncher {
       targetBed = intervalFile
   }
 
-  call hsMetrics.hsMetrics as hsMetricsRun3 {
+  call hsMetrics.hsMetrics as hsMetricsRunAllUnique {
     input: 
       inputBam = consensus.dcsScBam,
       outputFileNamePrefix = "allUnique-hsMetrics",
@@ -82,16 +126,17 @@ workflow consensusCruncher {
 
   call combineVariants {
     input: 
-      inputVcfs = [mutectRun1.filteredVcfFile,mutectRun2.filteredVcfFile],
-      inputIndexes = [mutectRun1.filteredVcfIndex,mutectRun2.filteredVcfIndex],
+      inputVcfs = [mutectRunDCSSC.filteredVcfFile,mutectRunSSCSSC.filteredVcfFile],
+      inputIndexes = [mutectRunDCSSC.filteredVcfIndex,mutectRunSSCSSC.filteredVcfIndex],
       priority = "mutect2-dcsSc,mutect2-sscsSc",
-      outputPrefix = outputFileNamePrefix
+      outputPrefix = outputFileNamePrefix,
+      referenceFasta = inputRefFasta
   }
 
   call annotation {
     input: 
-      uniqueVcf = mutectRun3.filteredVcfFile,
-      uniqueVcfIndex = mutectRun3.filteredVcfIndex,
+      uniqueVcf = mutectRunAllUnique.filteredVcfFile,
+      uniqueVcfIndex = mutectRunAllUnique.filteredVcfIndex,
       mergedVcf = combineVariants.combinedVcf,
       mergedVcfIndex = combineVariants.combinedIndex,
       outputPrefix = outputFileNamePrefix
@@ -102,7 +147,10 @@ workflow consensusCruncher {
       vcfFile = annotation.annotatedCombinedVcf,
       vcfIndex = annotation.annotatedCombinedIndex,
       toMAF = true,
-      onlyTumor = true
+      onlyTumor = true,
+      vep_referenceFasta = inputRefFasta,
+      vcf2maf_referenceFasta = inputRefFasta,
+      targetBed = intervalFile
   }
 
   meta {
@@ -148,9 +196,9 @@ workflow consensusCruncher {
     File outputCCReadFamilies = consensus.readFamiliesCCFile
     File ccFolder = consensus.ccFolder
     File? mafOutput = variantEffectPredictor.outputMaf
-    File dcsScHsMetrics = hsMetricsRun1.outputHSMetrics
-    File sscsScHsMetrics = hsMetricsRun2.outputHSMetrics
-    File allUniqueHsMetrics = hsMetricsRun3.outputHSMetrics
+    File dcsScHsMetrics = hsMetricsRunDCSSC.outputHSMetrics
+    File sscsScHsMetrics = hsMetricsRunSSCSSC.outputHSMetrics
+    File allUniqueHsMetrics = hsMetricsRunAllUnique.outputHSMetrics
   }
 }
 
