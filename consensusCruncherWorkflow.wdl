@@ -66,8 +66,8 @@ workflow consensusCruncher {
 
   call mutect2.mutect2 as mutectRunSSCSSC {
     input:
-      tumorBam = consensus.dcsScBam,
-      tumorBai = consensus.dcsScBamIndex,
+      tumorBam = consensus.sscsScBam,
+      tumorBai = consensus.sscsScBamIndex,
       filter_refDict = inputRefDict,
       filter_refFai = inputRefFai,
       filter_refFasta = inputRefFasta,
@@ -84,8 +84,8 @@ workflow consensusCruncher {
 
   call mutect2.mutect2 as mutectRunAllUnique {
     input:
-      tumorBam = consensus.dcsScBam,
-      tumorBai = consensus.dcsScBamIndex,
+      tumorBam = consensus.allUniqueBam,
+      tumorBai = consensus.allUniqueBamIndex,
       filter_refDict = inputRefDict,
       filter_refFai = inputRefFai,
       filter_refFasta = inputRefFasta,
@@ -116,7 +116,7 @@ workflow consensusCruncher {
 
   call hsMetrics.hsMetrics as hsMetricsRunSSCSSC {
     input: 
-      inputBam = consensus.dcsScBam,
+      inputBam = consensus.sscsScBam,
       outputFileNamePrefix = "sscsSc-hsMetrics",
       baitBed = intervalFile, 
       targetBed = intervalFile,
@@ -130,7 +130,7 @@ workflow consensusCruncher {
 
   call hsMetrics.hsMetrics as hsMetricsRunAllUnique {
     input: 
-      inputBam = consensus.dcsScBam,
+      inputBam = consensus.allUniqueBam,
       outputFileNamePrefix = "allUnique-hsMetrics",
       baitBed = intervalFile, 
       targetBed = intervalFile,
@@ -480,5 +480,6 @@ output {
   File annotatedCombinedIndex = "~{outputPrefix}.merged.vcf.gz.tbi"
 }
 }
+
 
 
