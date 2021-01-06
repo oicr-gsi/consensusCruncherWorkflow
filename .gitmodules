@@ -1,0 +1,3 @@
+[submodule "/.mounts/labs/gsiprojects/gsi/rshah/workflows/ConsensusCruncherWorkflow/submodules"]
+	path = /.mounts/labs/gsiprojects/gsi/rshah/workflows/ConsensusCruncherWorkflow/submodules
+	url = git@github.com:oicr-gsi/mutect2.git
