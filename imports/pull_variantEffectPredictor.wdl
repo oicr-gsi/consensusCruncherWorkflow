@@ -23,7 +23,6 @@ workflow variantEffectPredictor {
     String vcf2maf_ncbiBuild
     String vcf2maf_referenceFasta
     String vcf2maf_species = "homo_sapiens"
-    Boolean vcf2maf_retainInfoProvided = true
     String vcf2maf_modules
     String vcf2maf_basename = basename("~{vcfFile}",".vcf.gz")
     Int tumorOnlyAlign_timeout = 6
@@ -37,6 +36,8 @@ workflow variantEffectPredictor {
     String vep_modules
     String vep_referenceFasta
     String vep_vepCacheDir
+    String vep_ncbiBuild
+    String vep_species = "homo_sapiens"
     String? vep_addParam
     String vep_basename = basename("~{vcfFile}",".vcf.gz")
     Int subsetVcf_timeout = 6
@@ -138,6 +139,10 @@ workflow variantEffectPredictor {
     
     vepCacheDir = vep_vepCacheDir,
     
+    ncbiBuild = vep_ncbiBuild,
+    
+    species = vep_species,
+    
     addParam = vep_addParam,
     
     basename = vep_basename,
@@ -174,8 +179,6 @@ workflow variantEffectPredictor {
              minHomVaf = vcf2maf_minHomVaf,
              
              maxfilterAC = vcf2maf_maxfilterAC,
-
-	     retainInfoProvided = vcf2maf_retainInfoProvided,
              
              vcfFilter = vcf2maf_vcfFilter,
              
@@ -265,6 +268,8 @@ workflow variantEffectPredictor {
       vep_modules: "Required environment modules"
       vep_referenceFasta: "Reference fasta file"
       vep_vepCacheDir: "Directory of cache files"
+      vep_ncbiBuild: "The assembly version"
+      vep_species: "Species name"
       vep_addParam: "Additional vep parameters"
       vep_basename: "Base name"
       subsetVcf_timeout: "Maximum amount of time (in hours) the task can run for."
@@ -359,7 +364,7 @@ task targetBedTask {
   command <<<
     set -euo pipefail
 
-    bedtools intersect -header -u \
+    bedtools intersect -header \
                        -a ~{vcfFile} \
                        -b ~{targetBed} \
                        > ~{basename}.targeted.vcf
@@ -465,6 +470,8 @@ task vep {
     File vcfFile 
     String basename = basename("~{vcfFile}", ".vcf.gz")
     String? addParam
+    String species = "homo_sapiens"
+    String ncbiBuild
     String vepCacheDir
     String referenceFasta
     String modules
@@ -477,6 +484,8 @@ task vep {
     vcfFile: "Vcf input file"
     basename: "Base name"
     addParam: "Additional vep parameters"
+    species: "Species name"
+    ncbiBuild: "The assembly version"
     vepCacheDir: "Directory of cache files"
     referenceFasta: "Reference fasta file"
     modules: "Required environment modules"
@@ -488,14 +497,21 @@ task vep {
   command <<<
     set -euo pipefail
 
-    vep --offline --dir ~{vepCacheDir} -i ~{vcfFile} --fasta ~{referenceFasta} \
-          -o ~{basename}.vep.vcf.gz --vcf --compress_output bgzip ~{addParam} \
+    if [ "~{species}" = "homo_sapiens" ]; then
+      human_only_command_line="--polyphen b --af --af_1kg --af_esp --af_gnomad"
+    else
+      human_only_command_line=""
+    fi
+
+    vep --offline --dir ~{vepCacheDir} -i ~{vcfFile} --fasta ~{referenceFasta} --species ~{species} \
+          --assembly ~{ncbiBuild} -o ~{basename}.vep.vcf.gz --vcf --compress_output bgzip ~{addParam} \
           --no_progress --no_stats --sift b --ccds --uniprot --hgvs --symbol --numbers --domains --gene_phenotype \
           --canonical --protein --biotype --uniprot --tsl --variant_class --check_existing --total_length \
           --allele_number --no_escape --xref_refseq --failed 1 --flag_pick_allele \
           --pick_order canonical,tsl,biotype,rank,ccds,length  \
-          --pubmed --fork 4 --polyphen b --af --af_1kg --af_esp --af_gnomad --regulatory
-    
+          $human_only_command_line \
+          --pubmed --fork 4 --regulatory
+
   >>> 
 
   runtime {
@@ -585,9 +601,8 @@ task tumorOnlyAlign {
   }
   command <<<
     set -euo pipefail
-    zcat ~{vcfFile} | sed s/Number\=A/Number\=./ | sed s/Number\=R/Number\=./ > "~{basename}_temporary.vcf"
 
-    cat ~{basename}_temporary.vcf | sed 's/QSS\,Number\=A/QSS\,Number\=\./' | sed 's/AS_FilterStatus\,Number\=A/AS_FilterStatus\,Number\=\./' | bgzip -c > "~{basename}_input.vcf.gz"
+    zcat ~{vcfFile} | sed 's/QSS\,Number\=A/QSS\,Number\=\./' | sed 's/AS_FilterStatus\,Number\=A/AS_FilterStatus\,Number\=\./' | bgzip -c > "~{basename}_input.vcf.gz"
     tabix -p vcf "~{basename}_input.vcf.gz"
 
     cat ~{tumorNormalNames} > "~{basename}_header"
@@ -630,7 +645,6 @@ task vcf2maf {
     String vepPath
     String vepCacheDir
     String vcfFilter
-    Boolean retainInfoProvided
     Int maxfilterAC = 10
     Float minHomVaf = 0.7
     Int bufferSize = 200
@@ -665,21 +679,12 @@ task vcf2maf {
     NORM=$(sed -n 2p ~{tumorNormalNames} )
 
     bgzip -c -d ~{vcfFile} > ~{basename}
-    
-    if ~{retainInfoProvided} ; then
- 
-         vcf2maf --ref-fasta ~{referenceFasta} --species ~{species} --ncbi-build ~{ncbiBuild} \
-                 --input-vcf ~{basename} --output-maf ~{basename}.maf \
-                 --tumor-id $TUMR --normal-id $NORM --vcf-tumor-id $TUMR --vcf-normal-id $NORM \
-                 --filter-vcf ~{vcfFilter} --vep-path ~{vepPath} --vep-data ~{vepCacheDir} \
-                 --max-filter-ac ~{maxfilterAC} --min-hom-vaf ~{minHomVaf} --buffer-size ~{bufferSize} --retain-info MBQ,MMQ,TLOD,set
-    else     
-          vcf2maf --ref-fasta ~{referenceFasta} --species ~{species} --ncbi-build ~{ncbiBuild} \
-                   --input-vcf ~{basename} --output-maf ~{basename}.maf \
-                --tumor-id $TUMR --normal-id $NORM --vcf-tumor-id $TUMR --vcf-normal-id $NORM \
-                --filter-vcf ~{vcfFilter} --vep-path ~{vepPath} --vep-data ~{vepCacheDir} \
-                --max-filter-ac ~{maxfilterAC} --min-hom-vaf ~{minHomVaf} --buffer-size ~{bufferSize}
-    fi
+
+    vcf2maf --ref-fasta ~{referenceFasta} --species ~{species} --ncbi-build ~{ncbiBuild} \
+            --input-vcf ~{basename} --output-maf ~{basename}.maf \
+            --tumor-id $TUMR --normal-id $NORM --vcf-tumor-id $TUMR --vcf-normal-id $NORM \
+            --filter-vcf ~{vcfFilter} --vep-path ~{vepPath} --vep-data ~{vepCacheDir} \
+            --max-filter-ac ~{maxfilterAC} --min-hom-vaf ~{minHomVaf} --buffer-size ~{bufferSize}
   >>>
 
   runtime {
