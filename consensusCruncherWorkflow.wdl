@@ -1,30 +1,49 @@
 version 1.0
 
+struct InputGroup {
+  File fastqR1
+  File fastqR2
+  String readGroup
+}
+
 import "imports/pull_mutect2.wdl" as mutect2
 import "imports/pull_variantEffectPredictor.wdl" as vep
 
 workflow consensusCruncher {
   input {
-    File? fastqR1
-    File? fastqR2
+    Array[InputGroup] inputGroups
     File? sortedBam
     File? sortedBai
     String outputFileNamePrefix
   }
 
+  scatter (ig in inputGroups) {
+    File read1s       = ig.fastqR1
+    File read2s       = ig.fastqR2
+    String readGroups = ig.readGroup
+  }
+
   parameter_meta {
-    fastqR1: "First Fastq Files"
-    fastqR2: "Second Fastq File"
+    inputGroups: "Array of fastq files to concatenate if a top-up"
     sortedBam: "Bam file from bwamem"
     sortedBai: "Bai file from bwamem"
     outputFileNamePrefix: "Prefix to use for output file"
   }
 
   if (!(defined(sortedBam)) && defined(fastqR1) && defined(fastqR2)) {
+    call concat {
+      input:
+        fastqR1 = select_first([reads1]),
+        fastqR2 = select_first([reads2]),
+        outputFileNamePrefix = outputFileNamePrefix
+    }
+  }
+
+  if (!(defined(sortedBam)) && defined(fastqR1) && defined(fastqR2)) {
     call align {
       input:
-        fastqR1 = select_first([fastqR1]),
-        fastqR2 = select_first([fastqR2]),
+        fastqR1 = select_first([fastqR1, concat.fastqR1]),
+        fastqR2 = select_first([fastqR2, concat.fastqR2]),
         outputFileNamePrefix = outputFileNamePrefix
     }
   }
@@ -56,7 +75,7 @@ workflow consensusCruncher {
 
 
   call combineVariants {
-    input: 
+    input:
       inputVcfs = [mutectRun1.filteredVcfFile,mutectRun2.filteredVcfFile],
       inputIndexes = [mutectRun1.filteredVcfIndex,mutectRun2.filteredVcfIndex],
       priority = "mutect2-dcsSc,mutect2-sscsSc",
@@ -64,16 +83,16 @@ workflow consensusCruncher {
   }
 
   call annotation {
-    input: 
+    input:
       uniqueVcf = mutectRun3.filteredVcfFile,
       uniqueVcfIndex = mutectRun3.filteredVcfIndex,
       mergedVcf = combineVariants.combinedVcf,
       mergedVcfIndex = combineVariants.combinedIndex,
       outputPrefix = outputFileNamePrefix
   }
-  
+
   call vep.variantEffectPredictor {
-    input: 
+    input:
       vcfFile = annotation.annotatedCombinedVcf,
       vcfIndex = annotation.annotatedCombinedIndex,
       toMAF = true,
@@ -270,7 +289,7 @@ input {
  Array[File] inputIndexes
  Array[String] workflows
  String referenceFasta
- String outputPrefix 
+ String outputPrefix
  String modules
  String priority
  Int jobMemory = 24
@@ -301,14 +320,14 @@ command <<<
   w = "~{sep=' ' workflows}"
   workflowIds = w.split()
   priority = "~{priority}"
-  
+
   if len(vcfFiles) != len(workflowIds):
       print("The arrays with input files and their respective workflow names are not of equal size!")
   else:
       for f in range(0, len(vcfFiles)):
           inputStrings.append("--variant:" + workflowIds[f] + " " + vcfFiles[f])
 
-  javaMemory = ~{jobMemory} - 6 
+  javaMemory = ~{jobMemory} - 6
   gatkCommand  = "$JAVA_ROOT/bin/java -Xmx" + str(javaMemory) + "G -jar $GATK_ROOT/GenomeAnalysisTK.jar "
   gatkCommand += "-T CombineVariants "
   gatkCommand += " ".join(inputStrings)
@@ -338,11 +357,11 @@ output {
 
 task annotation {
 input {
- File uniqueVcf 
+ File uniqueVcf
  File uniqueVcfIndex
  File mergedVcf
  File mergedVcfIndex
- String outputPrefix 
+ String outputPrefix
  String modules = "samtools/1.9 bcftools/1.9 htslib/1.9 tabix/1.9"
  Int jobMemory = 24
  Int timeout = 20
@@ -381,4 +400,3 @@ output {
   File annotatedCombinedIndex = "~{outputPrefix}.merge_temp.vcf.gz.tbi"
 }
 }
-
