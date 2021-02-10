@@ -33,8 +33,8 @@ workflow consensusCruncher {
   if (!(defined(sortedBam)) && defined(fastqR1) && defined(fastqR2)) {
     call concat {
       input:
-        fastqR1 = select_first([reads1]),
-        fastqR2 = select_first([reads2]),
+        fastqR1 = reads1,
+        fastqR2 = reads2,
         outputFileNamePrefix = outputFileNamePrefix
     }
   }
@@ -42,8 +42,8 @@ workflow consensusCruncher {
   if (!(defined(sortedBam)) && defined(fastqR1) && defined(fastqR2)) {
     call align {
       input:
-        fastqR1 = select_first([fastqR1, concat.fastqR1]),
-        fastqR2 = select_first([fastqR2, concat.fastqR2]),
+        fastqR1 = select_first([concat.fastqR1, fastqR1]),
+        fastqR2 = select_first([concat.fastqR2, fastqR2]),
         outputFileNamePrefix = outputFileNamePrefix
     }
   }
@@ -140,6 +140,50 @@ workflow consensusCruncher {
     File sscsScBamIndex = consensus.sscsScBamIndex
     File ccFolder = consensus.ccFolder
     File? mafOutput = variantEffectPredictor.outputMaf
+  }
+}
+
+task concat {
+  input {
+    Array[File]+ read1s
+    Array[File]+ read2s
+    Array[String]+ readGroups
+    String outputFileNamePrefix
+    Int threads = 4
+    Int jobMemory = 16
+    Int timeout = 72
+  }
+
+  parameter_meta {
+    read1s: "array of read1s"
+    read2s: "array of read2s"
+    readGroups: "array of readgroup lines"
+    outputFileNamePrefix: "File name prefix"
+    threads: "Number of threads to request"
+    jobMemory: "Memory allocated for this job"
+    timeout: "Hours before task timeout"
+  }
+
+  command <<<
+    set -euo pipefail
+
+    cat ~{sep=" " read1s} > ~{outputFileNamePrefix}_R1_001.fastq.gz
+
+    cat ~{sep=" " read2s} > ~{outputFileNamePrefix}_R2_001.fastq.gz
+
+  >>>
+
+  runtime {
+    memory:  "~{jobMemory} GB"
+    modules: "~{modules}"
+    cpu:     "~{threads}"
+    timeout: "~{timeout}"
+
+  }
+
+  output {
+    File? fastqR1 = "~{outputFileNamePrefix}_R2_001.fastq.gz"
+    File? fastqR2 = "~{outputFileNamePrefix}_R2_001.fastq.gz"
   }
 }
 
