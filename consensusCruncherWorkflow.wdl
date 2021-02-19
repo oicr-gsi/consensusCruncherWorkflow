@@ -185,6 +185,8 @@ workflow consensusCruncher {
       vcfIndex = annotation.annotatedCombinedIndex,
       toMAF = true,
       onlyTumor = true,
+      updateTagValue = true,
+      retainInfoProvided = true,
       vep_referenceFasta = inputRefFasta,
       vcf2maf_referenceFasta = inputRefFasta,
       targetBed = intervalFile
