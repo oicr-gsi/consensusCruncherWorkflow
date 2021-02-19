@@ -17,6 +17,7 @@ workflow variantEffectPredictor {
     Int vcf2maf_bufferSize = 200
     Float vcf2maf_minHomVaf = 0.7
     Int vcf2maf_maxfilterAC = 10
+    Boolean vcf2maf_retainInfoProvided = false
     String vcf2maf_vcfFilter
     String vcf2maf_vepCacheDir
     String vcf2maf_vepPath
@@ -25,6 +26,7 @@ workflow variantEffectPredictor {
     String vcf2maf_species = "homo_sapiens"
     String vcf2maf_modules
     String vcf2maf_basename = basename("~{vcfFile}",".vcf.gz")
+    Boolean tumorOnlyAlign_updateTagValue = false
     Int tumorOnlyAlign_timeout = 6
     Int tumorOnlyAlign_threads = 4
     Int tumorOnlyAlign_jobMemory = 32
@@ -153,6 +155,8 @@ workflow variantEffectPredictor {
       if (onlyTumor == true) {
         call tumorOnlyAlign {
           input: 
+                 updateTagValue = tumorOnlyAlign_updateTagValue,
+                 
                  timeout = tumorOnlyAlign_timeout,
                  
                  threads = tumorOnlyAlign_threads,
@@ -163,7 +167,7 @@ workflow variantEffectPredictor {
                  
                  basename = tumorOnlyAlign_basename,
                  vcfFile = subsetVcf.subsetVcf,
-                 tumorNormalNames = select_first([getSampleNames.tumorNormalNames])   
+                 tumorNormalNames = select_first([getSampleNames.tumorNormalNames])
         }
       }
       call vcf2maf {
@@ -179,6 +183,8 @@ workflow variantEffectPredictor {
              minHomVaf = vcf2maf_minHomVaf,
              
              maxfilterAC = vcf2maf_maxfilterAC,
+             
+             retainInfoProvided = vcf2maf_retainInfoProvided,
              
              vcfFilter = vcf2maf_vcfFilter,
              
@@ -249,6 +255,7 @@ workflow variantEffectPredictor {
       vcf2maf_bufferSize: "The buffer size"
       vcf2maf_minHomVaf: "The minimum vaf for homozygous calls"
       vcf2maf_maxfilterAC: "The maximum AC filter"
+      vcf2maf_retainInfoProvided: "Comma-delimited names of INFO fields to retain as extra columns in MAF"
       vcf2maf_vcfFilter: "Filter for the vep module that is used in vcf2maf"
       vcf2maf_vepCacheDir: "Directory of vep cache files"
       vcf2maf_vepPath: "Path to vep script"
@@ -257,6 +264,7 @@ workflow variantEffectPredictor {
       vcf2maf_species: "Species name"
       vcf2maf_modules: "Required environment modules"
       vcf2maf_basename: "Base name"
+      tumorOnlyAlign_updateTagValue: "If true, update tag values in vcf header for CC workflow"
       tumorOnlyAlign_timeout: "Hours before task timeout"
       tumorOnlyAlign_threads: "Requested CPU threads"
       tumorOnlyAlign_jobMemory: "Memory allocated for this job (GB)"
@@ -364,7 +372,7 @@ task targetBedTask {
   command <<<
     set -euo pipefail
 
-    bedtools intersect -header \
+    bedtools intersect -header -u \
                        -a ~{vcfFile} \
                        -b ~{targetBed} \
                        > ~{basename}.targeted.vcf
@@ -588,7 +596,8 @@ task tumorOnlyAlign {
     String modules = "bcftools/1.9 tabix/0.2.6"
     Int jobMemory = 32
     Int threads = 4
-    Int timeout = 6   
+    Int timeout = 6
+    Boolean updateTagValue = false
   }
   parameter_meta {
     vcfFile: "Vcf input file"
@@ -598,11 +607,19 @@ task tumorOnlyAlign {
     jobMemory: "Memory allocated for this job (GB)"
     threads: "Requested CPU threads"
     timeout: "Hours before task timeout"
+    updateTagValue: "If true, update tag values in vcf header for CC workflow"
   }
+
   command <<<
     set -euo pipefail
 
-    zcat ~{vcfFile} | sed 's/QSS\,Number\=A/QSS\,Number\=\./' | sed 's/AS_FilterStatus\,Number\=A/AS_FilterStatus\,Number\=\./' | bgzip -c > "~{basename}_input.vcf.gz"
+    if ~{updateTagValue} ; then
+        zcat ~{vcfFile} | sed s/Number\=A/Number\=./ | sed s/Number\=R/Number\=./ > "~{basename}_temporary.vcf"
+        cat ~{basename}_temporary.vcf | sed 's/QSS\,Number\=A/QSS\,Number\=\./' | sed 's/AS_FilterStatus\,Number\=A/AS_FilterStatus\,Number\=\./' | bgzip -c > "~{basename}_input.vcf.gz"
+    else
+        zcat ~{vcfFile} | sed 's/QSS\,Number\=A/QSS\,Number\=\./' | sed 's/AS_FilterStatus\,Number\=A/AS_FilterStatus\,Number\=\./' | bgzip -c > "~{basename}_input.vcf.gz"
+    fi
+    
     tabix -p vcf "~{basename}_input.vcf.gz"
 
     cat ~{tumorNormalNames} > "~{basename}_header"
@@ -645,6 +662,7 @@ task vcf2maf {
     String vepPath
     String vepCacheDir
     String vcfFilter
+    Boolean retainInfoProvided = false
     Int maxfilterAC = 10
     Float minHomVaf = 0.7
     Int bufferSize = 200
@@ -661,6 +679,7 @@ task vcf2maf {
     vepPath: "Path to vep script"
     vepCacheDir: "Directory of vep cache files"
     vcfFilter: "Filter for the vep module that is used in vcf2maf"
+    retainInfoProvided: "Comma-delimited names of INFO fields to retain as extra columns in MAF"
     maxfilterAC: "The maximum AC filter"
     minHomVaf: "The minimum vaf for homozygous calls"
     bufferSize: "The buffer size"  
@@ -680,11 +699,20 @@ task vcf2maf {
 
     bgzip -c -d ~{vcfFile} > ~{basename}
 
-    vcf2maf --ref-fasta ~{referenceFasta} --species ~{species} --ncbi-build ~{ncbiBuild} \
-            --input-vcf ~{basename} --output-maf ~{basename}.maf \
-            --tumor-id $TUMR --normal-id $NORM --vcf-tumor-id $TUMR --vcf-normal-id $NORM \
-            --filter-vcf ~{vcfFilter} --vep-path ~{vepPath} --vep-data ~{vepCacheDir} \
-            --max-filter-ac ~{maxfilterAC} --min-hom-vaf ~{minHomVaf} --buffer-size ~{bufferSize}
+    if ~{retainInfoProvided} ; then
+
+        vcf2maf --ref-fasta ~{referenceFasta} --species ~{species} --ncbi-build ~{ncbiBuild} \
+                --input-vcf ~{basename} --output-maf ~{basename}.maf \
+                --tumor-id $TUMR --normal-id $NORM --vcf-tumor-id $TUMR --vcf-normal-id $NORM \
+                --filter-vcf ~{vcfFilter} --vep-path ~{vepPath} --vep-data ~{vepCacheDir} \
+                --max-filter-ac ~{maxfilterAC} --min-hom-vaf ~{minHomVaf} --buffer-size ~{bufferSize} --retain-info MBQ,MMQ,TLOD,set
+    else
+        vcf2maf --ref-fasta ~{referenceFasta} --species ~{species} --ncbi-build ~{ncbiBuild} \
+                --input-vcf ~{basename} --output-maf ~{basename}.maf \
+                --tumor-id $TUMR --normal-id $NORM --vcf-tumor-id $TUMR --vcf-normal-id $NORM \
+                --filter-vcf ~{vcfFilter} --vep-path ~{vepPath} --vep-data ~{vepCacheDir} \
+                --max-filter-ac ~{maxfilterAC} --min-hom-vaf ~{minHomVaf} --buffer-size ~{bufferSize}
+    fi
   >>>
 
   runtime {
@@ -802,4 +830,3 @@ task mergeVcfs {
   }
 
 }
-
