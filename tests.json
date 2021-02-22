@@ -37,6 +37,7 @@
           "consensusCruncher.combineVariants.workflows": ["mutect2-dcsSc", "mutect2-sscsSc"],
           "consensusCruncher.variantEffectPredictor.vep_modules": "vep/92.0 tabix/0.2.6 vep-hg38-cache/92 hg38/p12",
           "consensusCruncher.variantEffectPredictor.vep_vepCacheDir": "$VEP_HG38_CACHE_ROOT/.vep",
+          "consensusCruncher.variantEffectPredictor.vep_ncbiBuild": "GRCh38",
           "consensusCruncher.variantEffectPredictor.vcf2maf_modules": "vcf2maf/1.6.17 tabix/0.2.6 hg38/p12 vep-hg38-cache/92 vep-hg38-exac/0.3",
           "consensusCruncher.variantEffectPredictor.vcf2maf_vepCacheDir": "$VEP_HG38_CACHE_ROOT/.vep",
           "consensusCruncher.variantEffectPredictor.vcf2maf_vepPath": "$VEP_ROOT/bin/",
@@ -64,6 +65,7 @@
           "consensusCruncher.combineVariants.workflows": ["mutect2-dcsSc", "mutect2-sscsSc"],
           "consensusCruncher.variantEffectPredictor.vep_modules": "vep/92.0 tabix/0.2.6 vep-hg19-cache/92 hg19/p13",
           "consensusCruncher.variantEffectPredictor.vep_vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep",
+          "consensusCruncher.variantEffectPredictor.vep_ncbiBuild": "GRCh37",
           "consensusCruncher.variantEffectPredictor.vcf2maf_modules": "vcf2maf/1.6.17 tabix/0.2.6 hg19/p13 vep-hg19-cache/92 vep-hg19-exac/0.3.1",
           "consensusCruncher.variantEffectPredictor.vcf2maf_vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep",
           "consensusCruncher.variantEffectPredictor.vcf2maf_vepPath": "$VEP_ROOT/bin/",
@@ -74,4 +76,3 @@
     }
   ]
 }
-
