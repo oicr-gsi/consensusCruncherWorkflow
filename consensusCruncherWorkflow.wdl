@@ -186,7 +186,7 @@ workflow consensusCruncher {
       toMAF = true,
       onlyTumor = true,
       tumorOnlyAlign_updateTagValue = true,
-      vcf2map_retainInfoProvided = true,
+      vcf2maf_retainInfoProvided = true,
       vep_referenceFasta = inputRefFasta,
       vcf2maf_referenceFasta = inputRefFasta,
       targetBed = intervalFile
