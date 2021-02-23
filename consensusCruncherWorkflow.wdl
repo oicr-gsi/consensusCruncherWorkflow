@@ -11,7 +11,7 @@ struct InputGroup {
 
 workflow consensusCruncher {
   input {
-    Array[InputGroup] inputGroups
+    Array[InputGroup]? inputGroups
     File? sortedBam
     File? sortedBai
     String outputFileNamePrefix
@@ -275,8 +275,8 @@ task concat {
   }
 
   output {
-    File? fastqR1 = "~{outputFileNamePrefix}_R2_001.fastq.gz"
-    File? fastqR2 = "~{outputFileNamePrefix}_R2_001.fastq.gz"
+    File fastqR1 = "~{outputFileNamePrefix}_R2_001.fastq.gz"
+    File fastqR2 = "~{outputFileNamePrefix}_R2_001.fastq.gz"
   }
 }
 
