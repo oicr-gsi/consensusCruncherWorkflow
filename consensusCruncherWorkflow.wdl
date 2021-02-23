@@ -11,7 +11,9 @@ struct InputGroup {
 
 workflow consensusCruncher {
   input {
-    Array[InputGroup] inputGroups
+    Array[InputGroup]? inputGroups
+    File? sortedBam
+    File? sortedBai
     String outputFileNamePrefix
     File intervalFile
     String inputRefDict 
@@ -23,36 +25,43 @@ workflow consensusCruncher {
 
   }
 
-  scatter (ig in inputGroups) {
+if (!(defined(sortedBam)) && defined(inputGroups)) {
+  Array[InputGroup] inputs = select_first([inputGroups])
+  scatter (ig in inputs) {
     File read1s       = ig.fastqR1
     File read2s       = ig.fastqR2
   }
-
+}
   parameter_meta {
     inputGroups: "Array of fastq files to concatenate if a top-up"
+    sortedBam: "Bam file from bwamem"
+    sortedBai: "Bai file from bwamem"
     outputFileNamePrefix: "Prefix to use for output file"
   }
 
-  call concat {
-    input:
-      read1s = read1s,
-      read2s = read2s,
-      outputFileNamePrefix = outputFileNamePrefix
+  if (!(defined(sortedBam)) && defined(inputGroups)) {
+    call concat {
+      input:
+        read1s = select_first([read1s]),
+        read2s = select_first([read2s]),
+        outputFileNamePrefix = outputFileNamePrefix
+    }
   }
 
-  call align {
-    input:
-      fastqR1 = concat.fastqR1,
-      fastqR2 = concat.fastqR2,
-      outputFileNamePrefix = outputFileNamePrefix
+  if (!(defined(sortedBam)) && defined(read1s) && defined(read2s)) {
+    call align {
+      input:
+        fastqR1 = select_first([concat.fastqR1]),
+        fastqR2 = select_first([concat.fastqR2]),
+        outputFileNamePrefix = outputFileNamePrefix
 
+    }
   }
-
 
   call consensus {
     input:
-      inputBam = align.sortedBam,
-      inputBai = align.sortedBai,
+      inputBam = select_first([sortedBam, align.sortedBam]),
+      inputBai = select_first([sortedBai, align.sortedBai]),
       basePrefix = outputFileNamePrefix
   }
 
