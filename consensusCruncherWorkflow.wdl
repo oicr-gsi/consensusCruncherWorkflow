@@ -1,9 +1,8 @@
 version 1.0
 
 struct InputGroup {
-  File fastqR1
-  File fastqR2
-  String readGroup
+  File? fastqR1
+  File? fastqR2
 }
 
 import "imports/pull_mutect2.wdl" as mutect2
@@ -29,7 +28,6 @@ workflow consensusCruncher {
   scatter (ig in inputGroups) {
     File read1s       = ig.fastqR1
     File read2s       = ig.fastqR2
-    String readGroups = ig.readGroup
   }
 
   parameter_meta {
@@ -245,7 +243,6 @@ task concat {
   input {
     Array[File]+ read1s
     Array[File]+ read2s
-    Array[String]+ readGroups
     String outputFileNamePrefix
     Int threads = 4
     Int jobMemory = 16
@@ -255,7 +252,6 @@ task concat {
   parameter_meta {
     read1s: "array of read1s"
     read2s: "array of read2s"
-    readGroups: "array of readgroup lines"
     outputFileNamePrefix: "File name prefix"
     threads: "Number of threads to request"
     jobMemory: "Memory allocated for this job"
