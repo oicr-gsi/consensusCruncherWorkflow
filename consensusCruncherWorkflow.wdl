@@ -11,9 +11,7 @@ struct InputGroup {
 
 workflow consensusCruncher {
   input {
-    Array[InputGroup]? inputGroups
-    File? sortedBam
-    File? sortedBai
+    Array[InputGroup] inputGroups
     String outputFileNamePrefix
     File intervalFile
     String inputRefDict 
@@ -32,34 +30,29 @@ workflow consensusCruncher {
 
   parameter_meta {
     inputGroups: "Array of fastq files to concatenate if a top-up"
-    sortedBam: "Bam file from bwamem"
-    sortedBai: "Bai file from bwamem"
     outputFileNamePrefix: "Prefix to use for output file"
   }
 
-  if (!(defined(sortedBam)) && defined(read1s) && defined(read2s)) {
-    call concat {
-      input:
-        read1s = read1s,
-        read2s = read2s,
-        outputFileNamePrefix = outputFileNamePrefix
-    }
+  call concat {
+    input:
+      read1s = read1s,
+      read2s = read2s,
+      outputFileNamePrefix = outputFileNamePrefix
   }
 
-  if (!(defined(sortedBam)) && defined(read1s) && defined(read2s)) {
-    call align {
-      input:
-        fastqR1 = select_first([concat.fastqR1]),
-        fastqR2 = select_first([concat.fastqR2]),
-        outputFileNamePrefix = outputFileNamePrefix
+  call align {
+    input:
+      fastqR1 = concat.fastqR1,
+      fastqR2 = concat.fastqR2,
+      outputFileNamePrefix = outputFileNamePrefix
 
-    }
   }
+
 
   call consensus {
     input:
-      inputBam = select_first([sortedBam, align.sortedBam]),
-      inputBai = select_first([sortedBai, align.sortedBai]),
+      inputBam = align.sortedBam,
+      inputBai = align.sortedBai,
       basePrefix = outputFileNamePrefix
   }
 
