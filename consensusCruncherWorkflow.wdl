@@ -1,13 +1,18 @@
 version 1.0
 
+struct InputGroup {
+  File fastqR1
+  File fastqR2
+  String readGroup
+}
+
 import "imports/pull_mutect2.wdl" as mutect2
 import "imports/pull_variantEffectPredictor.wdl" as vep
 import "imports/pull_hsMetrics.wdl" as hsMetrics
 
 workflow consensusCruncher {
   input {
-    File? fastqR1
-    File? fastqR2
+    Array[InputGroup] inputGroups
     File? sortedBam
     File? sortedBai
     String outputFileNamePrefix
@@ -21,19 +26,33 @@ workflow consensusCruncher {
 
   }
 
+  scatter (ig in inputGroups) {
+    File read1s       = ig.fastqR1
+    File read2s       = ig.fastqR2
+    String readGroups = ig.readGroup
+  }
+
   parameter_meta {
-    fastqR1: "First Fastq Files"
-    fastqR2: "Second Fastq File"
+    inputGroups: "Array of fastq files to concatenate if a top-up"
     sortedBam: "Bam file from bwamem"
     sortedBai: "Bai file from bwamem"
     outputFileNamePrefix: "Prefix to use for output file"
   }
 
   if (!(defined(sortedBam)) && defined(fastqR1) && defined(fastqR2)) {
+    call concat {
+      input:
+        fastqR1 = reads1,
+        fastqR2 = reads2,
+        outputFileNamePrefix = outputFileNamePrefix
+    }
+  }
+
+  if (!(defined(sortedBam)) && defined(fastqR1) && defined(fastqR2)) {
     call align {
       input:
-        fastqR1 = select_first([fastqR1]),
-        fastqR2 = select_first([fastqR2]),
+        fastqR1 = select_first([concat.fastqR1, fastqR1]),
+        fastqR2 = select_first([concat.fastqR2, fastqR2]),
         outputFileNamePrefix = outputFileNamePrefix
 
     }
@@ -219,6 +238,50 @@ workflow consensusCruncher {
     File dcsScHsMetrics = hsMetricsRunDCSSC.outputHSMetrics
     File sscsScHsMetrics = hsMetricsRunSSCSSC.outputHSMetrics
     File allUniqueHsMetrics = hsMetricsRunAllUnique.outputHSMetrics
+  }
+}
+
+task concat {
+  input {
+    Array[File]+ read1s
+    Array[File]+ read2s
+    Array[String]+ readGroups
+    String outputFileNamePrefix
+    Int threads = 4
+    Int jobMemory = 16
+    Int timeout = 72
+  }
+
+  parameter_meta {
+    read1s: "array of read1s"
+    read2s: "array of read2s"
+    readGroups: "array of readgroup lines"
+    outputFileNamePrefix: "File name prefix"
+    threads: "Number of threads to request"
+    jobMemory: "Memory allocated for this job"
+    timeout: "Hours before task timeout"
+  }
+
+  command <<<
+    set -euo pipefail
+
+    cat ~{sep=" " read1s} > ~{outputFileNamePrefix}_R1_001.fastq.gz
+
+    cat ~{sep=" " read2s} > ~{outputFileNamePrefix}_R2_001.fastq.gz
+
+  >>>
+
+  runtime {
+    memory:  "~{jobMemory} GB"
+    modules: "~{modules}"
+    cpu:     "~{threads}"
+    timeout: "~{timeout}"
+
+  }
+
+  output {
+    File? fastqR1 = "~{outputFileNamePrefix}_R2_001.fastq.gz"
+    File? fastqR2 = "~{outputFileNamePrefix}_R2_001.fastq.gz"
   }
 }
 
