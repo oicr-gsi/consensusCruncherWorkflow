@@ -11,7 +11,7 @@ struct InputGroup {
 
 workflow consensusCruncher {
   input {
-    Array[InputGroup]? inputGroups
+    Array[InputGroup] inputGroups
     File? sortedBam
     File? sortedBai
     String outputFileNamePrefix
@@ -40,17 +40,17 @@ workflow consensusCruncher {
   if (!(defined(sortedBam)) && defined(read1s) && defined(read2s)) {
     call concat {
       input:
-        fastqR1 = read1s,
-        fastqR2 = read2s,
+        read1s = read1s,
+        read2s = read2s,
         outputFileNamePrefix = outputFileNamePrefix
     }
   }
 
-  if (!(defined(sortedBam)) && defined(fastqR1) && defined(fastqR2)) {
+  if (!(defined(sortedBam)) && defined(read1s) && defined(read2s)) {
     call align {
       input:
-        fastqR1 = select_first([concat.fastqR1, fastqR1]),
-        fastqR2 = select_first([concat.fastqR2, fastqR2]),
+        fastqR1 = select_first([concat.fastqR1]),
+        fastqR2 = select_first([concat.fastqR2]),
         outputFileNamePrefix = outputFileNamePrefix
 
     }
