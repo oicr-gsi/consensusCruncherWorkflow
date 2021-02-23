@@ -1,17 +1,17 @@
 version 1.0
 
-struct InputGroup {
-  File? fastqR1
-  File? fastqR2
-}
-
 import "imports/pull_mutect2.wdl" as mutect2
 import "imports/pull_variantEffectPredictor.wdl" as vep
 import "imports/pull_hsMetrics.wdl" as hsMetrics
 
+struct InputGroup {
+  File fastqR1
+  File fastqR2
+}
+
 workflow consensusCruncher {
   input {
-    Array[InputGroup] inputGroups
+    Array[InputGroup]? inputGroups
     File? sortedBam
     File? sortedBai
     String outputFileNamePrefix
@@ -37,11 +37,11 @@ workflow consensusCruncher {
     outputFileNamePrefix: "Prefix to use for output file"
   }
 
-  if (!(defined(sortedBam)) && defined(fastqR1) && defined(fastqR2)) {
+  if (!(defined(sortedBam)) && defined(read1s) && defined(read2s)) {
     call concat {
       input:
-        fastqR1 = reads1,
-        fastqR2 = reads2,
+        fastqR1 = read1s,
+        fastqR2 = read2s,
         outputFileNamePrefix = outputFileNamePrefix
     }
   }
@@ -269,7 +269,6 @@ task concat {
 
   runtime {
     memory:  "~{jobMemory} GB"
-    modules: "~{modules}"
     cpu:     "~{threads}"
     timeout: "~{timeout}"
 
