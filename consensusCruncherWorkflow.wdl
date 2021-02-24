@@ -249,6 +249,7 @@ task concat {
     Int threads = 4
     Int jobMemory = 16
     Int timeout = 72
+    String modules = "tabix/0.2.6"
   }
 
   parameter_meta {
@@ -258,14 +259,15 @@ task concat {
     threads: "Number of threads to request"
     jobMemory: "Memory allocated for this job"
     timeout: "Hours before task timeout"
+    modules: "Required environment modules"
   }
 
   command <<<
     set -euo pipefail
 
-    cat ~{sep=" " read1s} > ~{outputFileNamePrefix}_R1_001.fastq.gz
+    zcat ~{sep=" " read1s} | bgzip > ~{outputFileNamePrefix}_R1_001.fastq.gz
 
-    cat ~{sep=" " read2s} > ~{outputFileNamePrefix}_R2_001.fastq.gz
+    zcat ~{sep=" " read2s} | bgzip > ~{outputFileNamePrefix}_R2_001.fastq.gz
 
   >>>
 
@@ -273,6 +275,7 @@ task concat {
     memory:  "~{jobMemory} GB"
     cpu:     "~{threads}"
     timeout: "~{timeout}"
+    modules: "~{modules}"
 
   }
 
