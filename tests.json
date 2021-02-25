@@ -95,7 +95,6 @@
             {
               "fastqR1": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/TGL40_0037_Pl_P_PE_449_TS_201023_NB551051_0190_AHMCWGBGXF_1_CGTGTGTA-CCAACGAA_R1.fastq.gz",
               "fastqR2": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/TGL40_0037_Pl_P_PE_449_TS_201023_NB551051_0190_AHMCWGBGXF_1_CGTGTGTA-CCAACGAA_R2.fastq.gz"
-​
             }
           ],"consensusCruncher.outputFileNamePrefix":"TGL40_0037_Pl_P_PE_449_TS_200901TS",
           "consensusCruncher.intervalFile": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/IDT_MA38_Panel.sorted.bed",
