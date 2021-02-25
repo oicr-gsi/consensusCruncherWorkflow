@@ -53,7 +53,7 @@
     {
       "id": "consensusCruncher_dataset2",
       "parameters": {
-    "wdl_deps_zip": "${workflow_bundle_dir}/Workflow_Bundle_consensusCruncherWorkflow/1.1.0/lib/imports.zip",
+    "wdl_deps_zip": "${workflow_bundle_dir}/Workflow_Bundle_consensusCruncherWorkflow/1.2.0/lib/imports.zip",
         "wdl_inputs": {
           "consensusCruncher.inputGroups": [
             {
