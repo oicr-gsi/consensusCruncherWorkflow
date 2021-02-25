@@ -1,4 +1,4 @@
-version 1.0
+version 1.2.0
 
 import "imports/pull_mutect2.wdl" as mutect2
 import "imports/pull_variantEffectPredictor.wdl" as vep
