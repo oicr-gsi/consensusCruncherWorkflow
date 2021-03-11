@@ -25,13 +25,6 @@ workflow consensusCruncher {
 
   }
 
-if (!(defined(sortedBam)) && defined(inputGroups)) {
-  Array[InputGroup] inputs = select_first([inputGroups])
-  scatter (ig in inputs) {
-    File read1s       = ig.fastqR1
-    File read2s       = ig.fastqR2
-  }
-}
   parameter_meta {
     inputGroups: "Array of fastq files to concatenate if a top-up"
     sortedBam: "Bam file from bwamem"
@@ -39,6 +32,14 @@ if (!(defined(sortedBam)) && defined(inputGroups)) {
     outputFileNamePrefix: "Prefix to use for output file"
   }
 
+if (!(defined(sortedBam)) && defined(inputGroups)) {
+  Array[InputGroup] inputs = select_first([inputGroups])
+  scatter (ig in inputs) {
+    File read1s       = ig.fastqR1
+    File read2s       = ig.fastqR2
+  }
+}
+  
   if (!(defined(sortedBam)) && defined(inputGroups)) {
     call concat {
       input:
