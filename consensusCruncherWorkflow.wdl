@@ -555,3 +555,4 @@ output {
   File annotatedCombinedVcf = "~{outputPrefix}.merged.vcf.gz"
   File annotatedCombinedIndex = "~{outputPrefix}.merged.vcf.gz.tbi"
 }
+}
