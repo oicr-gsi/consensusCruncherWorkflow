@@ -224,8 +224,10 @@ if (!(defined(sortedBam)) && defined(inputGroups)) {
      }
     ]
   }
-
+  
   output {
+    File? rawBam = align.sortedBam
+    File? rawBamIndex = align.sortedBai
     File dcsScBam = consensus.dcsScBam
     File dcsScBamIndex = consensus.dcsScBamIndex
     File allUniqueBam = consensus.allUniqueBam
@@ -235,6 +237,14 @@ if (!(defined(sortedBam)) && defined(inputGroups)) {
     File outputCCStats = consensus.statsCCFile
     File outputCCReadFamilies = consensus.readFamiliesCCFile
     File ccFolder = consensus.ccFolder
+    File dcsScVcf = mutectRunDCSSC.filteredVcfFile
+    File dcsScVcfIndex = mutectRunDCSSC.filteredVcfIndex
+    File allUniqueVcf = mutectRunAllUnique.filteredVcfFile
+    File allUniqueVcfIndex = mutectRunAllUnique.filteredVcfIndex
+    File sscsScVcf = mutectRunSSCSSC.filteredVcfFile
+    File sscsScVcfIndex = mutectRunSSCSSC.filteredVcfIndex
+    File vepVcf = variantEffectPredictor.outputVcf
+    File vepVcfIndex = variantEffectPredictor.outputTbi
     File? mafOutput = variantEffectPredictor.outputMaf
     File dcsScHsMetrics = hsMetricsRunDCSSC.outputHSMetrics
     File sscsScHsMetrics = hsMetricsRunSSCSSC.outputHSMetrics
@@ -544,5 +554,4 @@ runtime {
 output {
   File annotatedCombinedVcf = "~{outputPrefix}.merged.vcf.gz"
   File annotatedCombinedIndex = "~{outputPrefix}.merged.vcf.gz.tbi"
-}
 }
