@@ -2,30 +2,60 @@ version 1.0
 
 import "imports/pull_mutect2.wdl" as mutect2
 import "imports/pull_variantEffectPredictor.wdl" as vep
+import "imports/pull_hsMetrics.wdl" as hsMetrics
+
+struct InputGroup {
+  File fastqR1
+  File fastqR2
+}
 
 workflow consensusCruncher {
   input {
-    File? fastqR1
-    File? fastqR2
+    Array[InputGroup]? inputGroups
     File? sortedBam
     File? sortedBai
     String outputFileNamePrefix
+    File intervalFile
+    String inputRefDict 
+    String inputRefFai
+    String inputRefFasta
+    String inputMutectModules
+    String inputIntervalsToParalellizeBy
+    String inputHSMetricsModules
+
   }
 
   parameter_meta {
-    fastqR1: "First Fastq Files"
-    fastqR2: "Second Fastq File"
+    inputGroups: "Array of fastq files to concatenate if a top-up"
     sortedBam: "Bam file from bwamem"
     sortedBai: "Bai file from bwamem"
     outputFileNamePrefix: "Prefix to use for output file"
   }
 
-  if (!(defined(sortedBam)) && defined(fastqR1) && defined(fastqR2)) {
+if (!(defined(sortedBam)) && defined(inputGroups)) {
+  Array[InputGroup] inputs = select_first([inputGroups])
+  scatter (ig in inputs) {
+    File read1s       = ig.fastqR1
+    File read2s       = ig.fastqR2
+  }
+}
+  
+  if (!(defined(sortedBam)) && defined(inputGroups)) {
+    call concat {
+      input:
+        read1s = select_first([read1s]),
+        read2s = select_first([read2s]),
+        outputFileNamePrefix = outputFileNamePrefix
+    }
+  }
+
+  if (!(defined(sortedBam)) && defined(read1s) && defined(read2s)) {
     call align {
       input:
-        fastqR1 = select_first([fastqR1]),
-        fastqR2 = select_first([fastqR2]),
+        fastqR1 = select_first([concat.fastqR1]),
+        fastqR2 = select_first([concat.fastqR2]),
         outputFileNamePrefix = outputFileNamePrefix
+
     }
   }
 
@@ -36,37 +66,115 @@ workflow consensusCruncher {
       basePrefix = outputFileNamePrefix
   }
 
-  call mutect2.mutect2 as mutectRun1 {
+  call mutect2.mutect2 as mutectRunDCSSC {
     input:
       tumorBam = consensus.dcsScBam,
-      tumorBai = consensus.dcsScBamIndex
+      tumorBai = consensus.dcsScBamIndex,
+      filter_refDict = inputRefDict,
+      filter_refFai = inputRefFai,
+      filter_refFasta = inputRefFasta,
+      filter_modules = inputMutectModules,
+      mergeVCFs_refFasta = inputRefFasta,
+      mergeVCFs_modules = inputMutectModules,
+      runMutect2_refDict = inputRefDict,
+      runMutect2_refFai = inputRefFasta,
+      runMutect2_refFasta = inputRefFasta,
+      runMutect2_modules = inputMutectModules,
+      intervalFile = intervalFile,
+      intervalsToParallelizeBy = inputIntervalsToParalellizeBy
   }
 
-  call mutect2.mutect2 as mutectRun2 {
+  call mutect2.mutect2 as mutectRunSSCSSC {
     input:
       tumorBam = consensus.sscsScBam,
-      tumorBai = consensus.sscsScBamIndex
+      tumorBai = consensus.sscsScBamIndex,
+      filter_refDict = inputRefDict,
+      filter_refFai = inputRefFai,
+      filter_refFasta = inputRefFasta,
+      filter_modules = inputMutectModules,
+      mergeVCFs_refFasta = inputRefFasta,
+      mergeVCFs_modules = inputMutectModules,
+      runMutect2_refDict = inputRefDict,
+      runMutect2_refFai = inputRefFasta,
+      runMutect2_refFasta = inputRefFasta,
+      runMutect2_modules = inputMutectModules,
+      intervalFile = intervalFile,
+      intervalsToParallelizeBy = inputIntervalsToParalellizeBy
   }
 
-  call mutect2.mutect2 as mutectRun3 {
+  call mutect2.mutect2 as mutectRunAllUnique {
     input:
       tumorBam = consensus.allUniqueBam,
-      tumorBai = consensus.allUniqueBamIndex
+      tumorBai = consensus.allUniqueBamIndex,
+      filter_refDict = inputRefDict,
+      filter_refFai = inputRefFai,
+      filter_refFasta = inputRefFasta,
+      filter_modules = inputMutectModules,
+      mergeVCFs_refFasta = inputRefFasta,
+      mergeVCFs_modules = inputMutectModules,
+      runMutect2_refDict = inputRefDict,
+      runMutect2_refFai = inputRefFasta,
+      runMutect2_refFasta = inputRefFasta,
+      runMutect2_modules = inputMutectModules,
+      intervalFile = intervalFile,
+      intervalsToParallelizeBy = inputIntervalsToParalellizeBy
   }
 
+  call hsMetrics.hsMetrics as hsMetricsRunDCSSC {
+    input: 
+      inputBam = consensus.dcsScBam,
+      outputFileNamePrefix = "dcsSc-hsMetrics",
+      baitBed = intervalFile, 
+      targetBed = intervalFile,
+      collectHSmetrics_modules = inputHSMetricsModules,
+      collectHSmetrics_refFasta = inputRefFasta,
+      bedToBaitIntervals_refDict = inputRefDict,
+      bedToBaitIntervals_modules = inputHSMetricsModules,
+      bedToTargetIntervals_refDict = inputRefDict,
+      bedToTargetIntervals_modules = inputHSMetricsModules
+  }
+
+  call hsMetrics.hsMetrics as hsMetricsRunSSCSSC {
+    input: 
+      inputBam = consensus.sscsScBam,
+      outputFileNamePrefix = "sscsSc-hsMetrics",
+      baitBed = intervalFile, 
+      targetBed = intervalFile,
+      collectHSmetrics_modules = inputHSMetricsModules,
+      collectHSmetrics_refFasta = inputRefFasta,
+      bedToBaitIntervals_refDict = inputRefDict,
+      bedToBaitIntervals_modules = inputHSMetricsModules,
+      bedToTargetIntervals_refDict = inputRefDict,
+      bedToTargetIntervals_modules = inputHSMetricsModules
+  }
+
+  call hsMetrics.hsMetrics as hsMetricsRunAllUnique {
+    input: 
+      inputBam = consensus.allUniqueBam,
+      outputFileNamePrefix = "allUnique-hsMetrics",
+      baitBed = intervalFile, 
+      targetBed = intervalFile,
+      collectHSmetrics_modules = inputHSMetricsModules,
+      collectHSmetrics_refFasta = inputRefFasta,
+      bedToBaitIntervals_refDict = inputRefDict,
+      bedToBaitIntervals_modules = inputHSMetricsModules,
+      bedToTargetIntervals_refDict = inputRefDict,
+      bedToTargetIntervals_modules = inputHSMetricsModules
+  }
 
   call combineVariants {
     input: 
-      inputVcfs = [mutectRun1.filteredVcfFile,mutectRun2.filteredVcfFile],
-      inputIndexes = [mutectRun1.filteredVcfIndex,mutectRun2.filteredVcfIndex],
+      inputVcfs = [mutectRunDCSSC.filteredVcfFile,mutectRunSSCSSC.filteredVcfFile],
+      inputIndexes = [mutectRunDCSSC.filteredVcfIndex,mutectRunSSCSSC.filteredVcfIndex],
       priority = "mutect2-dcsSc,mutect2-sscsSc",
-      outputPrefix = outputFileNamePrefix
+      outputPrefix = outputFileNamePrefix,
+      referenceFasta = inputRefFasta
   }
 
   call annotation {
     input: 
-      uniqueVcf = mutectRun3.filteredVcfFile,
-      uniqueVcfIndex = mutectRun3.filteredVcfIndex,
+      uniqueVcf = mutectRunAllUnique.filteredVcfFile,
+      uniqueVcfIndex = mutectRunAllUnique.filteredVcfIndex,
       mergedVcf = combineVariants.combinedVcf,
       mergedVcfIndex = combineVariants.combinedIndex,
       outputPrefix = outputFileNamePrefix
@@ -77,13 +185,18 @@ workflow consensusCruncher {
       vcfFile = annotation.annotatedCombinedVcf,
       vcfIndex = annotation.annotatedCombinedIndex,
       toMAF = true,
-      onlyTumor = true
+      onlyTumor = true,
+      tumorOnlyAlign_updateTagValue = true,
+      vcf2maf_retainInfoProvided = true,
+      vep_referenceFasta = inputRefFasta,
+      vcf2maf_referenceFasta = inputRefFasta,
+      targetBed = intervalFile
   }
 
   meta {
     author: "Alexander Fortuna and Rishi Shah"
     email: "alexander.fortuna@oicr.on.ca and rshah@oicr.on.ca"
-    description: "Workflow to run extract UMIs from fastq and generate consensus Bams as well as run it through mutect2 and combine variants"
+    description: "Workflow to run extract UMIs from fastq and generate consensus Bams as well as run it thru mutect2 task and combinevariants task"
     dependencies: [
      {
       name: "hg19-bwa-index/0.7.12",
@@ -111,16 +224,75 @@ workflow consensusCruncher {
      }
     ]
   }
-
+  
   output {
+    File? rawBam = align.sortedBam
+    File? rawBamIndex = align.sortedBai
     File dcsScBam = consensus.dcsScBam
     File dcsScBamIndex = consensus.dcsScBamIndex
     File allUniqueBam = consensus.allUniqueBam
     File allUniqueBamIndex = consensus.allUniqueBamIndex
     File sscsScBam = consensus.sscsScBam
     File sscsScBamIndex = consensus.sscsScBamIndex
+    File outputCCStats = consensus.statsCCFile
+    File outputCCReadFamilies = consensus.readFamiliesCCFile
     File ccFolder = consensus.ccFolder
+    File dcsScVcf = mutectRunDCSSC.filteredVcfFile
+    File dcsScVcfIndex = mutectRunDCSSC.filteredVcfIndex
+    File allUniqueVcf = mutectRunAllUnique.filteredVcfFile
+    File allUniqueVcfIndex = mutectRunAllUnique.filteredVcfIndex
+    File sscsScVcf = mutectRunSSCSSC.filteredVcfFile
+    File sscsScVcfIndex = mutectRunSSCSSC.filteredVcfIndex
+    File vepVcf = variantEffectPredictor.outputVcf
+    File vepVcfIndex = variantEffectPredictor.outputTbi
     File? mafOutput = variantEffectPredictor.outputMaf
+    File dcsScHsMetrics = hsMetricsRunDCSSC.outputHSMetrics
+    File sscsScHsMetrics = hsMetricsRunSSCSSC.outputHSMetrics
+    File allUniqueHsMetrics = hsMetricsRunAllUnique.outputHSMetrics
+  }
+}
+
+task concat {
+  input {
+    Array[File]+ read1s
+    Array[File]+ read2s
+    String outputFileNamePrefix
+    Int threads = 4
+    Int jobMemory = 16
+    Int timeout = 72
+    String modules = "tabix/0.2.6"
+  }
+
+  parameter_meta {
+    read1s: "array of read1s"
+    read2s: "array of read2s"
+    outputFileNamePrefix: "File name prefix"
+    threads: "Number of threads to request"
+    jobMemory: "Memory allocated for this job"
+    timeout: "Hours before task timeout"
+    modules: "Required environment modules"
+  }
+
+  command <<<
+    set -euo pipefail
+
+    zcat ~{sep=" " read1s} | gzip > ~{outputFileNamePrefix}_R1_001.fastq.gz
+
+    zcat ~{sep=" " read2s} | gzip > ~{outputFileNamePrefix}_R2_001.fastq.gz
+
+  >>>
+
+  runtime {
+    memory:  "~{jobMemory} GB"
+    cpu:     "~{threads}"
+    timeout: "~{timeout}"
+    modules: "~{modules}"
+
+  }
+
+  output {
+    File fastqR1 = "~{outputFileNamePrefix}_R1_001.fastq.gz"
+    File fastqR2 = "~{outputFileNamePrefix}_R2_001.fastq.gz"
   }
 }
 
@@ -248,7 +420,10 @@ task consensus {
     File allUniqueBamIndex = "~{basePrefix}/dcs_sc/~{basePrefix}.all.unique.dcs.sorted.bam.bai"
     File sscsScBam = "~{basePrefix}/sscs_sc/~{basePrefix}.sscs.sc.sorted.bam"
     File sscsScBamIndex = "~{basePrefix}/sscs_sc/~{basePrefix}.sscs.sc.sorted.bam.bai"
+    File statsCCFile = "~{basePrefix}/~{basePrefix}.stats.txt"
+    File readFamiliesCCFile = "~{basePrefix}/~{basePrefix}.read_families.txt"
     File ccFolder = "~{ccDir}.tar.gz"
+    
   }
 
   meta {
@@ -364,9 +539,9 @@ parameter_meta {
 command <<<
   bcftools annotate -a ~{uniqueVcf} \
  -c FMT/AD,FMT/DP ~{mergedVcf} -Oz \
- -o "~{outputPrefix}.merge_temp.vcf.gz"
+ -o "~{outputPrefix}.merged.vcf.gz"
 
- tabix -p vcf "~{outputPrefix}.merge_temp.vcf.gz"
+ tabix -p vcf "~{outputPrefix}.merged.vcf.gz"
 >>>
 
 runtime {
@@ -377,8 +552,7 @@ runtime {
 }
 
 output {
-  File annotatedCombinedVcf = "~{outputPrefix}.merge_temp.vcf.gz"
-  File annotatedCombinedIndex = "~{outputPrefix}.merge_temp.vcf.gz.tbi"
+  File annotatedCombinedVcf = "~{outputPrefix}.merged.vcf.gz"
+  File annotatedCombinedIndex = "~{outputPrefix}.merged.vcf.gz.tbi"
 }
 }
-

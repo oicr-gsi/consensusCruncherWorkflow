@@ -1,3 +1,9 @@
-[submodule "/.mounts/labs/gsiprojects/gsi/rshah/workflows/ConsensusCruncherWorkflow/submodules"]
-	path = /.mounts/labs/gsiprojects/gsi/rshah/workflows/ConsensusCruncherWorkflow/submodules
+[submodule "subworkflows/mutect2"]
+	path = subworkflows/mutect2
 	url = git@github.com:oicr-gsi/mutect2.git
+[submodule "subworkflows/HSMetrics"]
+	path = subworkflows/HSMetrics
+	url = git@github.com:oicr-gsi/HSMetrics.git
+[submodule "subworkflows/variantEffectPredictor"]
+	path = subworkflows/variantEffectPredictor
+	url = git@github.com:oicr-gsi/variantEffectPredictor.git
