@@ -1,0 +1,6 @@
+{
+    "names": [
+        "consensusCruncher"
+    ],
+    "wdl": "consensusCruncherWorkflow.wdl"
+}
