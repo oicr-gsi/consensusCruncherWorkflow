@@ -238,7 +238,10 @@
             "consensusCruncher.variantEffectPredictor.vep_vepCacheDir": "$VEP_HG38_CACHE_ROOT/.vep"
         },
         "description": "consensus cruncher workflow test",
-        "engineArguments": {},
+        "engineArguments": {
+           "write_to_cache": false,
+           "read_from_cache": false
+        },
         "id": "consensusCruncher_dataset1",
         "metadata": {
             "consensusCruncher.allUniqueBam": {
@@ -674,7 +677,10 @@
             "consensusCruncher.variantEffectPredictor.vep_vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep"
         },
         "description": "consensus cruncher workflow test",
-        "engineArguments": {},
+        "engineArguments": {
+           "write_to_cache": false,
+           "read_from_cache": false
+        },
         "id": "consensusCruncher_dataset2",
         "metadata": {
             "consensusCruncher.allUniqueBam": {
@@ -1136,7 +1142,10 @@
             "consensusCruncher.variantEffectPredictor.vep_vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep"
         },
         "description": "consensus cruncher workflow test",
-        "engineArguments": {},
+        "engineArguments": {
+           "write_to_cache": false,
+           "read_from_cache": false
+        },
         "id": "consensusCruncher_dataset3",
         "metadata": {
             "consensusCruncher.allUniqueBam": {
