@@ -4,13 +4,14 @@ set -o pipefail
 
 cd $1
 
-module load samtools/1.9 2>/dev/null
+module load samtools/1.9 vcftools/0.1.16 2>/dev/null
 
 ls | sed 's/.*\.//' | sort | uniq -c
 
-find -name *.bam -exec samtools flagstat {} \; | sort
+for i in *.stats.txt; do md5sum ${i}; done | sort
 
-find -name *.bam -exec /bin/bash -c "samtools view {} | md5sum" \; | sort
+for i in *.bam; do samtools flagstat ${i} | grep "in total" | md5sum; done | sort
 
-for v in *.vcf;do cat $v | grep -v ^# | md5sum; done | sort -V
+for i in *.vcf.gz; do vcf-query -l ${i}; done | sort
 
+for i in *.vcf.gz; do zcat ${i} | grep -v ^# | cut -f 1 | uniq| md5sum; done | sort
