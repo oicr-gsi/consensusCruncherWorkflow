@@ -1,5 +1,4 @@
 #!/bin/bash
-set -o nounset
 set -euo pipefail
 
 cd $1
