@@ -62,7 +62,7 @@ workflow variantEffectPredictor {
     String targetBedTask_basename = basename("~{vcfFile}",".vcf.gz")
     File vcfFile
     File vcfIndex
-    File? targetBed
+    String? targetBed
     Boolean toMAF
     Boolean onlyTumor
   }

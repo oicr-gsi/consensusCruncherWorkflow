@@ -15,7 +15,7 @@ workflow consensusCruncher {
     File? sortedBam
     File? sortedBai
     String outputFileNamePrefix
-    File intervalFile
+    String intervalFile
     String inputRefDict 
     String inputRefFai
     String inputRefFasta
