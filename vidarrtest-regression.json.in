@@ -97,18 +97,7 @@
             "consensusCruncher.inputRefDict": "$HG38_ROOT/hg38_random.dict",
             "consensusCruncher.inputRefFai": "$HG38_ROOT/hg38_random.fa.fai",
             "consensusCruncher.inputRefFasta": "$HG38_ROOT/hg38_random.fa",
-            "consensusCruncher.intervalFile": {
-                "contents": {
-                    "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/TGL49_CHARM_designed-probe-coords_All_curated_minimal.GRCh38.bed",
-                    "externalIds": [
-                        {
-                            "id": "TEST",
-                            "provider": "TEST"
-                        }
-                    ]
-                },
-                "type": "EXTERNAL"
-            },
+            "consensusCruncher.intervalFile": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/TGL49_CHARM_designed-probe-coords_All_curated_minimal.GRCh38.bed",
             "consensusCruncher.mutectRunAllUnique.filter_filterExtraArgs": null,
             "consensusCruncher.mutectRunAllUnique.filter_memory": null,
             "consensusCruncher.mutectRunAllUnique.filter_timeout": null,
@@ -536,18 +525,7 @@
             "consensusCruncher.inputRefDict": "$HG19_ROOT/hg19_random.dict",
             "consensusCruncher.inputRefFai": "$HG19_ROOT/hg19_random.fa.fai",
             "consensusCruncher.inputRefFasta": "$HG19_ROOT/hg19_random.fa",
-            "consensusCruncher.intervalFile": {
-                "contents": {
-                    "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/MA38_designed-probe-coords_pad50_sorted.bed",
-                    "externalIds": [
-                        {
-                            "id": "TEST",
-                            "provider": "TEST"
-                        }
-                    ]
-                },
-                "type": "EXTERNAL"
-            },
+            "consensusCruncher.intervalFile": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/MA38_designed-probe-coords_pad50_sorted.bed",
             "consensusCruncher.mutectRunAllUnique.filter_filterExtraArgs": null,
             "consensusCruncher.mutectRunAllUnique.filter_memory": null,
             "consensusCruncher.mutectRunAllUnique.filter_timeout": null,
@@ -1001,18 +979,7 @@
             "consensusCruncher.inputRefDict": "$HG19_ROOT/hg19_random.dict",
             "consensusCruncher.inputRefFai": "$HG19_ROOT/hg19_random.fa.fai",
             "consensusCruncher.inputRefFasta": "$HG19_ROOT/hg19_random.fa",
-            "consensusCruncher.intervalFile": {
-                "contents": {
-                    "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/IDT_MA38_Panel.sorted.bed",
-                    "externalIds": [
-                        {
-                            "id": "TEST",
-                            "provider": "TEST"
-                        }
-                    ]
-                },
-                "type": "EXTERNAL"
-            },
+            "consensusCruncher.intervalFile": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/IDT_MA38_Panel.sorted.bed",
             "consensusCruncher.mutectRunAllUnique.filter_filterExtraArgs": null,
             "consensusCruncher.mutectRunAllUnique.filter_memory": null,
             "consensusCruncher.mutectRunAllUnique.filter_timeout": null,
