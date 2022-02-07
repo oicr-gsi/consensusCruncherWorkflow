@@ -33,7 +33,7 @@ workflow mutect2 {
     File tumorBai
     File? normalBam
     File? normalBai
-    File? intervalFile
+    String? intervalFile
     String? intervalsToParallelizeBy
     File? pon
     File? ponIdx
@@ -176,7 +176,7 @@ task runMutect2 {
     String refFai = "$HG19_ROOT/hg19_random.fa.fai"
     String refDict = "$HG19_ROOT/hg19_random.dict"
     String mutectTag = "mutect2"
-    File? intervalFile
+    String? intervalFile
     Array[String]? intervals
     Boolean intervalsProvided
     File tumorBam
@@ -332,7 +332,7 @@ task filter {
     String refFasta = "$HG19_ROOT/hg19_random.fa"
     String refFai = "$HG19_ROOT/hg19_random.fa.fai"
     String refDict = "$HG19_ROOT/hg19_random.dict"
-    File? intervalFile
+    String? intervalFile
     File unfilteredVcf
     File unfilteredVcfIdx
     File mutectStats
