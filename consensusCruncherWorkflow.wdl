@@ -15,7 +15,7 @@ workflow consensusCruncher {
     File? sortedBam
     File? sortedBai
     String outputFileNamePrefix
-    File intervalFile
+    String intervalFile
     String inputRefDict 
     String inputRefFai
     String inputRefFasta
@@ -30,6 +30,13 @@ workflow consensusCruncher {
     sortedBam: "Bam file from bwamem"
     sortedBai: "Bai file from bwamem"
     outputFileNamePrefix: "Prefix to use for output file"
+    intervalFile: "interval file to subset variant calls"
+    inputRefDict: "reference dictionary"
+    inputRefFai: "reference dictionary index"
+    inputRefFasta: "reference fasta file"
+    inputMutectModules: "module for mutect"
+    inputIntervalsToParalellizeBy: "intervals for parallelization"
+    inputHSMetricsModules: "module for HSmetrics"
   }
 
 if (!(defined(sortedBam)) && defined(inputGroups)) {
@@ -388,6 +395,7 @@ task consensus {
     genome: "Which genome version to use"
     cytoband: "Path to cytoband for genome"
     cutoff: "Cutoff to use to call a consenus of reads"
+    ccDir: "Placeholder"
   }
 
 

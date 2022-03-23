@@ -45,6 +45,7 @@
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_jobMemory": null,
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_metricTag": null,
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_timeout": null,
+	    "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_maxRecordsInRam":null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToBaitIntervals_jobMemory": null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToBaitIntervals_timeout": null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToTargetIntervals_jobMemory": null,
@@ -53,7 +54,8 @@
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_filter": null,
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_jobMemory": null,
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_metricTag": null,
-            "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_timeout": null,
+	    "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_timeout": null,
+	    "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_maxRecordsInRam": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToBaitIntervals_jobMemory": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToBaitIntervals_timeout": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToTargetIntervals_jobMemory": null,
@@ -63,6 +65,7 @@
             "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_jobMemory": null,
             "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_metricTag": null,
             "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_timeout": null,
+	    "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_maxRecordsInRam": null,
             "consensusCruncher.inputGroups": [
                 {
                     "fastqR1": {
@@ -97,18 +100,7 @@
             "consensusCruncher.inputRefDict": "$HG38_ROOT/hg38_random.dict",
             "consensusCruncher.inputRefFai": "$HG38_ROOT/hg38_random.fa.fai",
             "consensusCruncher.inputRefFasta": "$HG38_ROOT/hg38_random.fa",
-            "consensusCruncher.intervalFile": {
-                "contents": {
-                    "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/TGL49_CHARM_designed-probe-coords_All_curated_minimal.GRCh38.bed",
-                    "externalIds": [
-                        {
-                            "id": "TEST",
-                            "provider": "TEST"
-                        }
-                    ]
-                },
-                "type": "EXTERNAL"
-            },
+            "consensusCruncher.intervalFile": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/TGL49_CHARM_designed-probe-coords_All_curated_minimal.GRCh38.bed",
             "consensusCruncher.mutectRunAllUnique.filter_filterExtraArgs": null,
             "consensusCruncher.mutectRunAllUnique.filter_memory": null,
             "consensusCruncher.mutectRunAllUnique.filter_timeout": null,
@@ -484,6 +476,7 @@
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_jobMemory": null,
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_metricTag": null,
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_timeout": null,
+	    "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_maxRecordsInRam": null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToBaitIntervals_jobMemory": null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToBaitIntervals_timeout": null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToTargetIntervals_jobMemory": null,
@@ -493,6 +486,7 @@
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_jobMemory": null,
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_metricTag": null,
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_timeout": null,
+	    "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_maxRecordsInRam": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToBaitIntervals_jobMemory": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToBaitIntervals_timeout": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToTargetIntervals_jobMemory": null,
@@ -502,6 +496,7 @@
             "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_jobMemory": null,
             "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_metricTag": null,
             "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_timeout": null,
+	    "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_maxRecordsInRam": null,
             "consensusCruncher.inputGroups": [
                 {
                     "fastqR1": {
@@ -536,18 +531,7 @@
             "consensusCruncher.inputRefDict": "$HG19_ROOT/hg19_random.dict",
             "consensusCruncher.inputRefFai": "$HG19_ROOT/hg19_random.fa.fai",
             "consensusCruncher.inputRefFasta": "$HG19_ROOT/hg19_random.fa",
-            "consensusCruncher.intervalFile": {
-                "contents": {
-                    "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/MA38_designed-probe-coords_pad50_sorted.bed",
-                    "externalIds": [
-                        {
-                            "id": "TEST",
-                            "provider": "TEST"
-                        }
-                    ]
-                },
-                "type": "EXTERNAL"
-            },
+            "consensusCruncher.intervalFile": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/MA38_designed-probe-coords_pad50_sorted.bed",
             "consensusCruncher.mutectRunAllUnique.filter_filterExtraArgs": null,
             "consensusCruncher.mutectRunAllUnique.filter_memory": null,
             "consensusCruncher.mutectRunAllUnique.filter_timeout": null,
@@ -923,6 +907,7 @@
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_jobMemory": null,
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_metricTag": null,
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_timeout": null,
+	    "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_maxRecordsInRam": null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToBaitIntervals_jobMemory": null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToBaitIntervals_timeout": null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToTargetIntervals_jobMemory": null,
@@ -932,6 +917,7 @@
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_jobMemory": null,
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_metricTag": null,
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_timeout": null,
+	    "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_maxRecordsInRam": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToBaitIntervals_jobMemory": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToBaitIntervals_timeout": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToTargetIntervals_jobMemory": null,
@@ -941,6 +927,7 @@
             "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_jobMemory": null,
             "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_metricTag": null,
             "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_timeout": null,
+	    "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_maxRecordsInRam":null,
             "consensusCruncher.inputGroups": [
                 {
                     "fastqR1": {
@@ -1001,18 +988,7 @@
             "consensusCruncher.inputRefDict": "$HG19_ROOT/hg19_random.dict",
             "consensusCruncher.inputRefFai": "$HG19_ROOT/hg19_random.fa.fai",
             "consensusCruncher.inputRefFasta": "$HG19_ROOT/hg19_random.fa",
-            "consensusCruncher.intervalFile": {
-                "contents": {
-                    "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/IDT_MA38_Panel.sorted.bed",
-                    "externalIds": [
-                        {
-                            "id": "TEST",
-                            "provider": "TEST"
-                        }
-                    ]
-                },
-                "type": "EXTERNAL"
-            },
+            "consensusCruncher.intervalFile": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/IDT_MA38_Panel.sorted.bed",
             "consensusCruncher.mutectRunAllUnique.filter_filterExtraArgs": null,
             "consensusCruncher.mutectRunAllUnique.filter_memory": null,
             "consensusCruncher.mutectRunAllUnique.filter_timeout": null,

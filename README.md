@@ -27,13 +27,13 @@ java -jar cromwell.jar run consensusCruncherWorkflow.wdl --inputs inputs.json
 Parameter|Value|Description
 ---|---|---
 `outputFileNamePrefix`|String|Prefix to use for output file
-`intervalFile`|File|Missing?
-`inputRefDict`|String|Missing?
-`inputRefFai`|String|Missing?
-`inputRefFasta`|String|Missing?
-`inputMutectModules`|String|Missing?
-`inputIntervalsToParalellizeBy`|String|Missing?
-`inputHSMetricsModules`|String|Missing?
+`intervalFile`|String|interval file to subset variant calls
+`inputRefDict`|String|reference dictionary
+`inputRefFai`|String|reference dictionary index
+`inputRefFasta`|String|reference fasta file
+`inputMutectModules`|String|module for mutect
+`inputIntervalsToParalellizeBy`|String|intervals for parallelization
+`inputHSMetricsModules`|String|module for HSmetrics
 `combineVariants.workflows`|Array[String]|array of ids of producer workflows
 `combineVariants.modules`|String|modules for running preprocessing
 `variantEffectPredictor.vcf2maf_vcfFilter`|String|Filter for the vep module that is used in vcf2maf
@@ -49,8 +49,7 @@ Parameter|Value|Description
 #### Optional workflow parameters:
 Parameter|Value|Default|Description
 ---|---|---|---
-`fastqR1`|File?|None|First Fastq Files
-`fastqR2`|File?|None|Second Fastq File
+`inputGroups`|Array[InputGroup]?|None|Array of fastq files to concatenate if a top-up
 `sortedBam`|File?|None|Bam file from bwamem
 `sortedBai`|File?|None|Bai file from bwamem
 
@@ -58,6 +57,10 @@ Parameter|Value|Default|Description
 #### Optional task parameters:
 Parameter|Value|Default|Description
 ---|---|---|---
+`concat.threads`|Int|4|Number of threads to request
+`concat.jobMemory`|Int|16|Memory allocated for this job
+`concat.timeout`|Int|72|Hours before task timeout
+`concat.modules`|String|"tabix/0.2.6"|Required environment modules
 `align.modules`|String|"consensus-cruncher/5.0 data-hg19-consensus-cruncher/1.0 hg19-bwa-index/0.7.12 samtools/1.9"|Names and versions of modules to load
 `align.consensusCruncherPy`|String|"$CONSENSUS_CRUNCHER_ROOT/bin/ConsensusCruncher.py"|Path to consensusCruncher binary
 `align.bwa`|String|"$BWA_ROOT/bin/bwa"|Path to bwa binary
@@ -71,82 +74,83 @@ Parameter|Value|Default|Description
 `consensus.samtools`|String|"$SAMTOOLS_ROOT/bin/samtools"|Path to samtools binary
 `consensus.cytoband`|String|"$DATA_HG19_CONSENSUS_CRUNCHER_ROOT/hg19_cytoBand.txt"|Path to cytoband for genome
 `consensus.genome`|String|"hg19"|Which genome version to use
-`consensus.ccDir`|String|basePrefix + ".consensuscruncher"|Missing?
+`consensus.ccDir`|String|basePrefix + ".consensuscruncher"|Placeholder
 `consensus.cutoff`|Float|0.7|Cutoff to use to call a consenus of reads
 `consensus.threads`|Int|8|Number of threads to request
 `consensus.jobMemory`|Int|32|Memory allocated for this job
 `consensus.timeout`|Int|72|Hours before task timeout
 `consensus.modules`|String|"consensus-cruncher/5.0 data-hg19-consensus-cruncher/1.0 hg19-bwa-index/0.7.12 samtools/1.9"|Names and versions of modules to load
-`mutectRunDCSSC.filter_timeout`|Int|12|Missing?
-`mutectRunDCSSC.filter_memory`|Int|16|Missing?
-`mutectRunDCSSC.filter_filterExtraArgs`|String?|None|Missing?
-`mutectRunDCSSC.mergeStats_timeout`|Int|5|Missing?
-`mutectRunDCSSC.mergeStats_memory`|Int|4|Missing?
-`mutectRunDCSSC.mergeStats_modules`|String|"gatk/4.1.6.0"|Missing?
+`mutectRunDCSSC.filter_timeout`|Int|12|-
+`mutectRunDCSSC.filter_memory`|Int|16|-
+`mutectRunDCSSC.filter_filterExtraArgs`|String?|None|-
+`mutectRunDCSSC.mergeStats_timeout`|Int|5|-
+`mutectRunDCSSC.mergeStats_memory`|Int|4|-
+`mutectRunDCSSC.mergeStats_modules`|String|"gatk/4.1.6.0"|-
 `mutectRunDCSSC.mergeVCFs_timeout`|Int|12|Hours before task timeout
 `mutectRunDCSSC.mergeVCFs_memory`|Int|4|Memory allocated for job
-`mutectRunDCSSC.runMutect2_timeout`|Int|24|Missing?
-`mutectRunDCSSC.runMutect2_memory`|Int|32|Missing?
-`mutectRunDCSSC.runMutect2_threads`|Int|4|Missing?
-`mutectRunDCSSC.runMutect2_mutect2ExtraArgs`|String?|None|Missing?
-`mutectRunDCSSC.runMutect2_mutectTag`|String|"mutect2"|Missing?
-`mutectRunDCSSC.splitStringToArray_modules`|String|""|Missing?
-`mutectRunDCSSC.splitStringToArray_timeout`|Int|1|Missing?
-`mutectRunDCSSC.splitStringToArray_memory`|Int|1|Missing?
-`mutectRunDCSSC.splitStringToArray_lineSeparator`|String|","|Missing?
+`mutectRunDCSSC.runMutect2_timeout`|Int|24|-
+`mutectRunDCSSC.runMutect2_memory`|Int|32|-
+`mutectRunDCSSC.runMutect2_threads`|Int|4|-
+`mutectRunDCSSC.runMutect2_mutect2ExtraArgs`|String?|None|-
+`mutectRunDCSSC.runMutect2_mutectTag`|String|"mutect2"|-
+`mutectRunDCSSC.splitStringToArray_modules`|String|""|-
+`mutectRunDCSSC.splitStringToArray_timeout`|Int|1|-
+`mutectRunDCSSC.splitStringToArray_memory`|Int|1|-
+`mutectRunDCSSC.splitStringToArray_lineSeparator`|String|","|-
 `mutectRunDCSSC.normalBam`|File?|None|Input normal file (bam or sam).
-`mutectRunDCSSC.normalBai`|File?|None|Missing?
-`mutectRunDCSSC.pon`|File?|None|Missing?
-`mutectRunDCSSC.ponIdx`|File?|None|Missing?
-`mutectRunDCSSC.gnomad`|File?|None|Missing?
-`mutectRunDCSSC.gnomadIdx`|File?|None|Missing?
-`mutectRunSSCSSC.filter_timeout`|Int|12|Missing?
-`mutectRunSSCSSC.filter_memory`|Int|16|Missing?
-`mutectRunSSCSSC.filter_filterExtraArgs`|String?|None|Missing?
-`mutectRunSSCSSC.mergeStats_timeout`|Int|5|Missing?
-`mutectRunSSCSSC.mergeStats_memory`|Int|4|Missing?
-`mutectRunSSCSSC.mergeStats_modules`|String|"gatk/4.1.6.0"|Missing?
+`mutectRunDCSSC.normalBai`|File?|None|-
+`mutectRunDCSSC.pon`|File?|None|-
+`mutectRunDCSSC.ponIdx`|File?|None|-
+`mutectRunDCSSC.gnomad`|File?|None|-
+`mutectRunDCSSC.gnomadIdx`|File?|None|-
+`mutectRunSSCSSC.filter_timeout`|Int|12|-
+`mutectRunSSCSSC.filter_memory`|Int|16|-
+`mutectRunSSCSSC.filter_filterExtraArgs`|String?|None|-
+`mutectRunSSCSSC.mergeStats_timeout`|Int|5|-
+`mutectRunSSCSSC.mergeStats_memory`|Int|4|-
+`mutectRunSSCSSC.mergeStats_modules`|String|"gatk/4.1.6.0"|-
 `mutectRunSSCSSC.mergeVCFs_timeout`|Int|12|Hours before task timeout
 `mutectRunSSCSSC.mergeVCFs_memory`|Int|4|Memory allocated for job
-`mutectRunSSCSSC.runMutect2_timeout`|Int|24|Missing?
-`mutectRunSSCSSC.runMutect2_memory`|Int|32|Missing?
-`mutectRunSSCSSC.runMutect2_threads`|Int|4|Missing?
-`mutectRunSSCSSC.runMutect2_mutect2ExtraArgs`|String?|None|Missing?
-`mutectRunSSCSSC.runMutect2_mutectTag`|String|"mutect2"|Missing?
-`mutectRunSSCSSC.splitStringToArray_modules`|String|""|Missing?
-`mutectRunSSCSSC.splitStringToArray_timeout`|Int|1|Missing?
-`mutectRunSSCSSC.splitStringToArray_memory`|Int|1|Missing?
-`mutectRunSSCSSC.splitStringToArray_lineSeparator`|String|","|Missing?
+`mutectRunSSCSSC.runMutect2_timeout`|Int|24|-
+`mutectRunSSCSSC.runMutect2_memory`|Int|32|-
+`mutectRunSSCSSC.runMutect2_threads`|Int|4|-
+`mutectRunSSCSSC.runMutect2_mutect2ExtraArgs`|String?|None|-
+`mutectRunSSCSSC.runMutect2_mutectTag`|String|"mutect2"|-
+`mutectRunSSCSSC.splitStringToArray_modules`|String|""|-
+`mutectRunSSCSSC.splitStringToArray_timeout`|Int|1|-
+`mutectRunSSCSSC.splitStringToArray_memory`|Int|1|-
+`mutectRunSSCSSC.splitStringToArray_lineSeparator`|String|","|-
 `mutectRunSSCSSC.normalBam`|File?|None|Input normal file (bam or sam).
-`mutectRunSSCSSC.normalBai`|File?|None|Missing?
-`mutectRunSSCSSC.pon`|File?|None|Missing?
-`mutectRunSSCSSC.ponIdx`|File?|None|Missing?
-`mutectRunSSCSSC.gnomad`|File?|None|Missing?
-`mutectRunSSCSSC.gnomadIdx`|File?|None|Missing?
-`mutectRunAllUnique.filter_timeout`|Int|12|Missing?
-`mutectRunAllUnique.filter_memory`|Int|16|Missing?
-`mutectRunAllUnique.filter_filterExtraArgs`|String?|None|Missing?
-`mutectRunAllUnique.mergeStats_timeout`|Int|5|Missing?
-`mutectRunAllUnique.mergeStats_memory`|Int|4|Missing?
-`mutectRunAllUnique.mergeStats_modules`|String|"gatk/4.1.6.0"|Missing?
+`mutectRunSSCSSC.normalBai`|File?|None|-
+`mutectRunSSCSSC.pon`|File?|None|-
+`mutectRunSSCSSC.ponIdx`|File?|None|-
+`mutectRunSSCSSC.gnomad`|File?|None|-
+`mutectRunSSCSSC.gnomadIdx`|File?|None|-
+`mutectRunAllUnique.filter_timeout`|Int|12|-
+`mutectRunAllUnique.filter_memory`|Int|16|-
+`mutectRunAllUnique.filter_filterExtraArgs`|String?|None|-
+`mutectRunAllUnique.mergeStats_timeout`|Int|5|-
+`mutectRunAllUnique.mergeStats_memory`|Int|4|-
+`mutectRunAllUnique.mergeStats_modules`|String|"gatk/4.1.6.0"|-
 `mutectRunAllUnique.mergeVCFs_timeout`|Int|12|Hours before task timeout
 `mutectRunAllUnique.mergeVCFs_memory`|Int|4|Memory allocated for job
-`mutectRunAllUnique.runMutect2_timeout`|Int|24|Missing?
-`mutectRunAllUnique.runMutect2_memory`|Int|32|Missing?
-`mutectRunAllUnique.runMutect2_threads`|Int|4|Missing?
-`mutectRunAllUnique.runMutect2_mutect2ExtraArgs`|String?|None|Missing?
-`mutectRunAllUnique.runMutect2_mutectTag`|String|"mutect2"|Missing?
-`mutectRunAllUnique.splitStringToArray_modules`|String|""|Missing?
-`mutectRunAllUnique.splitStringToArray_timeout`|Int|1|Missing?
-`mutectRunAllUnique.splitStringToArray_memory`|Int|1|Missing?
-`mutectRunAllUnique.splitStringToArray_lineSeparator`|String|","|Missing?
+`mutectRunAllUnique.runMutect2_timeout`|Int|24|-
+`mutectRunAllUnique.runMutect2_memory`|Int|32|-
+`mutectRunAllUnique.runMutect2_threads`|Int|4|-
+`mutectRunAllUnique.runMutect2_mutect2ExtraArgs`|String?|None|-
+`mutectRunAllUnique.runMutect2_mutectTag`|String|"mutect2"|-
+`mutectRunAllUnique.splitStringToArray_modules`|String|""|-
+`mutectRunAllUnique.splitStringToArray_timeout`|Int|1|-
+`mutectRunAllUnique.splitStringToArray_memory`|Int|1|-
+`mutectRunAllUnique.splitStringToArray_lineSeparator`|String|","|-
 `mutectRunAllUnique.normalBam`|File?|None|Input normal file (bam or sam).
-`mutectRunAllUnique.normalBai`|File?|None|Missing?
-`mutectRunAllUnique.pon`|File?|None|Missing?
-`mutectRunAllUnique.ponIdx`|File?|None|Missing?
-`mutectRunAllUnique.gnomad`|File?|None|Missing?
-`mutectRunAllUnique.gnomadIdx`|File?|None|Missing?
+`mutectRunAllUnique.normalBai`|File?|None|-
+`mutectRunAllUnique.pon`|File?|None|-
+`mutectRunAllUnique.ponIdx`|File?|None|-
+`mutectRunAllUnique.gnomad`|File?|None|-
+`mutectRunAllUnique.gnomadIdx`|File?|None|-
 `hsMetricsRunDCSSC.collectHSmetrics_timeout`|Int|5|Maximum amount of time (in hours) the task can run for.
+`hsMetricsRunDCSSC.collectHSmetrics_maxRecordsInRam`|Int|250000|Specifies the N of records stored in RAM before spilling to disk. Increasing this number increases the amount of RAM needed.
 `hsMetricsRunDCSSC.collectHSmetrics_coverageCap`|Int|500|Parameter to set a max coverage limit for Theoretical Sensitivity calculations
 `hsMetricsRunDCSSC.collectHSmetrics_jobMemory`|Int|18|Memory allocated to job
 `hsMetricsRunDCSSC.collectHSmetrics_filter`|String|"LENIENT"|Settings for picard filter
@@ -156,6 +160,7 @@ Parameter|Value|Default|Description
 `hsMetricsRunDCSSC.bedToTargetIntervals_timeout`|Int|1|Maximum amount of time (in hours) the task can run for.
 `hsMetricsRunDCSSC.bedToTargetIntervals_jobMemory`|Int|16|Memory allocated to job
 `hsMetricsRunSSCSSC.collectHSmetrics_timeout`|Int|5|Maximum amount of time (in hours) the task can run for.
+`hsMetricsRunSSCSSC.collectHSmetrics_maxRecordsInRam`|Int|250000|Specifies the N of records stored in RAM before spilling to disk. Increasing this number increases the amount of RAM needed.
 `hsMetricsRunSSCSSC.collectHSmetrics_coverageCap`|Int|500|Parameter to set a max coverage limit for Theoretical Sensitivity calculations
 `hsMetricsRunSSCSSC.collectHSmetrics_jobMemory`|Int|18|Memory allocated to job
 `hsMetricsRunSSCSSC.collectHSmetrics_filter`|String|"LENIENT"|Settings for picard filter
@@ -165,6 +170,7 @@ Parameter|Value|Default|Description
 `hsMetricsRunSSCSSC.bedToTargetIntervals_timeout`|Int|1|Maximum amount of time (in hours) the task can run for.
 `hsMetricsRunSSCSSC.bedToTargetIntervals_jobMemory`|Int|16|Memory allocated to job
 `hsMetricsRunAllUnique.collectHSmetrics_timeout`|Int|5|Maximum amount of time (in hours) the task can run for.
+`hsMetricsRunAllUnique.collectHSmetrics_maxRecordsInRam`|Int|250000|Specifies the N of records stored in RAM before spilling to disk. Increasing this number increases the amount of RAM needed.
 `hsMetricsRunAllUnique.collectHSmetrics_coverageCap`|Int|500|Parameter to set a max coverage limit for Theoretical Sensitivity calculations
 `hsMetricsRunAllUnique.collectHSmetrics_jobMemory`|Int|18|Memory allocated to job
 `hsMetricsRunAllUnique.collectHSmetrics_filter`|String|"LENIENT"|Settings for picard filter

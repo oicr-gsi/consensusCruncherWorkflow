@@ -23,9 +23,3 @@ generate-subworkflow-import --input-wdl subworkflows/HSMetrics/hsMetrics.wdl --p
 generate-subworkflow-import --input-wdl subworkflows/mutect2/mutect2.wdl --pull-all --output-wdl-path imports/pull_mutect2.wdl
 generate-subworkflow-import --input-wdl subworkflows/variantEffectPredictor/variantEffectPredictor.wdl --pull-all --output-wdl-path imports/pull_variantEffectPredictor.wdl
 ```
-
-## update imports.zip
-```
-zip -r -9 imports.zip imports
-```
-
