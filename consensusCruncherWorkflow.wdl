@@ -38,7 +38,7 @@ workflow consensusCruncher {
     inputMutectModules: "module for mutect"
     inputIntervalsToParalellizeBy: "intervals for parallelization"
     inputHSMetricsModules: "module for HSmetrics"
-    tumorName: "Name of the tumor sample
+    tumorName: "Name of the tumor sample"
   }
 
 if (!(defined(sortedBam)) && defined(inputGroups)) {
