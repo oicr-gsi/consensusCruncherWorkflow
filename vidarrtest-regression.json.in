@@ -173,7 +173,7 @@
             "consensusCruncher.outputFileNamePrefix": "SWID_15409584_TGL49_0032_Cf_U_PE_381_TS_LFS_4042_87782-1_191126_NB551056_0130_AHTMW5BGXC_CGTGTGTA-CCAACGAA_L001",
             "consensusCruncher.sortedBai": null,
             "consensusCruncher.sortedBam": null,
-            "consensusCruncher.tumorName":"TGL49_0032_Cf_U_TS_LFS_4042_87782-1",
+            "consensusCruncher.tumorName": "TGL49_0032_Cf_U_TS_LFS_4042_87782-1",
             "consensusCruncher.variantEffectPredictor.chromosomeArray_jobMemory": null,
             "consensusCruncher.variantEffectPredictor.chromosomeArray_threads": null,
             "consensusCruncher.variantEffectPredictor.chromosomeArray_timeout": null,
@@ -642,7 +642,7 @@
             "consensusCruncher.variantEffectPredictor.vcf2maf_jobMemory": null,
             "consensusCruncher.variantEffectPredictor.vcf2maf_maxfilterAC": null,
             "consensusCruncher.variantEffectPredictor.vcf2maf_minHomVaf": null,
-            "consensusCruncher.variantEffectPredictor.vcf2maf_modules": 
+            "consensusCruncher.variantEffectPredictor.vcf2maf_modules": "vcf2maf/1.6.21b tabix/0.2.6 hg19/p13 vep-hg19-cache/105",
             "consensusCruncher.variantEffectPredictor.vcf2maf_ncbiBuild": "GRCh37",
             "consensusCruncher.variantEffectPredictor.vcf2maf_species": null,
             "consensusCruncher.variantEffectPredictor.vcf2maf_threads": null,
