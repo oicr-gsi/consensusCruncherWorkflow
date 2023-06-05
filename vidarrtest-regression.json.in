@@ -173,6 +173,7 @@
             "consensusCruncher.outputFileNamePrefix": "SWID_15409584_TGL49_0032_Cf_U_PE_381_TS_LFS_4042_87782-1_191126_NB551056_0130_AHTMW5BGXC_CGTGTGTA-CCAACGAA_L001",
             "consensusCruncher.sortedBai": null,
             "consensusCruncher.sortedBam": null,
+            "consensusCruncher.tumorName":"TGL49_0032_Cf_U_TS_LFS_4042_87782-1",
             "consensusCruncher.variantEffectPredictor.chromosomeArray_jobMemory": null,
             "consensusCruncher.variantEffectPredictor.chromosomeArray_threads": null,
             "consensusCruncher.variantEffectPredictor.chromosomeArray_timeout": null,
@@ -209,20 +210,18 @@
             "consensusCruncher.variantEffectPredictor.vcf2maf_basename": null,
             "consensusCruncher.variantEffectPredictor.vcf2maf_bufferSize": null,
             "consensusCruncher.variantEffectPredictor.vcf2maf_jobMemory": null,
-            "consensusCruncher.variantEffectPredictor.vcf2maf_maxfilterAC": null,
             "consensusCruncher.variantEffectPredictor.vcf2maf_minHomVaf": null,
-            "consensusCruncher.variantEffectPredictor.vcf2maf_modules": "vcf2maf/1.6.17 tabix/0.2.6 hg38/p12 vep-hg38-cache/92 vep-hg38-exac/0.3",
+            "consensusCruncher.variantEffectPredictor.vcf2maf_modules": "vcf2maf/1.6.21b tabix/0.2.6 hg38/p12 vep-hg38-cache/105",
             "consensusCruncher.variantEffectPredictor.vcf2maf_ncbiBuild": "GRCh38",
             "consensusCruncher.variantEffectPredictor.vcf2maf_species": null,
             "consensusCruncher.variantEffectPredictor.vcf2maf_threads": null,
             "consensusCruncher.variantEffectPredictor.vcf2maf_timeout": null,
-            "consensusCruncher.variantEffectPredictor.vcf2maf_vcfFilter": "$VEP_HG38_EXAC_ROOT/ExAC.r0.3.sites.minus_somatic.hg38.vcf.gz",
             "consensusCruncher.variantEffectPredictor.vcf2maf_vepCacheDir": "$VEP_HG38_CACHE_ROOT/.vep",
             "consensusCruncher.variantEffectPredictor.vcf2maf_vepPath": "$VEP_ROOT/bin/",
             "consensusCruncher.variantEffectPredictor.vep_addParam": null,
             "consensusCruncher.variantEffectPredictor.vep_basename": null,
             "consensusCruncher.variantEffectPredictor.vep_jobMemory": null,
-            "consensusCruncher.variantEffectPredictor.vep_modules": "vep/92.0 tabix/0.2.6 vep-hg38-cache/92 hg38/p12",
+            "consensusCruncher.variantEffectPredictor.vep_modules": "vep/105.0 tabix/0.2.6 vep-hg38-cache/105 hg38/p12",
             "consensusCruncher.variantEffectPredictor.vep_ncbiBuild": "GRCh38",
             "consensusCruncher.variantEffectPredictor.vep_species": null,
             "consensusCruncher.variantEffectPredictor.vep_threads": null,
@@ -425,7 +424,7 @@
             {
                 "metrics_calculate": "@CHECKOUT@/tests/calculate.sh",
                 "metrics_compare": "@CHECKOUT@/tests/compare.sh",
-                "output_metrics": "/.mounts/labs/gsi/testdata/consensusCruncher/1.0.0/output_metrics/consensusCruncher_dataset1.metrics",
+                "output_metrics": "/.mounts/labs/gsi/testdata/consensusCruncher/1.2.3/output_metrics/consensusCruncher_dataset1.metrics",
                 "type": "script"
             }
         ]
@@ -476,7 +475,7 @@
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_jobMemory": null,
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_metricTag": null,
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_timeout": null,
-	    "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_maxRecordsInRam": null,
+	        "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_maxRecordsInRam": null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToBaitIntervals_jobMemory": null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToBaitIntervals_timeout": null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToTargetIntervals_jobMemory": null,
@@ -486,7 +485,7 @@
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_jobMemory": null,
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_metricTag": null,
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_timeout": null,
-	    "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_maxRecordsInRam": null,
+	        "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_maxRecordsInRam": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToBaitIntervals_jobMemory": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToBaitIntervals_timeout": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToTargetIntervals_jobMemory": null,
@@ -496,7 +495,7 @@
             "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_jobMemory": null,
             "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_metricTag": null,
             "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_timeout": null,
-	    "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_maxRecordsInRam": null,
+	        "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_maxRecordsInRam": null,
             "consensusCruncher.inputGroups": [
                 {
                     "fastqR1": {
@@ -604,6 +603,7 @@
             "consensusCruncher.outputFileNamePrefix": "SWID_15901346_TGL40_0008_Pl_P_PE_434_TS_651_P_200114_NB551051_0145_AHTMTCBGXC_CGGCTAAT-CTCGTTCT_L001",
             "consensusCruncher.sortedBai": null,
             "consensusCruncher.sortedBam": null,
+            "consensusCruncher.tumorName": "TGL40_0008_Pl_P_TS_651_P",
             "consensusCruncher.variantEffectPredictor.chromosomeArray_jobMemory": null,
             "consensusCruncher.variantEffectPredictor.chromosomeArray_threads": null,
             "consensusCruncher.variantEffectPredictor.chromosomeArray_timeout": null,
@@ -642,18 +642,17 @@
             "consensusCruncher.variantEffectPredictor.vcf2maf_jobMemory": null,
             "consensusCruncher.variantEffectPredictor.vcf2maf_maxfilterAC": null,
             "consensusCruncher.variantEffectPredictor.vcf2maf_minHomVaf": null,
-            "consensusCruncher.variantEffectPredictor.vcf2maf_modules": "vcf2maf/1.6.17 tabix/0.2.6 hg19/p13 vep-hg19-cache/92 vep-hg19-exac/0.3.1",
+            "consensusCruncher.variantEffectPredictor.vcf2maf_modules": 
             "consensusCruncher.variantEffectPredictor.vcf2maf_ncbiBuild": "GRCh37",
             "consensusCruncher.variantEffectPredictor.vcf2maf_species": null,
             "consensusCruncher.variantEffectPredictor.vcf2maf_threads": null,
             "consensusCruncher.variantEffectPredictor.vcf2maf_timeout": null,
-            "consensusCruncher.variantEffectPredictor.vcf2maf_vcfFilter": "$VEP_HG19_EXAC_ROOT/ExAC_nonTCGA.r0.3.1.somatic.sites.vep.vcf.gz",
             "consensusCruncher.variantEffectPredictor.vcf2maf_vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep",
             "consensusCruncher.variantEffectPredictor.vcf2maf_vepPath": "$VEP_ROOT/bin/",
             "consensusCruncher.variantEffectPredictor.vep_addParam": null,
             "consensusCruncher.variantEffectPredictor.vep_basename": null,
             "consensusCruncher.variantEffectPredictor.vep_jobMemory": null,
-            "consensusCruncher.variantEffectPredictor.vep_modules": "vep/92.0 tabix/0.2.6 vep-hg19-cache/92 hg19/p13",
+            "consensusCruncher.variantEffectPredictor.vep_modules": "vep/105.0 tabix/0.2.6 vep-hg19-cache/105 hg19/p13",
             "consensusCruncher.variantEffectPredictor.vep_ncbiBuild": "GRCh37",
             "consensusCruncher.variantEffectPredictor.vep_species": null,
             "consensusCruncher.variantEffectPredictor.vep_threads": null,
@@ -856,7 +855,7 @@
             {
                 "metrics_calculate": "@CHECKOUT@/tests/calculate.sh",
                 "metrics_compare": "@CHECKOUT@/tests/compare.sh",
-                "output_metrics": "/.mounts/labs/gsi/testdata/consensusCruncher/1.0.0/output_metrics/consensusCruncher_dataset2.metrics",
+                "output_metrics": "/.mounts/labs/gsi/testdata/consensusCruncher/1.2.3/output_metrics/consensusCruncher_dataset2.metrics",
                 "type": "script"
             }
         ]
@@ -907,7 +906,7 @@
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_jobMemory": null,
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_metricTag": null,
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_timeout": null,
-	    "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_maxRecordsInRam": null,
+	        "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_maxRecordsInRam": null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToBaitIntervals_jobMemory": null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToBaitIntervals_timeout": null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToTargetIntervals_jobMemory": null,
@@ -917,7 +916,7 @@
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_jobMemory": null,
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_metricTag": null,
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_timeout": null,
-	    "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_maxRecordsInRam": null,
+	        "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_maxRecordsInRam": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToBaitIntervals_jobMemory": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToBaitIntervals_timeout": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToTargetIntervals_jobMemory": null,
@@ -927,7 +926,7 @@
             "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_jobMemory": null,
             "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_metricTag": null,
             "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_timeout": null,
-	    "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_maxRecordsInRam":null,
+	        "consensusCruncher.hsMetricsRunSSCSSC.collectHSmetrics_maxRecordsInRam":null,
             "consensusCruncher.inputGroups": [
                 {
                     "fastqR1": {
@@ -1061,6 +1060,7 @@
             "consensusCruncher.outputFileNamePrefix": "TGL40_0037_Pl_P_PE_449_TS_200901TS",
             "consensusCruncher.sortedBai": null,
             "consensusCruncher.sortedBam": null,
+            "consensusCruncher.tumorName": "TGL40_0037_Pl_P_TS_200901TS",
             "consensusCruncher.variantEffectPredictor.chromosomeArray_jobMemory": null,
             "consensusCruncher.variantEffectPredictor.chromosomeArray_threads": null,
             "consensusCruncher.variantEffectPredictor.chromosomeArray_timeout": null,
@@ -1099,18 +1099,17 @@
             "consensusCruncher.variantEffectPredictor.vcf2maf_jobMemory": null,
             "consensusCruncher.variantEffectPredictor.vcf2maf_maxfilterAC": null,
             "consensusCruncher.variantEffectPredictor.vcf2maf_minHomVaf": null,
-            "consensusCruncher.variantEffectPredictor.vcf2maf_modules": "vcf2maf/1.6.17 tabix/0.2.6 hg19/p13 vep-hg19-cache/92 vep-hg19-exac/0.3.1",
+            "consensusCruncher.variantEffectPredictor.vcf2maf_modules": "vcf2maf/1.6.21b tabix/0.2.6 hg19/p13 vep-hg19-cache/105",
             "consensusCruncher.variantEffectPredictor.vcf2maf_ncbiBuild": "GRCh37",
             "consensusCruncher.variantEffectPredictor.vcf2maf_species": null,
             "consensusCruncher.variantEffectPredictor.vcf2maf_threads": null,
             "consensusCruncher.variantEffectPredictor.vcf2maf_timeout": null,
-            "consensusCruncher.variantEffectPredictor.vcf2maf_vcfFilter": "$VEP_HG19_EXAC_ROOT/ExAC_nonTCGA.r0.3.1.somatic.sites.vep.vcf.gz",
             "consensusCruncher.variantEffectPredictor.vcf2maf_vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep",
             "consensusCruncher.variantEffectPredictor.vcf2maf_vepPath": "$VEP_ROOT/bin/",
             "consensusCruncher.variantEffectPredictor.vep_addParam": null,
             "consensusCruncher.variantEffectPredictor.vep_basename": null,
             "consensusCruncher.variantEffectPredictor.vep_jobMemory": null,
-            "consensusCruncher.variantEffectPredictor.vep_modules": "vep/92.0 tabix/0.2.6 vep-hg19-cache/92 hg19/p13",
+            "consensusCruncher.variantEffectPredictor.vep_modules": "vep/105.0 tabix/0.2.6 vep-hg19-cache/105 hg19/p13",
             "consensusCruncher.variantEffectPredictor.vep_ncbiBuild": "GRCh37",
             "consensusCruncher.variantEffectPredictor.vep_species": null,
             "consensusCruncher.variantEffectPredictor.vep_threads": null,
@@ -1313,7 +1312,7 @@
             {
                 "metrics_calculate": "@CHECKOUT@/tests/calculate.sh",
                 "metrics_compare": "@CHECKOUT@/tests/compare.sh",
-                "output_metrics": "/.mounts/labs/gsi/testdata/consensusCruncher/1.0.0/output_metrics/consensusCruncher_dataset3.metrics",
+                "output_metrics": "/.mounts/labs/gsi/testdata/consensusCruncher/1.2.3/output_metrics/consensusCruncher_dataset3.metrics",
                 "type": "script"
             }
         ]
