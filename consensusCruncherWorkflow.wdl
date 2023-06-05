@@ -199,7 +199,7 @@ if (!(defined(sortedBam)) && defined(inputGroups)) {
       vcf2maf_retainInfoProvided = true,
       vep_referenceFasta = inputRefFasta,
       vcf2maf_referenceFasta = inputRefFasta,
-      targetBed = intervalFile
+      targetBed = intervalFile,
       tumorName = tumorName
   }
 
