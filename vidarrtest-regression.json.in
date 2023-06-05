@@ -226,7 +226,8 @@
             "consensusCruncher.variantEffectPredictor.vep_species": null,
             "consensusCruncher.variantEffectPredictor.vep_threads": null,
             "consensusCruncher.variantEffectPredictor.vep_timeout": null,
-            "consensusCruncher.variantEffectPredictor.vep_vepCacheDir": "$VEP_HG38_CACHE_ROOT/.vep"
+            "consensusCruncher.variantEffectPredictor.vep_vepCacheDir": "$VEP_HG38_CACHE_ROOT/.vep",
+            "consensusCruncher.variantEffectPredictor.vep_vepStats": null
         },
         "description": "consensus cruncher workflow test",
         "engineArguments": {
@@ -657,7 +658,8 @@
             "consensusCruncher.variantEffectPredictor.vep_species": null,
             "consensusCruncher.variantEffectPredictor.vep_threads": null,
             "consensusCruncher.variantEffectPredictor.vep_timeout": null,
-            "consensusCruncher.variantEffectPredictor.vep_vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep"
+            "consensusCruncher.variantEffectPredictor.vep_vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep",
+            "consensusCruncher.variantEffectPredictor.vep_vepStats": null
         },
         "description": "consensus cruncher workflow test",
         "engineArguments": {
@@ -1114,7 +1116,8 @@
             "consensusCruncher.variantEffectPredictor.vep_species": null,
             "consensusCruncher.variantEffectPredictor.vep_threads": null,
             "consensusCruncher.variantEffectPredictor.vep_timeout": null,
-            "consensusCruncher.variantEffectPredictor.vep_vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep"
+            "consensusCruncher.variantEffectPredictor.vep_vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep",
+            "consensusCruncher.variantEffectPredictor.vep_vepStats": null
         },
         "description": "consensus cruncher workflow test",
         "engineArguments": {
