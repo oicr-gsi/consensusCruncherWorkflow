@@ -22,6 +22,7 @@ workflow consensusCruncher {
     String inputMutectModules
     String inputIntervalsToParalellizeBy
     String inputHSMetricsModules
+    String tumorName
 
   }
 
@@ -37,6 +38,7 @@ workflow consensusCruncher {
     inputMutectModules: "module for mutect"
     inputIntervalsToParalellizeBy: "intervals for parallelization"
     inputHSMetricsModules: "module for HSmetrics"
+    tumorName: "Name of the tumor sample"
   }
 
 if (!(defined(sortedBam)) && defined(inputGroups)) {
@@ -197,7 +199,8 @@ if (!(defined(sortedBam)) && defined(inputGroups)) {
       vcf2maf_retainInfoProvided = true,
       vep_referenceFasta = inputRefFasta,
       vcf2maf_referenceFasta = inputRefFasta,
-      targetBed = intervalFile
+      targetBed = intervalFile,
+      tumorName = tumorName
   }
 
   meta {

@@ -1,3 +1,6 @@
+## 1.2.3 2023-06-05
+- updated VEP to v2.2.1
+
 ## 2022-02-10
 - GP-3151 Updated VEP to v2.1.5, HSmetrics to v2.0.3, mutect2 to v1.04  
 
