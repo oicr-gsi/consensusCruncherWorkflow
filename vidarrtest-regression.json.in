@@ -435,6 +435,7 @@
     },
     {
         "arguments": {
+            "consensusCruncher.reference": "hg19",
             "consensusCruncher.align.blist": null,
             "consensusCruncher.align.bwa": null,
             "consensusCruncher.align.bwaref": null,
@@ -869,6 +870,7 @@
     },
     {
         "arguments": {
+            "consensusCruncher.reference": "hg19",
             "consensusCruncher.align.blist": null,
             "consensusCruncher.align.bwa": null,
             "consensusCruncher.align.bwaref": null,
