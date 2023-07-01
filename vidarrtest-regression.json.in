@@ -5,7 +5,7 @@
             "consensusCruncher.align.blist": "$DATA_HG38_CONSENSUS_CRUNCHER_ROOT/IDT_duplex_sequencing_barcodes.list",
             "consensusCruncher.align.bwa": null,
             "consensusCruncher.align.bwaref": "$HG38_BWA_INDEX_ROOT/hg38_random.fa",
-            "consensusCruncher.align.consensusCruncherPy": "chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20,chr21,chr22,chrX,chrY",
+            "consensusCruncher.align.consensusCruncherPy": null,
             "consensusCruncher.align.jobMemory": null,
             "consensusCruncher.align.modules": "consensus-cruncher/5.0 data-hg38-consensus-cruncher/1.0 hg38-bwa-index/0.7.12 samtools/1.9",
             "consensusCruncher.align.samtools": null,
