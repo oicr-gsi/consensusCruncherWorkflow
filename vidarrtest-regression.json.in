@@ -32,7 +32,7 @@
             "consensusCruncher.consensus.cytoband": "$DATA_HG38_CONSENSUS_CRUNCHER_ROOT/hg38_cytoBand.txt",
             "consensusCruncher.consensus.genome": "hg38",
             "consensusCruncher.consensus.jobMemory": null,
-            "consensusCruncher.consensus.modules": "consensus-cruncher/5.0 data-hg38-consensus-cruncher/1.0 hg38-bwa-index/0.7.12 samtools/1.9",
+            "consensusCruncher.consensus.modules": "consensus-cruncher/5.0 data-hg38-consensus-cruncher/1.0  hg38-bwa-index-with-alt/0.7.12 samtools/1.9",
             "consensusCruncher.consensus.samtools": null,
             "consensusCruncher.consensus.threads": null,
             "consensusCruncher.consensus.timeout": null,
