@@ -6,7 +6,7 @@
             "consensusCruncher.align.bwaref": "$HG38_BWA_INDEX_ROOT/hg38_random.fa",
             "consensusCruncher.align.consensusCruncherPy": null,
             "consensusCruncher.align.jobMemory": null,
-            "consensusCruncher.align.modules": "consensus-cruncher/5.0 data-hg38-consensus-cruncher/1.0 hg38-bwa-index/0.7.12 samtools/1.9",
+            "consensusCruncher.align.modules": "consensus-cruncher/5.0 data-hg38-consensus-cruncher/1.0 hg38-bwa-index-with-alt/0.7.12 samtools/1.9",
             "consensusCruncher.align.samtools": null,
             "consensusCruncher.align.threads": null,
             "consensusCruncher.align.timeout": null,
