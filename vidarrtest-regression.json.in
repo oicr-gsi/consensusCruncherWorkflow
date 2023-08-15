@@ -428,7 +428,7 @@
             {
                 "metrics_calculate": "@CHECKOUT@/tests/calculate.sh",
                 "metrics_compare": "@CHECKOUT@/tests/compare.sh",
-                "output_metrics": "/.mounts/labs/gsi/testdata/consensusCruncher/1.2.3/output_metrics/original_consensusCruncher_dataset1.metrics",
+                "output_metrics": "/.mounts/labs/gsi/testdata/consensusCruncher/1.2.3/output_metrics/consensusCruncher_dataset1.metrics",
                 "type": "script"
             }
         ]
