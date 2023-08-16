@@ -305,6 +305,31 @@ if (!(defined(sortedBam)) && defined(inputGroups)) {
       url: "https://github.com/pughlab/ConsensusCruncher"
      }
     ]
+    output_meta: {
+      rawBam: "raw bame file",
+      rawBamIndex: "raw bam file index",
+      dcsScBam: "dcSc bam",
+      dcsScBamIndex: "dcSc bam index",
+      allUniqueBam: "all unique bam",
+      allUniqueBamIndex: "all unique bam index",
+      sscsScBam: "sscsSc bam",
+      sscsScBamIndex: "sscsSc bam index",
+      outputCCStats: "CC stats",
+      outputCCReadFamilies: "CC read families",
+      ccFolder: "cc folder",
+      dcsScVcf: "dcsSc vcf",
+      dcsScVcfIndex: "dcsSc vcf index",
+      allUniqueVcf: "all unique vcf",
+      allUniqueVcfIndex: "all unique vcf index",
+      sscsScVcf: "sscsSc vcf",
+      sscsScVcfIndex: "sscsSc vcf index",
+      vepVcf: "vep vcf",
+      vepVcfIndex: "vep vcf index",
+      mafOutput: "maf output",
+      dcsScHsMetrics: "dcsSc metrics",
+      sscsScHsMetrics: "sscsSc metrics",
+      allUniqueHsMetrics: "all unique metrics",
+    }
   }
   
   output {
