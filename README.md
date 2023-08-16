@@ -253,15 +253,15 @@ Output | Type | Description
  
  === Description here ===.
  
- <<<
+ ```
      set -euo pipefail
  
      zcat READ1S_ARRAY | gzip > OUTPUT_FILE_NAME_R1_001.fastq.gz
  
      zcat READ2S_ARRAY | gzip > OUTPUT_FILE_NAME_R2_001.fastq.gz
  
-   >>>
- <<<
+   ```
+ ```
      set -euo pipefail
  
      CONSENSUS_CRUNCHER fastq2bam \
@@ -278,8 +278,8 @@ Output | Type | Description
      # Additionally if ".sorted" isn't omitted here, file names from align include ".sorted" twice
      mv bamfiles/*.bam bamfiles/"OUTPUT_FILE_NAME.bam"
      mv bamfiles/*.bai bamfiles/"OUTPUT_FILE_NAME.bam.bai"
-   >>>
- <<<
+   ```
+ ```
    set -euo pipefail
  
     CONSENSUS_CRUNCHER consensus \
@@ -292,8 +292,8 @@ Output | Type | Description
           --bdelim '|'
  
     tar cf - NAME_PREFiX | gzip --no-name > CC_DIR.tar.gz
-   >>>
- <<<
+   ```
+ ```
    python3<<CODE
    import subprocess
    import sys
@@ -323,14 +323,14 @@ Output | Type | Description
    result_output = subprocess.run(gatkCommand, shell=True)
    sys.exit(result_output.returncode)
    CODE
- >>>
- <<<
+ ```
+ ```
    bcftools annotate -a UNIQUE_VCF \
   -c FMT/AD,FMT/DP MERGED_VCF -Oz \
   -o "OUTPUT_FILE_NAME.merged.vcf.gz"
  
   tabix -p vcf "OUTPUT_FILE_NAME.merged.vcf.gz"
- >>>
+ ```
  ## Support
 
 For support, please file an issue on the [Github project](https://github.com/oicr-gsi) or send an email to gsi@oicr.on.ca .
