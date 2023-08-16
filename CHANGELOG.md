@@ -1,3 +1,6 @@
+## 1.3.0 2023-08-16
+- moved reference-specific modules into WDL
+
 ## 1.2.3 2023-06-05
 - updated VEP to v2.2.1
 
