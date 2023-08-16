@@ -39,7 +39,6 @@ workflow consensusCruncher {
     String outputFileNamePrefix
     String intervalFile
     String inputIntervalsToParalellizeBy
-    String inputHSMetricsModules
     String tumorName
     String reference
   }
@@ -96,9 +95,7 @@ workflow consensusCruncher {
     sortedBai: "Bai file from bwamem"
     outputFileNamePrefix: "Prefix to use for output file"
     intervalFile: "interval file to subset variant calls"
-    inputMutectModules: "module for mutect"
     inputIntervalsToParalellizeBy: "intervals for parallelization"
-    inputHSMetricsModules: "module for HSmetrics"
     tumorName: "Name of the tumor sample"
     reference: "reference version"
   }
@@ -401,8 +398,8 @@ task align {
     fastqR1: "Path to left fastq file"
     fastqR2: "Path to right fastq file"
     outputFileNamePrefix: "File name prefix"
-    consensusCruncherPy: "Path to consensusCruncher binary"
     modules: "Names and versions of modules to load"
+    consensusCruncherPy: "Path to consensusCruncher binary"
     bwa: "Path to bwa binary"
     bwaref: "Path to bwa index"
     samtools: "Path to samtools binary"
@@ -465,15 +462,16 @@ task consensus {
     inputBam: "Bam file either from bwamem or ConsensusCruncher align."
     inputBai: "Bai file either from bwamem or ConsensusCruncher align."
     consensusCruncherPy: "Path to consensusCruncher binary"
-    modules: "Names and versions of modules to load"
+    basePrefix: "Prefix identifier for naming of output files"
     samtools: "Path to samtools binary"
+    cytoband: "Path to cytoband for genome"
+    genome: "Which genome version to use"
+    ccDir: "Placeholder"
+    cutoff: "Cutoff to use to call a consenus of reads"
     threads: "Number of threads to request"
     jobMemory: "Memory allocated for this job"
     timeout: "Hours before task timeout"
-    genome: "Which genome version to use"
-    cytoband: "Path to cytoband for genome"
-    cutoff: "Cutoff to use to call a consenus of reads"
-    ccDir: "Placeholder"
+    modules: "Names and versions of modules to load"
   }
 
 
@@ -520,6 +518,8 @@ task consensus {
       allUniqueBamIndex: "Index for All Unique Bam",
       sscsScBam: "SSCS combined with corrected singletons (from both rescue strategies)",
       sscsScBamIndex: "Index for SSCS SC Bam",
+      statsCCFile: "Stats file",
+      readFamiliesCCFile: "read families file",
       ccFolder: "output folder containing files not needed for downstream analysis; info on family size, QC metrics"
     }
   }
