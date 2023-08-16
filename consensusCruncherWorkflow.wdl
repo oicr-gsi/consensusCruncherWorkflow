@@ -328,7 +328,7 @@ if (!(defined(sortedBam)) && defined(inputGroups)) {
       mafOutput: "maf output",
       dcsScHsMetrics: "dcsSc metrics",
       sscsScHsMetrics: "sscsSc metrics",
-      allUniqueHsMetrics: "all unique metrics",
+      allUniqueHsMetrics: "all unique metrics"
     }
   }
   
