@@ -306,29 +306,29 @@ if (!(defined(sortedBam)) && defined(inputGroups)) {
      }
     ]
     output_meta: {
-      rawBam: "raw bame file",
+      rawBam: "raw bam file",
       rawBamIndex: "raw bam file index",
-      dcsScBam: "dcSc bam",
-      dcsScBamIndex: "dcSc bam index",
-      allUniqueBam: "all unique bam",
-      allUniqueBamIndex: "all unique bam index",
-      sscsScBam: "sscsSc bam",
-      sscsScBamIndex: "sscsSc bam index",
+      dcsScBam: "Duplex Consensus Sequence (DCS) generated from Single-Strand Consensus Sequences (SSCS) + Single Correction (SC)",
+      dcsScBamIndex: "Bam index for DCS generated from SSCS + SC",
+      allUniqueBam: "DCS (from SSCS + SC) + SSCS_SC_Singletons + remaining singletons",
+      allUniqueBamIndex: "Bam index for DCS (from SSCS + SC) + SSCS_SC_Singletons + remaining singletons",
+      sscsScBam: "SSCS combined with corrected singletons",
+      sscsScBamIndex: "Bam index for SSCS combined with corrected singletons",
       outputCCStats: "CC stats",
       outputCCReadFamilies: "CC read families",
       ccFolder: "cc folder",
-      dcsScVcf: "dcsSc vcf",
-      dcsScVcfIndex: "dcsSc vcf index",
-      allUniqueVcf: "all unique vcf",
-      allUniqueVcfIndex: "all unique vcf index",
-      sscsScVcf: "sscsSc vcf",
-      sscsScVcfIndex: "sscsSc vcf index",
+      dcsScVcf: "DCS vcf",
+      dcsScVcfIndex: "DCS vcf index",
+      allUniqueVcf: "vcf of DCS + singletons",
+      allUniqueVcfIndex: "vcf index for DCS + singletons",
+      sscsScVcf: "SSCS vcf",
+      sscsScVcfIndex: "SSCS vcf index",
       vepVcf: "vep vcf",
       vepVcfIndex: "vep vcf index",
       mafOutput: "maf output",
-      dcsScHsMetrics: "dcsSc metrics",
-      sscsScHsMetrics: "sscsSc metrics",
-      allUniqueHsMetrics: "all unique metrics"
+      dcsScHsMetrics: "DCS metrics",
+      sscsScHsMetrics: "SSCS metrics",
+      allUniqueHsMetrics: "metrics for DCS + singletons"
     }
   }
   
