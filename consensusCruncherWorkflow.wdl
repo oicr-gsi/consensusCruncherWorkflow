@@ -554,7 +554,7 @@ task combineVariants {
 input {
  Array[File] inputVcfs
  Array[File] inputIndexes
- Array[String] workflows = ["mutect2-dcsSc", "mutect2-sscsSc"]
+ Array[String] workflows
  String referenceFasta
  String outputPrefix 
  String modules
