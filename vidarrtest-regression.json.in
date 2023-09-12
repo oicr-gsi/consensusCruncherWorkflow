@@ -1,12 +1,13 @@
 [
     {
         "arguments": {
+            "consensusCruncher.reference": "hg38",
             "consensusCruncher.align.blist": "$DATA_HG38_CONSENSUS_CRUNCHER_ROOT/IDT_duplex_sequencing_barcodes.list",
             "consensusCruncher.align.bwa": null,
             "consensusCruncher.align.bwaref": "$HG38_BWA_INDEX_ROOT/hg38_random.fa",
             "consensusCruncher.align.consensusCruncherPy": null,
             "consensusCruncher.align.jobMemory": null,
-            "consensusCruncher.align.modules": "consensus-cruncher/5.0 data-hg38-consensus-cruncher/1.0 hg38-bwa-index/0.7.12 samtools/1.9",
+            "consensusCruncher.align.modules": "consensus-cruncher/5.0 data-hg38-consensus-cruncher/1.0 hg38-bwa-index-with-alt/0.7.12 samtools/1.9",
             "consensusCruncher.align.samtools": null,
             "consensusCruncher.align.threads": null,
             "consensusCruncher.align.timeout": null,
@@ -45,7 +46,7 @@
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_jobMemory": null,
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_metricTag": null,
             "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_timeout": null,
-	    "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_maxRecordsInRam":null,
+	        "consensusCruncher.hsMetricsRunAllUnique.collectHSmetrics_maxRecordsInRam":null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToBaitIntervals_jobMemory": null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToBaitIntervals_timeout": null,
             "consensusCruncher.hsMetricsRunDCSSC.bedToTargetIntervals_jobMemory": null,
@@ -54,8 +55,8 @@
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_filter": null,
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_jobMemory": null,
             "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_metricTag": null,
-	    "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_timeout": null,
-	    "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_maxRecordsInRam": null,
+	        "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_timeout": null,
+	        "consensusCruncher.hsMetricsRunDCSSC.collectHSmetrics_maxRecordsInRam": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToBaitIntervals_jobMemory": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToBaitIntervals_timeout": null,
             "consensusCruncher.hsMetricsRunSSCSSC.bedToTargetIntervals_jobMemory": null,
@@ -434,6 +435,7 @@
     },
     {
         "arguments": {
+            "consensusCruncher.reference": "hg19",
             "consensusCruncher.align.blist": null,
             "consensusCruncher.align.bwa": null,
             "consensusCruncher.align.bwaref": null,
@@ -868,6 +870,7 @@
     },
     {
         "arguments": {
+            "consensusCruncher.reference": "hg19",
             "consensusCruncher.align.blist": null,
             "consensusCruncher.align.bwa": null,
             "consensusCruncher.align.bwaref": null,
