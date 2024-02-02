@@ -1,33 +1,86 @@
 version 1.0
 
+
+
+struct HsResources {
+  String refDict
+  String refFasta
+  String modules
+}
+
 workflow hsMetrics {
+  
+Map[String,HsResources] resources = {
+  "hg19": {
+    "refDict": "$HG19_ROOT/hg19_random.dict",
+    "refFasta": "$HG19_ROOT/hg19_random.fa",
+    "modules": "picard/2.19.2 hg19/p13"
+  },
+  "hg38": {
+    "refDict": "$HG38_ROOT/hg38_random.dict",
+    "refFasta": "$HG38_ROOT/hg38_random.fa",
+    "modules": "picard/2.19.2 hg38/p12"
+  }
+}
+
 input {
    Int collectHSmetrics_timeout = 5
-   String collectHSmetrics_modules = "picard/2.21.2 hg19/p13"
    Int collectHSmetrics_maxRecordsInRam = 250000
    Int collectHSmetrics_coverageCap = 500
    Int collectHSmetrics_jobMemory = 18
    String collectHSmetrics_filter = "LENIENT"
    String collectHSmetrics_metricTag = "HS"
-   String collectHSmetrics_refFasta = "$HG19_ROOT/hg19_random.fa"
    Int bedToBaitIntervals_timeout = 1
-   String bedToBaitIntervals_modules = "picard/2.21.2 hg19/p13"
    Int bedToBaitIntervals_jobMemory = 16
-   String bedToBaitIntervals_refDict = "$HG19_ROOT/hg19_random.dict"
    Int bedToTargetIntervals_timeout = 1
-   String bedToTargetIntervals_modules = "picard/2.21.2 hg19/p13"
    Int bedToTargetIntervals_jobMemory = 16
-   String bedToTargetIntervals_refDict = "$HG19_ROOT/hg19_random.dict"
    File    inputBam
    String  baitBed
    String  targetBed
    String outputFileNamePrefix = basename(inputBam, '.bam')
+   String reference
 }
 
-call bedToIntervals as bedToTargetIntervals { input: inputBed = targetBed, refDict = bedToTargetIntervals_refDict, jobMemory = bedToTargetIntervals_jobMemory, modules = bedToTargetIntervals_modules, timeout = bedToTargetIntervals_timeout }
-call bedToIntervals as bedToBaitIntervals { input: inputBed = baitBed, refDict = bedToBaitIntervals_refDict, jobMemory = bedToBaitIntervals_jobMemory, modules = bedToBaitIntervals_modules, timeout = bedToBaitIntervals_timeout }
+call bedToIntervals as bedToTargetIntervals { 
+  input: 
+         timeout = bedToTargetIntervals_timeout,
+         
+         jobMemory = bedToTargetIntervals_jobMemory,
+         inputBed = targetBed,
+         refDict = resources[reference].refDict,
+         modules = resources[reference].modules
+    }
 
-call collectHSmetrics{ input: inputBam = inputBam, baitIntervals = bedToBaitIntervals.outputIntervals, targetIntervals = bedToTargetIntervals.outputIntervals, outputPrefix = outputFileNamePrefix, refFasta = collectHSmetrics_refFasta, metricTag = collectHSmetrics_metricTag, filter = collectHSmetrics_filter, jobMemory = collectHSmetrics_jobMemory, coverageCap = collectHSmetrics_coverageCap, maxRecordsInRam = collectHSmetrics_maxRecordsInRam, modules = collectHSmetrics_modules, timeout = collectHSmetrics_timeout }
+call bedToIntervals as bedToBaitIntervals { 
+  input: 
+         timeout = bedToBaitIntervals_timeout,
+         
+         jobMemory = bedToBaitIntervals_jobMemory,
+         inputBed = baitBed,
+         refDict = resources[reference].refDict,
+         modules = resources[reference].modules
+    }
+
+call collectHSmetrics{ 
+  input: 
+         timeout = collectHSmetrics_timeout,
+         
+         maxRecordsInRam = collectHSmetrics_maxRecordsInRam,
+         
+         coverageCap = collectHSmetrics_coverageCap,
+         
+         jobMemory = collectHSmetrics_jobMemory,
+         
+         filter = collectHSmetrics_filter,
+         
+         metricTag = collectHSmetrics_metricTag,
+         inputBam = inputBam, 
+         baitIntervals = bedToBaitIntervals.outputIntervals, 
+         targetIntervals = bedToTargetIntervals.outputIntervals, 
+         outputPrefix = outputFileNamePrefix,
+         refFasta = resources[reference].refFasta,
+         modules = resources[reference].modules 
+         }
 
 meta {
   author: "Peter Ruzanov"
@@ -37,25 +90,27 @@ meta {
     name: "picard/2.21.2",
     url: "https://broadinstitute.github.io/picard/"
   }]
+  output_meta: {
+   outputHSMetrics: "File with HS metrics"
+  } 
 }
 
 parameter_meta {
     collectHSmetrics_timeout: "Maximum amount of time (in hours) the task can run for."
-    collectHSmetrics_modules: "Names and versions of modules needed"
     collectHSmetrics_maxRecordsInRam: "Specifies the N of records stored in RAM before spilling to disk. Increasing this number increases the amount of RAM needed."
     collectHSmetrics_coverageCap: "Parameter to set a max coverage limit for Theoretical Sensitivity calculations"
     collectHSmetrics_jobMemory: "Memory allocated to job"
     collectHSmetrics_filter: "Settings for picard filter"
     collectHSmetrics_metricTag: "Extension for metrics file"
-    collectHSmetrics_refFasta: "Path to fasta reference file"
     bedToBaitIntervals_timeout: "Maximum amount of time (in hours) the task can run for."
-    bedToBaitIntervals_modules: "Names and versions of modules needed"
     bedToBaitIntervals_jobMemory: "Memory allocated to job"
-    bedToBaitIntervals_refDict: "Path to index of fasta reference file"
     bedToTargetIntervals_timeout: "Maximum amount of time (in hours) the task can run for."
-    bedToTargetIntervals_modules: "Names and versions of modules needed"
     bedToTargetIntervals_jobMemory: "Memory allocated to job"
-bedToTargetIntervals_refDict: "Path to index of fasta reference file"
+ inputBam: "Input bam file"
+ baitBed: "Path to input bait bed file"
+ targetBed: "Path to input target bed"
+ outputFileNamePrefix: "Prefix for output"
+ reference: "the reference genome for input sample"
 }
 
 output {
