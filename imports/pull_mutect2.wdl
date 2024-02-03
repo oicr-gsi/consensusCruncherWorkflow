@@ -38,7 +38,6 @@ workflow mutect2 {
     File? ponIdx
     String reference
     String gatk
-    String outputFileNamePrefix
   }
 
   parameter_meta {
@@ -69,7 +68,6 @@ workflow mutect2 {
     ponIdx: "index of pon"
     gatk: "gatk version to be used"
     reference: "the reference genome for input sample"
-    outputFileNamePrefix: "prefix of output file"
   }
 
   meta {
@@ -125,7 +123,7 @@ Map[String, M2Resources] resources = {
       intervalsToParallelizeBy = intervalsToParallelizeBy
   }
 
-  String outputBasename = outputFileNamePrefix
+  String outputBasename = basename(tumorBam, '.bam')
   Boolean intervalsProvided = if (defined(intervalsToParallelizeBy)) then true else false
 
   scatter(subinterval in flatten(splitStringToArray.out)) {
