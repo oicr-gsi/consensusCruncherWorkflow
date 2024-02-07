@@ -84,7 +84,7 @@
                     },
                     "fastqR2": {
                         "contents": {
-                            "configuration": "TGL49_0032_Cf_U_PE_381_TS_191126_NB551056_0130_AHTMW5BGXC_CGTGTGTA-CCAACGAA_R2_0.3.fastq.gz",
+                            "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/TGL49_0032_Cf_U_PE_381_TS_191126_NB551056_0130_AHTMW5BGXC_CGTGTGTA-CCAACGAA_R2_0.3.fastq.gz",
                             "externalIds": [
                                 {
                                     "id": "TEST",
