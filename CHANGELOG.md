@@ -1,7 +1,7 @@
 ## 1.4.0 2024-02-20
 - updated imported workflows to the latest versions
 * hsMetrics              2.1.0
-* variantEffectPredictor 2.3.2
+* variantEffectPredictor 2.3.3
 * mutect2                1.0.9
 
 ## 1.3.0 2023-08-16
