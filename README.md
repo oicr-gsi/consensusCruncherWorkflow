@@ -32,11 +32,8 @@ Parameter|Value|Description
 `tumorName`|String|Name of the tumor sample
 `reference`|String|reference version
 `mutectRunDCSSC.gatk`|String|gatk version to be used
-`mutectRunDCSSC.outputFileNamePrefix`|String|prefix of output file
 `mutectRunSSCSSC.gatk`|String|gatk version to be used
-`mutectRunSSCSSC.outputFileNamePrefix`|String|prefix of output file
 `mutectRunAllUnique.gatk`|String|gatk version to be used
-`mutectRunAllUnique.outputFileNamePrefix`|String|prefix of output file
 `hsMetricsRunSSCSSC.reference`|String|the reference genome for input sample
 `hsMetricsRunAllUnique.reference`|String|the reference genome for input sample
 `combineVariants.workflows`|Array[String]|array of ids of producer workflows
@@ -72,13 +69,14 @@ Parameter|Value|Default|Description
 `consensus.timeout`|Int|72|Hours before task timeout
 `mutectRunDCSSC.filter_timeout`|Int|12|Hours before task timeout
 `mutectRunDCSSC.filter_memory`|Int|16|Memory allocated for job
-`mutectRunDCSSC.filter_filterExtraArgs`|String?|None|Extra arguments
+`mutectRunDCSSC.filter_filterExtraArgs`|String?|None|placehoulder for extra arguments
 `mutectRunDCSSC.mergeStats_timeout`|Int|5|Hours before task timeout
 `mutectRunDCSSC.mergeStats_memory`|Int|4|Memory allocated for job
 `mutectRunDCSSC.mergeVCFs_timeout`|Int|12|Hours before task timeout
 `mutectRunDCSSC.mergeVCFs_memory`|Int|4|Memory allocated for job
 `mutectRunDCSSC.runMutect2_timeout`|Int|24|Maximum amount of time (in hours) the task can run for.
 `mutectRunDCSSC.runMutect2_memory`|Int|32|Memory allocated to job (in GB).
+`mutectRunDCSSC.runMutect2_minMemory`|Int|6|Minimum RAM allocated to runMutect2 task (in GB).
 `mutectRunDCSSC.runMutect2_threads`|Int|4|Requested CPU threads
 `mutectRunDCSSC.runMutect2_mutect2ExtraArgs`|String?|None|placehoulder for extra arguments
 `mutectRunDCSSC.runMutect2_mutectTag`|String|"mutect2"|version tag for mutect
@@ -93,13 +91,14 @@ Parameter|Value|Default|Description
 `mutectRunDCSSC.ponIdx`|File?|None|index of pon
 `mutectRunSSCSSC.filter_timeout`|Int|12|Hours before task timeout
 `mutectRunSSCSSC.filter_memory`|Int|16|Memory allocated for job
-`mutectRunSSCSSC.filter_filterExtraArgs`|String?|None|Extra arguments
+`mutectRunSSCSSC.filter_filterExtraArgs`|String?|None|placehoulder for extra arguments
 `mutectRunSSCSSC.mergeStats_timeout`|Int|5|Hours before task timeout
 `mutectRunSSCSSC.mergeStats_memory`|Int|4|Memory allocated for job
 `mutectRunSSCSSC.mergeVCFs_timeout`|Int|12|Hours before task timeout
 `mutectRunSSCSSC.mergeVCFs_memory`|Int|4|Memory allocated for job
 `mutectRunSSCSSC.runMutect2_timeout`|Int|24|Maximum amount of time (in hours) the task can run for.
 `mutectRunSSCSSC.runMutect2_memory`|Int|32|Memory allocated to job (in GB).
+`mutectRunSSCSSC.runMutect2_minMemory`|Int|6|Minimum RAM allocated to runMutect2 task (in GB).
 `mutectRunSSCSSC.runMutect2_threads`|Int|4|Requested CPU threads
 `mutectRunSSCSSC.runMutect2_mutect2ExtraArgs`|String?|None|placehoulder for extra arguments
 `mutectRunSSCSSC.runMutect2_mutectTag`|String|"mutect2"|version tag for mutect
@@ -114,13 +113,14 @@ Parameter|Value|Default|Description
 `mutectRunSSCSSC.ponIdx`|File?|None|index of pon
 `mutectRunAllUnique.filter_timeout`|Int|12|Hours before task timeout
 `mutectRunAllUnique.filter_memory`|Int|16|Memory allocated for job
-`mutectRunAllUnique.filter_filterExtraArgs`|String?|None|Extra arguments
+`mutectRunAllUnique.filter_filterExtraArgs`|String?|None|placehoulder for extra arguments
 `mutectRunAllUnique.mergeStats_timeout`|Int|5|Hours before task timeout
 `mutectRunAllUnique.mergeStats_memory`|Int|4|Memory allocated for job
 `mutectRunAllUnique.mergeVCFs_timeout`|Int|12|Hours before task timeout
 `mutectRunAllUnique.mergeVCFs_memory`|Int|4|Memory allocated for job
 `mutectRunAllUnique.runMutect2_timeout`|Int|24|Maximum amount of time (in hours) the task can run for.
 `mutectRunAllUnique.runMutect2_memory`|Int|32|Memory allocated to job (in GB).
+`mutectRunAllUnique.runMutect2_minMemory`|Int|6|Minimum RAM allocated to runMutect2 task (in GB).
 `mutectRunAllUnique.runMutect2_threads`|Int|4|Requested CPU threads
 `mutectRunAllUnique.runMutect2_mutect2ExtraArgs`|String?|None|placehoulder for extra arguments
 `mutectRunAllUnique.runMutect2_mutectTag`|String|"mutect2"|version tag for mutect
