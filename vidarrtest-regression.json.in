@@ -204,6 +204,7 @@
             "consensusCruncher.variantEffectPredictor.vep_addParam": null,
             "consensusCruncher.variantEffectPredictor.vep_basename": null,
             "consensusCruncher.variantEffectPredictor.vep_jobMemory": null,
+            "consensusCruncher.variantEffectPredictor.vep_minMemory": null,
             "consensusCruncher.variantEffectPredictor.vep_threads": null,
             "consensusCruncher.variantEffectPredictor.vep_timeout": null,
             "consensusCruncher.variantEffectPredictor.vep_vepStats": null
@@ -614,6 +615,7 @@
             "consensusCruncher.variantEffectPredictor.vep_addParam": null,
             "consensusCruncher.variantEffectPredictor.vep_basename": null,
             "consensusCruncher.variantEffectPredictor.vep_jobMemory": null,
+            "consensusCruncher.variantEffectPredictor.vep_minMemory": null,
             "consensusCruncher.variantEffectPredictor.vep_threads": null,
             "consensusCruncher.variantEffectPredictor.vep_timeout": null,
             "consensusCruncher.variantEffectPredictor.vep_vepStats": null
@@ -1049,6 +1051,7 @@
             "consensusCruncher.variantEffectPredictor.vep_addParam": null,
             "consensusCruncher.variantEffectPredictor.vep_basename": null,
             "consensusCruncher.variantEffectPredictor.vep_jobMemory": null,
+            "consensusCruncher.variantEffectPredictor.vep_minMemory": null,
             "consensusCruncher.variantEffectPredictor.vep_threads": null,
             "consensusCruncher.variantEffectPredictor.vep_timeout": null,
             "consensusCruncher.variantEffectPredictor.vep_vepStats": null
