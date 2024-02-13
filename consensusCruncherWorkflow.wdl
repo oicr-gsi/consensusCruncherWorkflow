@@ -9,12 +9,7 @@ struct InputGroup {
   File fastqR2
 }
 
-struct GenomeResources {
-  String inputRefDict
-  String inputRefFasta
-  String inputRefFai
-  String inputMutectModules
-  String inputHSMetricsModules
+struct RefResources {
   String align_modules
   String align_bwaref
   String align_blist
@@ -22,13 +17,7 @@ struct GenomeResources {
   String consensus_genome
   String consensus_cytoband
   String combineVariants_modules
-  String variantEffectPredictor_vcf2maf_modules
-  String variantEffectPredictor_vcf2maf_ncbiBuild
-  String variantEffectPredictor_vcf2maf_vepCacheDir
-  String variantEffectPredictor_vcf2maf_vepPath
-  String variantEffectPredictor_vep_modules
-  String variantEffectPredictor_vep_ncbiBuild
-  String variantEffectPredictor_vep_vepCacheDir
+  String inputRefFasta
 }
 
 workflow consensusCruncher {
@@ -43,13 +32,8 @@ workflow consensusCruncher {
     String reference
   }
 
-  Map[String,GenomeResources] resources = {
+  Map[String,RefResources] resources = {
     "hg19": {
-      "inputRefDict": "$HG19_ROOT/hg19_random.dict",
-      "inputRefFai": "$HG19_ROOT/hg19_random.fa.fai",
-      "inputRefFasta": "$HG19_ROOT/hg19_random.fa",
-      "inputMutectModules": "gatk/4.1.6.0 hg19/p13 samtools/1.9",
-      "inputHSMetricsModules": "picard/2.21.2 hg19/p13",
       "align_modules": "consensus-cruncher/5.0 data-hg19-consensus-cruncher/1.0 hg19-bwa-index/0.7.12 samtools/1.9",
       "align_bwaref": "$HG19_BWA_INDEX_ROOT/hg19_random.fa",
       "align_blist": "$DATA_HG19_CONSENSUS_CRUNCHER_ROOT/IDT_duplex_sequencing_barcodes.list",
@@ -57,20 +41,9 @@ workflow consensusCruncher {
       "consensus_genome": "hg19",
       "consensus_cytoband": "$DATA_HG19_CONSENSUS_CRUNCHER_ROOT/hg19_cytoBand.txt",
       "combineVariants_modules": "gatk/3.6-0 tabix/0.2.6 hg19/p13",
-      "variantEffectPredictor_vep_modules": "vep/105.0 tabix/0.2.6 vep-hg19-cache/105 hg19/p13",
-      "variantEffectPredictor_vep_vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep",
-      "variantEffectPredictor_vep_ncbiBuild": "GRCh37",
-      "variantEffectPredictor_vcf2maf_modules": "vcf2maf/1.6.21b tabix/0.2.6 hg19/p13 vep-hg19-cache/105",
-      "variantEffectPredictor_vcf2maf_vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep",
-      "variantEffectPredictor_vcf2maf_vepPath": "$VEP_ROOT/bin/",
-      "variantEffectPredictor_vcf2maf_ncbiBuild": "GRCh37"
-      },
+      "inputRefFasta": "$HG19_ROOT/hg19_random.fa"
+    },
     "hg38": {
-      "inputRefDict": "$HG38_ROOT/hg38_random.dict",
-      "inputRefFai": "$HG38_ROOT/hg38_random.fa.fai",
-      "inputRefFasta": "$HG38_ROOT/hg38_random.fa",
-      "inputMutectModules": "gatk/4.1.6.0 hg38/p12 samtools/1.9",
-      "inputHSMetricsModules": "picard/2.21.2 hg38/p12",
       "align_modules": "consensus-cruncher/5.0 data-hg38-consensus-cruncher/1.0 hg38-bwa-index-with-alt/0.7.12 samtools/1.9",
       "align_bwaref": "$HG38_BWA_INDEX_WITH_ALT_ROOT/hg38_random.fa",
       "align_blist": "$DATA_HG38_CONSENSUS_CRUNCHER_ROOT/IDT_duplex_sequencing_barcodes.list",
@@ -78,17 +51,10 @@ workflow consensusCruncher {
       "consensus_genome": "hg38",
       "consensus_cytoband": "$DATA_HG38_CONSENSUS_CRUNCHER_ROOT/hg38_cytoBand.txt",
       "combineVariants_modules": "gatk/3.6-0 tabix/0.2.6 hg38/p12",
-      "variantEffectPredictor_vep_modules": "vep/105.0 tabix/0.2.6 vep-hg38-cache/105 hg38/p12",
-      "variantEffectPredictor_vep_vepCacheDir": "$VEP_HG38_CACHE_ROOT/.vep",
-      "variantEffectPredictor_vep_ncbiBuild": "GRCh38",
-      "variantEffectPredictor_vcf2maf_modules": "vcf2maf/1.6.21b tabix/0.2.6 hg38/p12 vep-hg38-cache/105",
-      "variantEffectPredictor_vcf2maf_vepCacheDir": "$VEP_HG38_CACHE_ROOT/.vep",
-      "variantEffectPredictor_vcf2maf_vepPath": "$VEP_ROOT/bin/",
-      "variantEffectPredictor_vcf2maf_ncbiBuild": "GRCh38"
-      }
+      "inputRefFasta": "$HG38_ROOT/hg38_random.fa"
+    }
   }
   
-
   parameter_meta {
     inputGroups: "Array of fastq files to concatenate if a top-up"
     sortedBam: "Bam file from bwamem"
@@ -100,13 +66,13 @@ workflow consensusCruncher {
     reference: "reference version"
   }
 
-if (!(defined(sortedBam)) && defined(inputGroups)) {
-  Array[InputGroup] inputs = select_first([inputGroups])
-  scatter (ig in inputs) {
-    File read1s       = ig.fastqR1
-    File read2s       = ig.fastqR2
+  if (!(defined(sortedBam)) && defined(inputGroups)) {
+    Array[InputGroup] inputs = select_first([inputGroups])
+    scatter (ig in inputs) {
+      File read1s       = ig.fastqR1
+      File read2s       = ig.fastqR2
+    }
   }
-}
   
   if (!(defined(sortedBam)) && defined(inputGroups)) {
     call concat {
@@ -143,16 +109,7 @@ if (!(defined(sortedBam)) && defined(inputGroups)) {
     input:
       tumorBam = consensus.dcsScBam,
       tumorBai = consensus.dcsScBamIndex,
-      filter_refDict = resources[reference].inputRefDict,
-      filter_refFai = resources[reference].inputRefFai,
-      filter_refFasta = resources[reference].inputRefFasta,
-      filter_modules = resources[reference].inputMutectModules,
-      mergeVCFs_refFasta = resources[reference].inputRefFasta,
-      mergeVCFs_modules = resources[reference].inputMutectModules,
-      runMutect2_refDict = resources[reference].inputRefDict,
-      runMutect2_refFai = resources[reference].inputRefFasta,
-      runMutect2_refFasta = resources[reference].inputRefFasta,
-      runMutect2_modules = resources[reference].inputMutectModules,
+      reference = reference,
       intervalFile = intervalFile,
       intervalsToParallelizeBy = inputIntervalsToParalellizeBy
   }
@@ -161,16 +118,7 @@ if (!(defined(sortedBam)) && defined(inputGroups)) {
     input:
       tumorBam = consensus.sscsScBam,
       tumorBai = consensus.sscsScBamIndex,
-      filter_refDict = resources[reference].inputRefDict,
-      filter_refFai = resources[reference].inputRefFai,
-      filter_refFasta = resources[reference].inputRefFasta,
-      filter_modules = resources[reference].inputMutectModules,
-      mergeVCFs_refFasta = resources[reference].inputRefFasta,
-      mergeVCFs_modules = resources[reference].inputMutectModules,
-      runMutect2_refDict = resources[reference].inputRefDict,
-      runMutect2_refFai = resources[reference].inputRefFasta,
-      runMutect2_refFasta = resources[reference].inputRefFasta,
-      runMutect2_modules = resources[reference].inputMutectModules,
+      reference = reference,
       intervalFile = intervalFile,
       intervalsToParallelizeBy = inputIntervalsToParalellizeBy
   }
@@ -179,16 +127,7 @@ if (!(defined(sortedBam)) && defined(inputGroups)) {
     input:
       tumorBam = consensus.allUniqueBam,
       tumorBai = consensus.allUniqueBamIndex,
-      filter_refDict = resources[reference].inputRefDict,
-      filter_refFai = resources[reference].inputRefFai,
-      filter_refFasta = resources[reference].inputRefFasta,
-      filter_modules = resources[reference].inputMutectModules,
-      mergeVCFs_refFasta = resources[reference].inputRefFasta,
-      mergeVCFs_modules = resources[reference].inputMutectModules,
-      runMutect2_refDict = resources[reference].inputRefDict,
-      runMutect2_refFai = resources[reference].inputRefFasta,
-      runMutect2_refFasta = resources[reference].inputRefFasta,
-      runMutect2_modules = resources[reference].inputMutectModules,
+      reference = reference,
       intervalFile = intervalFile,
       intervalsToParallelizeBy = inputIntervalsToParalellizeBy
   }
@@ -199,12 +138,7 @@ if (!(defined(sortedBam)) && defined(inputGroups)) {
       outputFileNamePrefix = "dcsSc-hsMetrics",
       baitBed = intervalFile, 
       targetBed = intervalFile,
-      collectHSmetrics_modules = resources[reference].inputHSMetricsModules,
-      collectHSmetrics_refFasta = resources[reference].inputRefFasta,
-      bedToBaitIntervals_refDict = resources[reference].inputRefDict,
-      bedToBaitIntervals_modules = resources[reference].inputHSMetricsModules,
-      bedToTargetIntervals_refDict = resources[reference].inputRefDict,
-      bedToTargetIntervals_modules = resources[reference].inputHSMetricsModules
+      reference = reference
   }
 
   call hsMetrics.hsMetrics as hsMetricsRunSSCSSC {
@@ -212,13 +146,7 @@ if (!(defined(sortedBam)) && defined(inputGroups)) {
       inputBam = consensus.sscsScBam,
       outputFileNamePrefix = "sscsSc-hsMetrics",
       baitBed = intervalFile, 
-      targetBed = intervalFile,
-      collectHSmetrics_modules = resources[reference].inputHSMetricsModules,
-      collectHSmetrics_refFasta = resources[reference].inputRefFasta,
-      bedToBaitIntervals_refDict = resources[reference].inputRefDict,
-      bedToBaitIntervals_modules = resources[reference].inputHSMetricsModules,
-      bedToTargetIntervals_refDict = resources[reference].inputRefDict,
-      bedToTargetIntervals_modules = resources[reference].inputHSMetricsModules
+      targetBed = intervalFile
   }
 
   call hsMetrics.hsMetrics as hsMetricsRunAllUnique {
@@ -226,13 +154,7 @@ if (!(defined(sortedBam)) && defined(inputGroups)) {
       inputBam = consensus.allUniqueBam,
       outputFileNamePrefix = "allUnique-hsMetrics",
       baitBed = intervalFile, 
-      targetBed = intervalFile,
-      collectHSmetrics_modules = resources[reference].inputHSMetricsModules,
-      collectHSmetrics_refFasta = resources[reference].inputRefFasta,
-      bedToBaitIntervals_refDict = resources[reference].inputRefDict,
-      bedToBaitIntervals_modules = resources[reference].inputHSMetricsModules,
-      bedToTargetIntervals_refDict = resources[reference].inputRefDict,
-      bedToTargetIntervals_modules = resources[reference].inputHSMetricsModules
+      targetBed = intervalFile
   }
 
   call combineVariants {
@@ -262,17 +184,9 @@ if (!(defined(sortedBam)) && defined(inputGroups)) {
       onlyTumor = true,
       tumorOnlyAlign_updateTagValue = true,
       vcf2maf_retainInfoProvided = true,
-      vep_referenceFasta = resources[reference].inputRefFasta,
-      vcf2maf_referenceFasta = resources[reference].inputRefFasta,
+      reference = reference,
       targetBed = intervalFile,
-      tumorName = tumorName,
-      vcf2maf_modules = resources[reference].variantEffectPredictor_vcf2maf_modules,
-      vcf2maf_ncbiBuild = resources[reference].variantEffectPredictor_vcf2maf_ncbiBuild,
-      vcf2maf_vepCacheDir = resources[reference].variantEffectPredictor_vcf2maf_vepCacheDir,
-      vcf2maf_vepPath = resources[reference].variantEffectPredictor_vcf2maf_vepPath,
-      vep_modules = resources[reference].variantEffectPredictor_vep_modules,
-      vep_ncbiBuild = resources[reference].variantEffectPredictor_vep_ncbiBuild,
-      vep_vepCacheDir = resources[reference].variantEffectPredictor_vep_vepCacheDir
+      tumorName = tumorName
   }
 
   meta {
@@ -466,6 +380,7 @@ task align {
     File? sortedBai = "bamfiles/~{outputFileNamePrefix}.bam.bai"
   }
 }
+
 task consensus {
   input {
     File? inputBam

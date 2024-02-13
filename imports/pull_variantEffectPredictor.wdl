@@ -1,61 +1,61 @@
 version 1.0
+
+struct vepResources{
+  String vep_modules
+  String vcf2maf_modules
+  String vepCacheDir
+  String referenceFasta
+  String species
+  String ncbiBuild
+  String vepPath
+}
+
+
 workflow variantEffectPredictor {
   input {
     Int mergeVcfs_timeout = 24
-    Int mergeVcfs_threads = 4
     Int mergeVcfs_overhead = 6
-    Int mergeVcfs_jobMemory = 24
+    Int mergeVcfs_jobMemory = 8
     String? mergeVcfs_extraArgs
     String mergeVcfs_modules = "gatk/4.1.7.0"
     Int mergeMafs_timeout = 24
-    Int mergeMafs_threads = 4
-    Int mergeMafs_jobMemory = 24
+    Int mergeMafs_jobMemory = 8
     String mergeMafs_modules = "tabix/0.2.6"
-    Int vcf2maf_timeout = 48
+    Int vcf2maf_timeout = 18
     Int vcf2maf_threads = 4
-    Int vcf2maf_jobMemory = 32
+    Int vcf2maf_minMemory = 4
+    Int vcf2maf_jobMemory = 12
     Int vcf2maf_bufferSize = 200
     Float vcf2maf_minHomVaf = 0.7
     Boolean vcf2maf_vepStats = true
     Boolean vcf2maf_retainInfoProvided = false
-    String vcf2maf_vepCacheDir
-    String vcf2maf_vepPath
-    String vcf2maf_ncbiBuild
-    String vcf2maf_referenceFasta
-    String vcf2maf_species = "homo_sapiens"
-    String vcf2maf_modules = "vcf2maf/1.6.21b tabix/0.2.6 hg38/p12 vep-hg38-cache/105"
     String vcf2maf_basename = basename("~{vcfFile}",".vcf.gz")
     Boolean tumorOnlyAlign_updateTagValue = false
     Int tumorOnlyAlign_timeout = 6
-    Int tumorOnlyAlign_threads = 4
-    Int tumorOnlyAlign_jobMemory = 32
+    Int tumorOnlyAlign_minMemory = 4
+    Int tumorOnlyAlign_jobMemory = 12
     String tumorOnlyAlign_modules = "bcftools/1.9 tabix/0.2.6"
     String tumorOnlyAlign_basename = basename("~{vcfFile}",".vcf.gz")
     Int vep_timeout = 16
     Int vep_threads = 4
-    Int vep_jobMemory = 32
-    String vep_modules = "vep/105.0 tabix/0.2.6 vep-hg38-cache/105 hg38/p12"
-    String vep_referenceFasta
-    String vep_vepCacheDir
-    String vep_ncbiBuild
+    Int vep_minMemory = 4
+    Int vep_jobMemory = 12
     Boolean vep_vepStats = true
-    String vep_species = "homo_sapiens"
     String? vep_addParam
     String vep_basename = basename("~{vcfFile}",".vcf.gz")
-    Int subsetVcf_timeout = 6
-    Int subsetVcf_threads = 4
-    Int subsetVcf_jobMemory = 32
+    Int subsetVcf_timeout = 2
+    Int subsetVcf_minMemory = 4
+    Int subsetVcf_jobMemory = 12
     String subsetVcf_modules = "bcftools/1.9"
     String subsetVcf_basename = basename("~{vcfFile}",".vcf.gz")
+    Int getChrCoefficient_timeout = 1
+    Int getChrCoefficient_memory = 1
     Int chromosomeArray_timeout = 1
-    Int chromosomeArray_threads = 4
     Int chromosomeArray_jobMemory = 1
     Int getSampleNames_timeout = 1
-    Int getSampleNames_threads = 4
     Int getSampleNames_jobMemory = 1
     Int targetBedTask_timeout = 6
-    Int targetBedTask_threads = 4
-    Int targetBedTask_jobMemory = 32
+    Int targetBedTask_jobMemory = 12
     String targetBedTask_modules = "bedtools/2.27 tabix/0.2.6"
     String targetBedTask_basename = basename("~{vcfFile}",".vcf.gz")
     File vcfFile
@@ -65,14 +65,43 @@ workflow variantEffectPredictor {
     String? normalName
     Boolean toMAF
     Boolean onlyTumor
+    String reference
   }
+
+  Map[String,vepResources] resources = {
+    "hg19": {
+       "vep_modules": "vep/105.0 tabix/0.2.6 vep-hg19-cache/105 hg19/p13",
+       "vcf2maf_modules": "vcf2maf/1.6.21b tabix/0.2.6 hg19/p13 vep-hg19-cache/105",
+       "vepCacheDir": "$VEP_HG19_CACHE_ROOT/.vep",
+       "referenceFasta": "$HG19_ROOT/hg19_random.fa",
+       "species": "homo_sapiens",
+       "ncbiBuild": "GRCh37",
+       "vepPath": "$VEP_ROOT/bin/"
+    },
+    "hg38":{
+       "vep_modules": "vep/105.0 tabix/0.2.6 vep-hg38-cache/105 hg38/p12",
+       "vcf2maf_modules": "vcf2maf/1.6.21b tabix/0.2.6 hg38/p12 vep-hg38-cache/105",
+       "vepCacheDir": "$VEP_HG38_CACHE_ROOT/.vep",
+       "referenceFasta": "$HG38_ROOT/hg38_random.fa",
+       "species": "homo_sapiens",
+       "ncbiBuild": "GRCh38",
+       "vepPath": "$VEP_ROOT/bin/"
+    },
+    "mm39":{
+       "vep_modules": "vep/105.0 tabix/0.2.6 vep-mm39-cache/105 mm39/p6",
+       "vcf2maf_modules": "vcf2maf/1.6.21b tabix/0.2.6 mm39/p6 vep-mm39-cache/105",
+       "vepCacheDir": "$VEP_MM39_CACHE_ROOT/.vep",
+       "referenceFasta": "$MM39_ROOT/mm39.fa",
+       "species": "mus_musculus",
+       "ncbiBuild": "GRCm39",
+       "vepPath": "$VEP_ROOT/bin/"
+    }
+  } 
 
   if (defined(targetBed) == true) {
     call targetBedTask {
       input: 
              timeout = targetBedTask_timeout,
-             
-             threads = targetBedTask_threads,
              
              jobMemory = targetBedTask_jobMemory,
              
@@ -89,8 +118,6 @@ workflow variantEffectPredictor {
         input: 
                timeout = getSampleNames_timeout,
                
-               threads = getSampleNames_threads,
-               
                jobMemory = getSampleNames_jobMemory,
                tumorName = tumorName,
                normalName = normalName
@@ -102,18 +129,26 @@ workflow variantEffectPredictor {
       input: 
   timeout = chromosomeArray_timeout,
   
-  threads = chromosomeArray_threads,
-  
   jobMemory = chromosomeArray_jobMemory,
   vcfFile = select_first([targetBedTask.targetedVcf, vcfFile])
   }
 
-  scatter (intervals in chromosomeArray.out) {
+  scatter (interval in flatten(chromosomeArray.out)) {
+
+    call getChrCoefficient {       
+      input: 
+             timeout = getChrCoefficient_timeout,
+             
+             memory = getChrCoefficient_memory,
+             chromosome = interval,
+             inputVcf = select_first([targetBedTask.targetedVcf, vcfFile])
+    }
+
     call subsetVcf {
       input: 
              timeout = subsetVcf_timeout,
              
-             threads = subsetVcf_threads,
+             minMemory = subsetVcf_minMemory,
              
              jobMemory = subsetVcf_jobMemory,
              
@@ -122,33 +157,26 @@ workflow variantEffectPredictor {
              basename = subsetVcf_basename,
              vcfFile = select_first([targetBedTask.targetedVcf, vcfFile]),
              vcfIndex = select_first([targetBedTask.targetedTbi, vcfIndex]),
-             regions = intervals[0]
+             regions = interval,
+             scaleCoefficient = getChrCoefficient.coeff
     }
 
     call vep {
       input: 
-    timeout = vep_timeout,
-    
-    threads = vep_threads,
-    
-    jobMemory = vep_jobMemory,
-    
-    modules = vep_modules,
-    
-    referenceFasta = vep_referenceFasta,
-    
-    vepCacheDir = vep_vepCacheDir,
-    
-    ncbiBuild = vep_ncbiBuild,
-    
-    vepStats = vep_vepStats,
-    
-    species = vep_species,
-    
-    addParam = vep_addParam,
-    
-    basename = vep_basename,
-    vcfFile = subsetVcf.subsetVcf
+        timeout = vep_timeout,
+        threads = vep_threads,
+        minMemory = vep_minMemory,
+        jobMemory = vep_jobMemory,
+        vepStats = vep_vepStats,
+        addParam = vep_addParam,
+        basename = vep_basename,
+        vcfFile = subsetVcf.subsetVcf,
+        modules = resources[reference].vep_modules,
+        vepCacheDir = resources[reference].vepCacheDir,
+        referenceFasta = resources[reference].referenceFasta,
+        species = resources[reference].species,
+        ncbiBuild = resources[reference].ncbiBuild,
+        scaleCoefficient = getChrCoefficient.coeff
     }
 
     if (toMAF == true) {
@@ -159,7 +187,7 @@ workflow variantEffectPredictor {
                  
                  timeout = tumorOnlyAlign_timeout,
                  
-                 threads = tumorOnlyAlign_threads,
+                 minMemory = tumorOnlyAlign_minMemory,
                  
                  jobMemory = tumorOnlyAlign_jobMemory,
                  
@@ -167,7 +195,8 @@ workflow variantEffectPredictor {
                  
                  basename = tumorOnlyAlign_basename,
                  vcfFile = subsetVcf.subsetVcf,
-                 tumorNormalNames = select_first([getSampleNames.tumorNormalNames])
+                 tumorNormalNames = select_first([getSampleNames.tumorNormalNames]),
+                 scaleCoefficient = getChrCoefficient.coeff
         }
       }
       call vcf2maf {
@@ -175,6 +204,8 @@ workflow variantEffectPredictor {
              timeout = vcf2maf_timeout,
              
              threads = vcf2maf_threads,
+             
+             minMemory = vcf2maf_minMemory,
              
              jobMemory = vcf2maf_jobMemory,
              
@@ -186,21 +217,16 @@ workflow variantEffectPredictor {
              
              retainInfoProvided = vcf2maf_retainInfoProvided,
              
-             vepCacheDir = vcf2maf_vepCacheDir,
-             
-             vepPath = vcf2maf_vepPath,
-             
-             ncbiBuild = vcf2maf_ncbiBuild,
-             
-             referenceFasta = vcf2maf_referenceFasta,
-             
-             species = vcf2maf_species,
-             
-             modules = vcf2maf_modules,
-             
              basename = vcf2maf_basename,
              vcfFile = select_first([tumorOnlyAlign.unmatchedOutputVcf,subsetVcf.subsetVcf]),
-             tumorNormalNames = select_first([getSampleNames.tumorNormalNames])
+             tumorNormalNames = select_first([getSampleNames.tumorNormalNames]),
+             vepCacheDir = resources[reference].vepCacheDir,
+             modules = resources[reference].vcf2maf_modules,
+             referenceFasta = resources[reference].referenceFasta,
+             species = resources[reference].species,
+             ncbiBuild = resources[reference].ncbiBuild,
+             vepPath = resources[reference].vepPath,
+             scaleCoefficient = getChrCoefficient.coeff
         }
       }
   }
@@ -209,8 +235,6 @@ workflow variantEffectPredictor {
     call mergeMafs {
       input: 
     timeout = mergeMafs_timeout,
-    
-    threads = mergeMafs_threads,
     
     jobMemory = mergeMafs_jobMemory,
     
@@ -222,8 +246,6 @@ workflow variantEffectPredictor {
   call mergeVcfs {
     input: 
   timeout = mergeVcfs_timeout,
-  
-  threads = mergeVcfs_threads,
   
   overhead = mergeVcfs_overhead,
   
@@ -238,59 +260,47 @@ workflow variantEffectPredictor {
 
   parameter_meta {
       mergeVcfs_timeout: "Maximum amount of time (in hours) the task can run for."
-      mergeVcfs_threads: "Requested CPU threads."
       mergeVcfs_overhead: "Java overhead memory (in GB). jobMemory - overhead == java Xmx/heap memory."
       mergeVcfs_jobMemory: "Memory allocated to job (in GB)."
       mergeVcfs_extraArgs: "Additional arguments to be passed directly to the command."
       mergeVcfs_modules: "Required environment modules."
       mergeMafs_timeout: "Maximum amount of time (in hours) the task can run for."
-      mergeMafs_threads: "Requested CPU threads."
       mergeMafs_jobMemory: "Memory allocated to job (in GB)."
       mergeMafs_modules: "Required environment modules"
       vcf2maf_timeout: "Hours before task timeout"
       vcf2maf_threads: "Requested CPU threads"
+      vcf2maf_minMemory: "A minimum amount of memory allocated to the task, overrides the scaled RAM setting"
       vcf2maf_jobMemory: "Memory allocated for this job (GB)"
       vcf2maf_bufferSize: "The buffer size"
       vcf2maf_minHomVaf: "The minimum vaf for homozygous calls"
       vcf2maf_vepStats: "If vepStats is true, remove flag '--no_stats' from vep. If vepStats is false, running vep with flag '--no_stats'"
       vcf2maf_retainInfoProvided: "Comma-delimited names of INFO fields to retain as extra columns in MAF"
-      vcf2maf_vepCacheDir: "Directory of vep cache files"
-      vcf2maf_vepPath: "Path to vep script"
-      vcf2maf_ncbiBuild: "The assembly version"
-      vcf2maf_referenceFasta: "Reference fasta file"
-      vcf2maf_species: "Species name"
-      vcf2maf_modules: "Required environment modules"
       vcf2maf_basename: "Base name"
       tumorOnlyAlign_updateTagValue: "If true, update tag values in vcf header for CC workflow"
       tumorOnlyAlign_timeout: "Hours before task timeout"
-      tumorOnlyAlign_threads: "Requested CPU threads"
+      tumorOnlyAlign_minMemory: "Minimum RAM (in GB) allocated to the task"
       tumorOnlyAlign_jobMemory: "Memory allocated for this job (GB)"
       tumorOnlyAlign_modules: "Required environment modules"
       tumorOnlyAlign_basename: "Base name"
       vep_timeout: "Hours before task timeout"
       vep_threads: "Requested CPU threads"
+      vep_minMemory: "Minimum RAM (in GB) allocated to the task"
       vep_jobMemory: "Memory allocated for this job (GB)"
-      vep_modules: "Required environment modules"
-      vep_referenceFasta: "Reference fasta file"
-      vep_vepCacheDir: "Directory of cache files"
-      vep_ncbiBuild: "The assembly version"
       vep_vepStats: "If vepStats is true, remove flag '--no_stats' from vep. If vepStats is false, running vep with flag '--no_stats'"
-      vep_species: "Species name"
       vep_addParam: "Additional vep parameters"
       vep_basename: "Base name"
       subsetVcf_timeout: "Maximum amount of time (in hours) the task can run for."
-      subsetVcf_threads: "Requested CPU threads."
+      subsetVcf_minMemory: "Minimum RAM (in GB) allocated to the task"
       subsetVcf_jobMemory: "Memory allocated to job (in GB)."
       subsetVcf_modules: "Required environment modules"
       subsetVcf_basename: "Base name"
+      getChrCoefficient_timeout: "Hours before task timeout"
+      getChrCoefficient_memory: "Memory allocated for this job"
       chromosomeArray_timeout: "Maximum amount of time (in hours) the task can run for."
-      chromosomeArray_threads: "Requested CPU threads."
       chromosomeArray_jobMemory: "Memory allocated to job (in GB)."
       getSampleNames_timeout: "Hours before task timeout"
-      getSampleNames_threads: "Requested CPU threads"
       getSampleNames_jobMemory: "Memory allocated for this job (GB)"
       targetBedTask_timeout: "Hours before task timeout"
-      targetBedTask_threads: "Requested CPU threads"
       targetBedTask_jobMemory: "Memory allocated for this job (GB)"
       targetBedTask_modules: "Required environment modules"
       targetBedTask_basename: "Base name"
@@ -301,6 +311,7 @@ workflow variantEffectPredictor {
     targetBed: "Target bed file"
     toMAF: "If true, generate the MAF file"
     onlyTumor: "If true, run tumor only mode"
+    reference: "reference genome for input sample"
   }
 
   meta {
@@ -349,14 +360,53 @@ workflow variantEffectPredictor {
   }
 }
 
+# ================================================================
+#  Scaling coefficient - use to scale RAM allocation by chromosome
+# ================================================================
+task getChrCoefficient {
+  input {
+    Int memory = 1
+    Int timeout = 1
+    String chromosome
+    File inputVcf
+  }
+
+  parameter_meta {
+    inputVcf: ".vcf.gz file used as input to VEP, we use it to extract chromosome sizes"
+    timeout: "Hours before task timeout"
+    chromosome: "Chromosome to check"
+    memory: "Memory allocated for this job"
+  }
+
+  command <<<
+    CHR_LEN=$(zcat ~{inputVcf} | head -n 800 | grep contig | grep -w ~{chromosome} | grep -v _ | sed -r 's/.*length=([[:digit:]]+)./\1/')
+    LARGEST=$(zcat ~{inputVcf} | head -n 800 | grep contig | grep -v _ | sed -r 's/.*length=([[:digit:]]+)./\1/' | sort -n | tail -n 1)
+    echo | awk -v chr_len=$CHR_LEN -v largest_chr=$LARGEST '{print int((chr_len/largest_chr + 0.1) * 10)/10}'
+  >>>
+
+  runtime {
+    memory:  "~{memory} GB"
+    timeout: "~{timeout}"
+  }
+
+  output {
+    String coeff = read_string(stdout())
+  }
+
+  meta {
+    output_meta: {
+      coeff: "Length ratio as relative to the largest chromosome."
+    }
+  }
+}
+
 task targetBedTask {
   input {
     File vcfFile
     String basename = basename("~{vcfFile}", ".vcf.gz")
     File? targetBed
     String modules = "bedtools/2.27 tabix/0.2.6"
-    Int jobMemory = 32
-    Int threads = 4
+    Int jobMemory = 12
     Int timeout = 6
 
   }
@@ -367,7 +417,6 @@ task targetBedTask {
     basename: "Base name"
     modules: "Required environment modules"
     jobMemory: "Memory allocated for this job (GB)"
-    threads: "Requested CPU threads"
     timeout: "Hours before task timeout"
   }
 
@@ -380,14 +429,12 @@ task targetBedTask {
                        > ~{basename}.targeted.vcf
 
     bgzip -c ~{basename}.targeted.vcf > ~{basename}.targeted.vcf.gz
-
     tabix -p vcf ~{basename}.targeted.vcf.gz
   >>>
 
   runtime {
     modules: "~{modules}"
     memory:  "~{jobMemory} GB"
-    cpu:     "~{threads}"
     timeout: "~{timeout}"
   }
 
@@ -409,12 +456,11 @@ task chromosomeArray {
   input {
     File vcfFile
     Int jobMemory = 1
-    Int threads = 4
     Int timeout = 1
   }
 
   command <<<
-    zcat ~{vcfFile} | grep -v ^# | cut -f 1 | uniq
+    zgrep -v ^# ~{vcfFile} | cut -f 1 | uniq
   >>>
 
   output {
@@ -423,14 +469,12 @@ task chromosomeArray {
 
   runtime {
     memory: "~{jobMemory} GB"
-    cpu: "~{threads}"
     timeout: "~{timeout}"
   }
 
   parameter_meta {
     vcfFile: "Vcf input file"
     jobMemory: "Memory allocated to job (in GB)."
-    threads: "Requested CPU threads."
     timeout: "Maximum amount of time (in hours) the task can run for."
   }
 }
@@ -442,13 +486,16 @@ task subsetVcf {
     String basename = basename("~{vcfFile}", ".vcf.gz")
     String regions
     String modules = "bcftools/1.9"
-    Int jobMemory = 32
-    Int threads = 4
-    Int timeout = 6
+    Int jobMemory = 12
+    Int minMemory = 4
+    Int timeout = 2
+    Float scaleCoefficient
   }
+
+  Int allocatedMemory = if minMemory > round(jobMemory * scaleCoefficient) then minMemory else round(jobMemory * scaleCoefficient)
+
   command <<<
     set -euo pipefail
-
     bcftools view -r ~{regions} ~{vcfFile} | bgzip -c > ~{basename}.vcf.gz
   >>>
 
@@ -458,8 +505,7 @@ task subsetVcf {
 
   runtime {
     modules: "~{modules}"
-    memory: "~{jobMemory} GB"
-    cpu: "~{threads}"
+    memory: "~{allocatedMemory} GB"
     timeout: "~{timeout}"
   }
 
@@ -470,8 +516,9 @@ task subsetVcf {
     basename: "Base name"
     modules: "Required environment modules"
     jobMemory: "Memory allocated to job (in GB)."
-    threads: "Requested CPU threads."
+    minMemory: "Minimum RAM (in GB) allocated to the task"
     timeout: "Maximum amount of time (in hours) the task can run for."
+    scaleCoefficient: "Scaling coefficient for RAM allocation, depends on chromosome size"
   }
 }
 
@@ -486,9 +533,11 @@ task vep {
     String vepCacheDir
     String referenceFasta
     String modules = "vep/105.0 tabix/0.2.6 vep-hg38-cache/105 hg38/p12"
-    Int jobMemory = 32
+    Int jobMemory = 12
+    Int minMemory = 4
     Int threads = 4
     Int timeout = 16
+    Float scaleCoefficient
   }
 
   parameter_meta {
@@ -502,9 +551,13 @@ task vep {
     vepStats: "If vepStats is true, remove flag '--no_stats' from vep. If vepStats is false, running vep with flag '--no_stats'"
     modules: "Required environment modules"
     jobMemory: "Memory allocated for this job (GB)"
+    minMemory: "Minimum RAM (in GB) allocated to the task"
     threads: "Requested CPU threads"
     timeout: "Hours before task timeout"
+    scaleCoefficient: "Scaling coefficient for RAM allocation, depends on chromosome size"
   }
+
+  Int allocatedMemory = if minMemory > round(jobMemory * scaleCoefficient) then minMemory else round(jobMemory * scaleCoefficient)
 
   command <<<
     set -euo pipefail
@@ -536,7 +589,7 @@ task vep {
 
   runtime {
     modules: "~{modules}"
-    memory:  "~{jobMemory} GB"
+    memory:  "~{allocatedMemory} GB"
     cpu:     "~{threads}"
     timeout: "~{timeout}"
   }
@@ -557,14 +610,12 @@ task getSampleNames {
     String tumorName
     String? normalName
     Int jobMemory = 1
-    Int threads = 4
     Int timeout = 1
   }
   parameter_meta {
     tumorName: "Name of the tumor sample"
     normalName: "Name of the normal sample"
     jobMemory: "Memory allocated for this job (GB)"
-    threads: "Requested CPU threads"
     timeout: "Hours before task timeout"
   }
   command <<<
@@ -584,7 +635,6 @@ task getSampleNames {
 
   runtime {
     memory:  "~{jobMemory} GB"
-    cpu:     "~{threads}"
     timeout: "~{timeout}"
   }
 
@@ -604,9 +654,10 @@ task tumorOnlyAlign {
     File tumorNormalNames
     String basename = basename("~{vcfFile}", ".vcf.gz")
     String modules = "bcftools/1.9 tabix/0.2.6"
-    Int jobMemory = 32
-    Int threads = 4
+    Int jobMemory = 12
+    Int minMemory = 4
     Int timeout = 6
+    Float scaleCoefficient
     Boolean updateTagValue = false
   }
   parameter_meta {
@@ -615,10 +666,13 @@ task tumorOnlyAlign {
     basename: "Base name"
     modules: "Required environment modules"
     jobMemory: "Memory allocated for this job (GB)"
-    threads: "Requested CPU threads"
+    minMemory: "Minimum RAM (in GB) allocated to the task"
     timeout: "Hours before task timeout"
+    scaleCoefficient: "Scaling coefficient for RAM allocation, depends on chromosome size" 
     updateTagValue: "If true, update tag values in vcf header for CC workflow"
   }
+
+  Int allocatedMemory = if minMemory > round(jobMemory * scaleCoefficient) then minMemory else round(jobMemory * scaleCoefficient)
 
   command <<<
     set -euo pipefail
@@ -641,8 +695,7 @@ task tumorOnlyAlign {
 
   runtime {
     modules: "~{modules}"
-    memory:  "~{jobMemory} GB"
-    cpu:     "~{threads}"
+    memory:  "~{allocatedMemory} GB"
     timeout: "~{timeout}"
   }
 
@@ -675,9 +728,11 @@ task vcf2maf {
     Boolean vepStats = true
     Float minHomVaf = 0.7
     Int bufferSize = 200
-    Int jobMemory = 32
+    Int jobMemory = 12
+    Int minMemory = 4
     Int threads = 4
-    Int timeout = 48
+    Int timeout = 18
+    Float scaleCoefficient
   }
 
   parameter_meta {
@@ -695,9 +750,13 @@ task vcf2maf {
     basename: "Base name"
     modules: "Required environment modules"
     jobMemory: "Memory allocated for this job (GB)"
+    minMemory: "A minimum amount of memory allocated to the task, overrides the scaled RAM setting"
     threads: "Requested CPU threads"
     timeout: "Hours before task timeout"
+    scaleCoefficient: "Scaling coefficient for RAM allocation, depends on chromosome size"
   }
+
+  Int allocatedMemory = if minMemory > round(jobMemory * scaleCoefficient) then minMemory else round(jobMemory * scaleCoefficient)
 
   command <<<
     set -euo pipefail
@@ -724,7 +783,7 @@ task vcf2maf {
 
   runtime {
     modules: "~{modules}"
-    memory:  "~{jobMemory} GB"
+    memory:  "~{allocatedMemory} GB"
     cpu:     "~{threads}"
     timeout: "~{timeout}"
   }
@@ -744,8 +803,7 @@ task mergeMafs {
   input {
     Array[File] mafs
     String modules = "tabix/0.2.6"
-    Int jobMemory = 24
-    Int threads = 4
+    Int jobMemory = 8
     Int timeout = 24
   }
 
@@ -763,7 +821,6 @@ task mergeMafs {
   runtime {
     modules: "~{modules}"
     memory: "~{jobMemory} GB"
-    cpu: "~{threads}"
     timeout: "~{timeout}"
   }
 
@@ -775,7 +832,6 @@ task mergeMafs {
     mafs: "mafs from scatter to merge together."
     modules: "Required environment modules"
     jobMemory:  "Memory allocated to job (in GB)."
-    threads: "Requested CPU threads."
     timeout: "Maximum amount of time (in hours) the task can run for."
   }
 
@@ -791,9 +847,8 @@ task mergeVcfs {
     String modules = "gatk/4.1.7.0"
     Array[File] vcfs
     String? extraArgs
-    Int jobMemory = 24
+    Int jobMemory = 8
     Int overhead = 6
-    Int threads = 4
     Int timeout = 24
   }
 
@@ -809,7 +864,6 @@ task mergeVcfs {
 
   runtime {
     memory: "~{jobMemory} GB"
-    cpu: "~{threads}"
     timeout: "~{timeout}"
     modules: "~{modules}"
   }
@@ -825,7 +879,6 @@ task mergeVcfs {
     extraArgs: "Additional arguments to be passed directly to the command."
     jobMemory:  "Memory allocated to job (in GB)."
     overhead: "Java overhead memory (in GB). jobMemory - overhead == java Xmx/heap memory."
-    threads: "Requested CPU threads."
     timeout: "Maximum amount of time (in hours) the task can run for."
   }
 
