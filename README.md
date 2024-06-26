@@ -180,22 +180,26 @@ Parameter|Value|Default|Description
 `variantEffectPredictor.mergeMafs_modules`|String|"tabix/0.2.6"|Required environment modules
 `variantEffectPredictor.vcf2maf_timeout`|Int|18|Hours before task timeout
 `variantEffectPredictor.vcf2maf_threads`|Int|4|Requested CPU threads
+`variantEffectPredictor.vcf2maf_minMemory`|Int|4|A minimum amount of memory allocated to the task, overrides the scaled RAM setting
 `variantEffectPredictor.vcf2maf_jobMemory`|Int|12|Memory allocated for this job (GB)
 `variantEffectPredictor.vcf2maf_bufferSize`|Int|200|The buffer size
 `variantEffectPredictor.vcf2maf_minHomVaf`|Float|0.7|The minimum vaf for homozygous calls
 `variantEffectPredictor.vcf2maf_vepStats`|Boolean|true|If vepStats is true, remove flag '--no_stats' from vep. If vepStats is false, running vep with flag '--no_stats'
 `variantEffectPredictor.vcf2maf_basename`|String|basename("~{vcfFile}",".vcf.gz")|Base name
 `variantEffectPredictor.tumorOnlyAlign_timeout`|Int|6|Hours before task timeout
+`variantEffectPredictor.tumorOnlyAlign_minMemory`|Int|4|Minimum RAM (in GB) allocated to the task
 `variantEffectPredictor.tumorOnlyAlign_jobMemory`|Int|12|Memory allocated for this job (GB)
 `variantEffectPredictor.tumorOnlyAlign_modules`|String|"bcftools/1.9 tabix/0.2.6"|Required environment modules
 `variantEffectPredictor.tumorOnlyAlign_basename`|String|basename("~{vcfFile}",".vcf.gz")|Base name
 `variantEffectPredictor.vep_timeout`|Int|16|Hours before task timeout
 `variantEffectPredictor.vep_threads`|Int|4|Requested CPU threads
+`variantEffectPredictor.vep_minMemory`|Int|4|Minimum RAM (in GB) allocated to the task
 `variantEffectPredictor.vep_jobMemory`|Int|12|Memory allocated for this job (GB)
 `variantEffectPredictor.vep_vepStats`|Boolean|true|If vepStats is true, remove flag '--no_stats' from vep. If vepStats is false, running vep with flag '--no_stats'
 `variantEffectPredictor.vep_addParam`|String?|None|Additional vep parameters
 `variantEffectPredictor.vep_basename`|String|basename("~{vcfFile}",".vcf.gz")|Base name
 `variantEffectPredictor.subsetVcf_timeout`|Int|2|Maximum amount of time (in hours) the task can run for.
+`variantEffectPredictor.subsetVcf_minMemory`|Int|4|Minimum RAM (in GB) allocated to the task
 `variantEffectPredictor.subsetVcf_jobMemory`|Int|12|Memory allocated to job (in GB).
 `variantEffectPredictor.subsetVcf_modules`|String|"bcftools/1.9"|Required environment modules
 `variantEffectPredictor.subsetVcf_basename`|String|basename("~{vcfFile}",".vcf.gz")|Base name
@@ -214,31 +218,31 @@ Parameter|Value|Default|Description
 
 ### Outputs
 
-Output | Type | Description
----|---|---
-`rawBam`|File?|raw bame file
-`rawBamIndex`|File?|raw bam file index
-`dcsScBam`|File|dcSc bam
-`dcsScBamIndex`|File|dcSc bam index
-`allUniqueBam`|File|all unique bam
-`allUniqueBamIndex`|File|all unique bam index
-`sscsScBam`|File|sscsSc bam
-`sscsScBamIndex`|File|sscsSc bam index
-`outputCCStats`|File|CC stats
-`outputCCReadFamilies`|File|CC read families
-`ccFolder`|File|cc folder
-`dcsScVcf`|File|dcsSc vcf
-`dcsScVcfIndex`|File|dcsSc vcf index
-`allUniqueVcf`|File|all unique vcf
-`allUniqueVcfIndex`|File|all unique vcf index
-`sscsScVcf`|File|sscsSc vcf
-`sscsScVcfIndex`|File|sscsSc vcf index
-`vepVcf`|File|vep vcf
-`vepVcfIndex`|File|vep vcf index
-`mafOutput`|File?|maf output
-`dcsScHsMetrics`|File|dcsSc metrics
-`sscsScHsMetrics`|File|sscsSc metrics
-`allUniqueHsMetrics`|File|all unique metrics
+Output | Type | Description | Labels
+---|---|---|---
+`rawBam`|File?|raw bam file|vidarr_label: rawBam
+`rawBamIndex`|File?|raw bam file index|vidarr_label: rawBamIndex
+`dcsScBam`|File|Duplex Consensus Sequence (DCS) generated from Single-Strand Consensus Sequences (SSCS) + Single Correction (SC)|vidarr_label: dcsScBam
+`dcsScBamIndex`|File|Bam index for DCS generated from SSCS + SC|vidarr_label: dcsScBamIndex
+`allUniqueBam`|File|DCS (from SSCS + SC) + SSCS_SC_Singletons + remaining singletons|vidarr_label: allUniqueBam
+`allUniqueBamIndex`|File|Bam index for DCS (from SSCS + SC) + SSCS_SC_Singletons + remaining singletons|vidarr_label: allUniqueBamIndex
+`sscsScBam`|File|SSCS combined with corrected singletons|vidarr_label: sscsScBam
+`sscsScBamIndex`|File|Bam index for SSCS combined with corrected singletons|vidarr_label: sscsScBamIndex
+`outputCCStats`|File|CC stats|vidarr_label: outputCCStats
+`outputCCReadFamilies`|File|CC read families|vidarr_label: outputCCReadFamilies
+`ccFolder`|File|cc folder|vidarr_label: ccFolder
+`dcsScVcf`|File|DCS vcf|vidarr_label: dcsScVcf
+`dcsScVcfIndex`|File|DCS vcf index|vidarr_label: dcsScVcfIndex
+`allUniqueVcf`|File|vcf of DCS + singletons|vidarr_label: allUniqueVcf
+`allUniqueVcfIndex`|File|vcf index for DCS + singletons|vidarr_label: allUniqueVcfIndex
+`sscsScVcf`|File|SSCS vcf|vidarr_label: sscsScVcf
+`sscsScVcfIndex`|File|SSCS vcf index|vidarr_label: sscsScVcfIndex
+`vepVcf`|File|vep vcf|vidarr_label: vepVcf
+`vepVcfIndex`|File|vep vcf index|vidarr_label: vepVcfIndex
+`mafOutput`|File?|maf output|vidarr_label: mafOutput
+`dcsScHsMetrics`|File|DCS metrics|vidarr_label: dcsScHsMetrics
+`sscsScHsMetrics`|File|SSCS metrics|vidarr_label: sscsScHsMetrics
+`allUniqueHsMetrics`|File|metrics for DCS + singletons|vidarr_label: allUniqueHsMetrics
 
 
 ## Commands
