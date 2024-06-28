@@ -220,30 +220,99 @@ workflow consensusCruncher {
      }
     ]
     output_meta: {
-      rawBam: "raw bam file",
-      rawBamIndex: "raw bam file index",
-      dcsScBam: "Duplex Consensus Sequence (DCS) generated from Single-Strand Consensus Sequences (SSCS) + Single Correction (SC)",
-      dcsScBamIndex: "Bam index for DCS generated from SSCS + SC",
-      allUniqueBam: "DCS (from SSCS + SC) + SSCS_SC_Singletons + remaining singletons",
-      allUniqueBamIndex: "Bam index for DCS (from SSCS + SC) + SSCS_SC_Singletons + remaining singletons",
-      sscsScBam: "SSCS combined with corrected singletons",
-      sscsScBamIndex: "Bam index for SSCS combined with corrected singletons",
-      outputCCStats: "CC stats",
-      outputCCReadFamilies: "CC read families",
-      ccFolder: "cc folder",
-      dcsScVcf: "DCS vcf",
-      dcsScVcfIndex: "DCS vcf index",
-      allUniqueVcf: "vcf of DCS + singletons",
-      allUniqueVcfIndex: "vcf index for DCS + singletons",
-      sscsScVcf: "SSCS vcf",
-      sscsScVcfIndex: "SSCS vcf index",
-      vepVcf: "vep vcf",
-      vepVcfIndex: "vep vcf index",
-      mafOutput: "maf output",
-      dcsScHsMetrics: "DCS metrics",
-      sscsScHsMetrics: "SSCS metrics",
-      allUniqueHsMetrics: "metrics for DCS + singletons"
+    rawBam: {
+        description: "raw bam file",
+        vidarr_label: "rawBam"
+    },
+    rawBamIndex: {
+        description: "raw bam file index",
+        vidarr_label: "rawBamIndex"
+    },
+    dcsScBam: {
+        description: "Duplex Consensus Sequence (DCS) generated from Single-Strand Consensus Sequences (SSCS) + Single Correction (SC)",
+        vidarr_label: "dcsScBam"
+    },
+    dcsScBamIndex: {
+        description: "Bam index for DCS generated from SSCS + SC",
+        vidarr_label: "dcsScBamIndex"
+    },
+    allUniqueBam: {
+        description: "DCS (from SSCS + SC) + SSCS_SC_Singletons + remaining singletons",
+        vidarr_label: "allUniqueBam"
+    },
+    allUniqueBamIndex: {
+        description: "Bam index for DCS (from SSCS + SC) + SSCS_SC_Singletons + remaining singletons",
+        vidarr_label: "allUniqueBamIndex"
+    },
+    sscsScBam: {
+        description: "SSCS combined with corrected singletons",
+        vidarr_label: "sscsScBam"
+    },
+    sscsScBamIndex: {
+        description: "Bam index for SSCS combined with corrected singletons",
+        vidarr_label: "sscsScBamIndex"
+    },
+    outputCCStats: {
+        description: "CC stats",
+        vidarr_label: "outputCCStats"
+    },
+    outputCCReadFamilies: {
+        description: "CC read families",
+        vidarr_label: "outputCCReadFamilies"
+    },
+    ccFolder: {
+        description: "cc folder",
+        vidarr_label: "ccFolder"
+    },
+    dcsScVcf: {
+        description: "DCS vcf",
+        vidarr_label: "dcsScVcf"
+    },
+    dcsScVcfIndex: {
+        description: "DCS vcf index",
+        vidarr_label: "dcsScVcfIndex"
+    },
+    allUniqueVcf: {
+        description: "vcf of DCS + singletons",
+        vidarr_label: "allUniqueVcf"
+    },
+    allUniqueVcfIndex: {
+        description: "vcf index for DCS + singletons",
+        vidarr_label: "allUniqueVcfIndex"
+    },
+    sscsScVcf: {
+        description: "SSCS vcf",
+        vidarr_label: "sscsScVcf"
+    },
+    sscsScVcfIndex: {
+        description: "SSCS vcf index",
+        vidarr_label: "sscsScVcfIndex"
+    },
+    vepVcf: {
+        description: "vep vcf",
+        vidarr_label: "vepVcf"
+    },
+    vepVcfIndex: {
+        description: "vep vcf index",
+        vidarr_label: "vepVcfIndex"
+    },
+    mafOutput: {
+        description: "maf output",
+        vidarr_label: "mafOutput"
+    },
+    dcsScHsMetrics: {
+        description: "DCS metrics",
+        vidarr_label: "dcsScHsMetrics"
+    },
+    sscsScHsMetrics: {
+        description: "SSCS metrics",
+        vidarr_label: "sscsScHsMetrics"
+    },
+    allUniqueHsMetrics: {
+        description: "metrics for DCS + singletons",
+        vidarr_label: "allUniqueHsMetrics"
     }
+}
   }
   
   output {
