@@ -192,7 +192,7 @@ workflow consensusCruncher {
   meta {
     author: "Alexander Fortuna and Rishi Shah"
     email: "alexander.fortuna@oicr.on.ca and rshah@oicr.on.ca"
-    description: "Workflow to run extract UMIs from fastq and generate consensus Bams as well as run it thru mutect2 task and combinevariants task"
+    description: "ConsensusCruncher is a tool developed by Pugh lab. It suppresses errors in next-generation sequencing data by using unique molecular identifers (UMIs) to amalgamate reads derived from the same DNA template into a consensus sequence. The workflow also uses the generated consensus Bams to run it thru mutect2 and combinevariants tasks."
     dependencies: [
      {
       name: "hg19-bwa-index/0.7.12",
