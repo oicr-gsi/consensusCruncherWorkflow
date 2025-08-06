@@ -72,7 +72,7 @@
                 {
                     "fastqR1": {
                         "contents": {
-                            "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/TGL49_0032_Cf_U_PE_381_TS_191126_NB551056_0130_AHTMW5BGXC_CGTGTGTA-CCAACGAA_R1_0.3.fastq.gz",
+                            "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/test_inputs/Test01_R1.fastq.gz",
                             "externalIds": [
                                 {
                                     "id": "TEST",
@@ -84,7 +84,7 @@
                     },
                     "fastqR2": {
                         "contents": {
-                            "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/TGL49_0032_Cf_U_PE_381_TS_191126_NB551056_0130_AHTMW5BGXC_CGTGTGTA-CCAACGAA_R2_0.3.fastq.gz",
+                            "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/test_inputs/Test01_R2.fastq.gz",
                             "externalIds": [
                                 {
                                     "id": "TEST",
@@ -97,7 +97,7 @@
                 }
             ],
             "consensusCruncher.inputIntervalsToParalellizeBy": "chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20,chr21,chr22,chrX,chrY",
-            "consensusCruncher.intervalFile": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/TGL49_CHARM_designed-probe-coords_All_curated_minimal.GRCh38.bed",
+            "consensusCruncher.intervalFile": "/.mounts/labs/gsi/testdata/consensusCruncher/test_inputs/TGL.GRCh38.bed",
             "consensusCruncher.mutectRunAllUnique.filter_filterExtraArgs": null,
             "consensusCruncher.mutectRunAllUnique.filter_memory": null,
             "consensusCruncher.mutectRunAllUnique.filter_timeout": null,
@@ -161,10 +161,10 @@
             "consensusCruncher.mutectRunSSCSSC.gatk": "gatk/4.1.6.0",
             "consensusCruncher.mutectRunSSCSSC.getChrCoefficient_memory": null,
             "consensusCruncher.mutectRunSSCSSC.getChrCoefficient_timeout": null,
-            "consensusCruncher.outputFileNamePrefix": "TGL49_0032_Cf_U_PE_381_TS_LFS_4042_87782-1",
+            "consensusCruncher.outputFileNamePrefix": "TGL-Test01",
             "consensusCruncher.sortedBai": null,
             "consensusCruncher.sortedBam": null,
-            "consensusCruncher.tumorName": "TGL49_0032_Cf_U_TS_LFS_4042_87782-1",
+            "consensusCruncher.tumorName": "TGL-1",
             "consensusCruncher.variantEffectPredictor.chromosomeArray_jobMemory": null,
             "consensusCruncher.variantEffectPredictor.chromosomeArray_timeout": null,
             "consensusCruncher.variantEffectPredictor.getChrCoefficient_memory": null,
@@ -406,7 +406,7 @@
               {
                 "metrics_calculate": "@CHECKOUT@/tests/calculate.sh",
                 "metrics_compare": "@CHECKOUT@/tests/compare.sh",
-                "output_metrics": "/.mounts/labs/gsi/testdata/consensusCruncher/1.4.0/output_metrics/consensusCruncher_dataset1.metrics",
+                "output_metrics": "/.mounts/labs/gsi/testdata/consensusCruncher/output_metrics/workflow_test_01.metrics",
                 "type": "script"
               }
             ]
@@ -477,7 +477,7 @@
                 {
                     "fastqR1": {
                         "contents": {
-                            "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/TGL40_0008_Pl_P_PE_434_TS_200114_NB551051_0145_AHTMTCBGXC_CGGCTAAT-CTCGTTCT_R1_0.3.fastq.gz",
+                            "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/test_inputs/Test02_R1.fastq.gz",
                             "externalIds": [
                                 {
                                     "id": "TEST",
@@ -489,7 +489,7 @@
                     },
                     "fastqR2": {
                         "contents": {
-                            "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/TGL40_0008_Pl_P_PE_434_TS_200114_NB551051_0145_AHTMTCBGXC_CGGCTAAT-CTCGTTCT_R2_0.3.fastq.gz",
+                            "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/test_inputs/Test02_R2.fastq.gz",
                             "externalIds": [
                                 {
                                     "id": "TEST",
@@ -502,7 +502,7 @@
                 }
             ],
             "consensusCruncher.inputIntervalsToParalellizeBy": "chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20,chr21,chr22,chrX",
-            "consensusCruncher.intervalFile": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/MA38_designed-probe-coords_pad50_sorted.bed",
+            "consensusCruncher.intervalFile": "/.mounts/labs/gsi/testdata/consensusCruncher/test_inputs/MA_sorted.bed",
             "consensusCruncher.mutectRunAllUnique.filter_filterExtraArgs": null,
             "consensusCruncher.mutectRunAllUnique.filter_memory": null,
             "consensusCruncher.mutectRunAllUnique.filter_timeout": null,
@@ -573,10 +573,10 @@
             "consensusCruncher.mutectRunSSCSSC.splitStringToArray_lineSeparator": null,
             "consensusCruncher.mutectRunSSCSSC.splitStringToArray_memory": null,
             "consensusCruncher.mutectRunSSCSSC.splitStringToArray_timeout": null,
-            "consensusCruncher.outputFileNamePrefix": "TGL40_0008_Pl_P_PE_434_TS_651_P",
+            "consensusCruncher.outputFileNamePrefix": "TGL-Test02",
             "consensusCruncher.sortedBai": null,
             "consensusCruncher.sortedBam": null,
-            "consensusCruncher.tumorName": "TGL40_0008_Pl_P_TS_651_P",
+            "consensusCruncher.tumorName": "TGL-2",
             "consensusCruncher.variantEffectPredictor.chromosomeArray_jobMemory": null,
             "consensusCruncher.variantEffectPredictor.chromosomeArray_timeout": null,
             "consensusCruncher.variantEffectPredictor.getChrCoefficient_memory": null,
@@ -818,7 +818,7 @@
             {
                 "metrics_calculate": "@CHECKOUT@/tests/calculate.sh",
                 "metrics_compare": "@CHECKOUT@/tests/compare.sh",
-                "output_metrics": "/.mounts/labs/gsi/testdata/consensusCruncher/1.4.0/output_metrics/consensusCruncher_dataset2.metrics",
+                "output_metrics": "/.mounts/labs/gsi/testdata/consensusCruncher/output_metrics/workflow_test_02.metrics",
                 "type": "script"
             }
             ]
@@ -889,7 +889,7 @@
                 {
                     "fastqR1": {
                         "contents": {
-                            "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/TGL40_0037_Pl_P_PE_449_TS_201001_NB551051_0187_AHMF5NBGXF_1_CGTGTGTA-CCAACGAA_R1.fastq.gz",
+                            "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/test_inputs/Test03_R1.fastq.gz",
                             "externalIds": [
                                 {
                                     "id": "TEST",
@@ -901,7 +901,7 @@
                     },
                     "fastqR2": {
                         "contents": {
-                            "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/TGL40_0037_Pl_P_PE_449_TS_201001_NB551051_0187_AHMF5NBGXF_1_CGTGTGTA-CCAACGAA_R2.fastq.gz",
+                            "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/test_inputs/Test03_R2.fastq.gz",
                             "externalIds": [
                                 {
                                     "id": "TEST",
@@ -915,7 +915,7 @@
                 {
                     "fastqR1": {
                         "contents": {
-                            "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/TGL40_0037_Pl_P_PE_449_TS_201023_NB551051_0190_AHMCWGBGXF_1_CGTGTGTA-CCAACGAA_R1.fastq.gz",
+                            "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/test_inputs/Test04_R1.fastq.gz",
                             "externalIds": [
                                 {
                                     "id": "TEST",
@@ -927,7 +927,7 @@
                     },
                     "fastqR2": {
                         "contents": {
-                            "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/TGL40_0037_Pl_P_PE_449_TS_201023_NB551051_0190_AHMCWGBGXF_1_CGTGTGTA-CCAACGAA_R2.fastq.gz",
+                            "configuration": "/.mounts/labs/gsi/testdata/consensusCruncher/test_inputs/Test04_R2.fastq.gz",
                             "externalIds": [
                                 {
                                     "id": "TEST",
@@ -940,7 +940,7 @@
                 }
             ],
             "consensusCruncher.inputIntervalsToParalellizeBy": "chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20,chr21,chr22,chrX",
-            "consensusCruncher.intervalFile": "/.mounts/labs/gsi/testdata/consensusCruncher/input_data/IDT_MA38_Panel.sorted.bed",
+            "consensusCruncher.intervalFile": "/.mounts/labs/gsi/testdata/consensusCruncher/test_inputs/IDT.sorted.bed",
             "consensusCruncher.mutectRunAllUnique.filter_filterExtraArgs": null,
             "consensusCruncher.mutectRunAllUnique.filter_memory": null,
             "consensusCruncher.mutectRunAllUnique.filter_timeout": null,
@@ -1010,10 +1010,10 @@
             "consensusCruncher.mutectRunSSCSSC.splitStringToArray_lineSeparator": null,
             "consensusCruncher.mutectRunSSCSSC.splitStringToArray_memory": null,
             "consensusCruncher.mutectRunSSCSSC.splitStringToArray_timeout": null,
-            "consensusCruncher.outputFileNamePrefix": "TGL40_0037_Pl_P_PE_449_TS_200901TS",
+            "consensusCruncher.outputFileNamePrefix": "TGL-Test03",
             "consensusCruncher.sortedBai": null,
             "consensusCruncher.sortedBam": null,
-            "consensusCruncher.tumorName": "TGL40_0037_Pl_P_TS_200901TS",
+            "consensusCruncher.tumorName": "TGL-3",
             "consensusCruncher.variantEffectPredictor.chromosomeArray_jobMemory": null,
             "consensusCruncher.variantEffectPredictor.chromosomeArray_timeout": null,
             "consensusCruncher.variantEffectPredictor.getSampleNames_jobMemory": null,
@@ -1255,7 +1255,7 @@
               {
                 "metrics_calculate": "@CHECKOUT@/tests/calculate.sh",
                 "metrics_compare": "@CHECKOUT@/tests/compare.sh",
-                "output_metrics": "/.mounts/labs/gsi/testdata/consensusCruncher/1.4.0/output_metrics/consensusCruncher_dataset3.metrics",
+                "output_metrics": "/.mounts/labs/gsi/testdata/consensusCruncher/output_metrics/workflow_test_03.metrics",
                 "type": "script"
               }
             ]
