@@ -52,6 +52,16 @@ workflow consensusCruncher {
       "consensus_cytoband": "$DATA_HG38_CONSENSUS_CRUNCHER_ROOT/hg38_cytoBand.txt",
       "combineVariants_modules": "gatk/3.6-0 tabix/0.2.6 hg38/p12",
       "inputRefFasta": "$HG38_ROOT/hg38_random.fa"
+    },
+    "hg38_noAlt": {
+      "align_modules": "consensus-cruncher/5.0 data-hg38-noalt-consensus-cruncher/1.0 hg38-bwa-index-noalt/0.7.17 samtools/1.9",
+      "align_bwaref": "$HG38_BWA_INDEX_NOALT_ROOT/hg38_noAlt.fa",
+      "align_blist": "$DATA_HG38_NOALT_CONSENSUS_CRUNCHER_ROOT/IDT_duplex_sequencing_barcodes.list",
+      "consensus_modules": "consensus-cruncher/5.0 data-hg38-noalt-consensus-cruncher/1.0 hg38-bwa-index-noalt/0.7.17 samtools/1.9",
+      "consensus_genome": "hg38_noAlt",
+      "consensus_cytoband": "$DATA_HG38_NOALT_CONSENSUS_CRUNCHER_ROOT/hg38_noAlt_cytoBand.txt",
+      "combineVariants_modules": "gatk/3.6-0 tabix/0.2.6 hg38-noalt/p12",
+      "inputRefFasta": "$HG38_NOALT_ROOT/hg38_noAlt.fa"
     }
   }
   
@@ -190,8 +200,8 @@ workflow consensusCruncher {
   }
 
   meta {
-    author: "Alexander Fortuna and Rishi Shah"
-    email: "alexander.fortuna@oicr.on.ca and rshah@oicr.on.ca"
+    author: "Alexander Fortuna, Rishi Shah and Aditi Nallan"
+    email: "alexander.fortuna@oicr.on.ca, rshah@oicr.on.ca and anallan@oicr.on.ca"
     description: "ConsensusCruncher is a tool developed by Pugh lab. It suppresses errors in next-generation sequencing data by using unique molecular identifers (UMIs) to amalgamate reads derived from the same DNA template into a consensus sequence. The workflow also uses the generated consensus Bams to run it thru mutect2 and combinevariants tasks."
     dependencies: [
      {
