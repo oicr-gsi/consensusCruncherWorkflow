@@ -44,20 +44,20 @@ workflow consensusCruncher {
       "inputRefFasta": "$HG19_ROOT/hg19_random.fa"
     },
     "hg38": {
-      "align_modules": "consensus-cruncher/5.0 data-hg38-consensus-cruncher/1.0 hg38-bwa-index-with-alt/0.7.12 samtools/1.9",
+      "align_modules": "consensus-cruncher/5.0.1 data-hg38-consensus-cruncher/1.0 hg38-bwa-index-with-alt/0.7.12 samtools/1.9",
       "align_bwaref": "$HG38_BWA_INDEX_WITH_ALT_ROOT/hg38_random.fa",
       "align_blist": "$DATA_HG38_CONSENSUS_CRUNCHER_ROOT/IDT_duplex_sequencing_barcodes.list",
-      "consensus_modules": "consensus-cruncher/5.0 data-hg38-consensus-cruncher/1.0 hg38-bwa-index-with-alt/0.7.12 samtools/1.9",
+      "consensus_modules": "consensus-cruncher/5.0.1 data-hg38-consensus-cruncher/1.0 hg38-bwa-index-with-alt/0.7.12 samtools/1.9",
       "consensus_genome": "hg38",
       "consensus_cytoband": "$DATA_HG38_CONSENSUS_CRUNCHER_ROOT/hg38_cytoBand.txt",
       "combineVariants_modules": "gatk/3.6-0 tabix/0.2.6 hg38/p12",
       "inputRefFasta": "$HG38_ROOT/hg38_random.fa"
     },
     "hg38_noAlt": {
-      "align_modules": "consensus-cruncher/5.0 data-hg38-noalt-consensus-cruncher/1.0 hg38-bwa-index-noalt/0.7.17 samtools/1.9",
+      "align_modules": "consensus-cruncher/5.0.2 data-hg38-noalt-consensus-cruncher/1.0 hg38-bwa-index-noalt/0.7.17 samtools/1.9",
       "align_bwaref": "$HG38_BWA_INDEX_NOALT_ROOT/hg38_noAlt.fa",
       "align_blist": "$DATA_HG38_NOALT_CONSENSUS_CRUNCHER_ROOT/IDT_duplex_sequencing_barcodes.list",
-      "consensus_modules": "consensus-cruncher/5.0 data-hg38-noalt-consensus-cruncher/1.0 hg38-bwa-index-noalt/0.7.17 samtools/1.9",
+      "consensus_modules": "consensus-cruncher/5.0.2 data-hg38-noalt-consensus-cruncher/1.0 hg38-bwa-index-noalt/0.7.17 samtools/1.9",
       "consensus_genome": "hg38_noAlt",
       "consensus_cytoband": "$DATA_HG38_NOALT_CONSENSUS_CRUNCHER_ROOT/hg38_noAlt_cytoBand.txt",
       "combineVariants_modules": "gatk/3.6-0 tabix/0.2.6 hg38-noalt/p12",
@@ -401,7 +401,7 @@ task align {
     File fastqR1
     File fastqR2
     String outputFileNamePrefix
-    String modules = "consensus-cruncher/5.0 data-hg19-consensus-cruncher/1.0 hg19-bwa-index/0.7.12 samtools/1.9"
+    String modules = "consensus-cruncher/5.0.2 data-hg19-consensus-cruncher/1.0 hg19-bwa-index/0.7.12 samtools/1.9"
     String consensusCruncherPy = "$CONSENSUS_CRUNCHER_ROOT/bin/ConsensusCruncher.py"
     String bwa = "$BWA_ROOT/bin/bwa"
     String bwaref = "$HG19_BWA_INDEX_ROOT/hg19_random.fa"
@@ -474,7 +474,7 @@ task consensus {
     Int threads = 8
     Int jobMemory = 32
     Int timeout = 72
-    String modules = "consensus-cruncher/5.0 data-hg19-consensus-cruncher/1.0 hg19-bwa-index/0.7.12 samtools/1.9"
+    String modules = "consensus-cruncher/5.0.2 data-hg19-consensus-cruncher/1.0 hg19-bwa-index/0.7.12 samtools/1.9"
   }
 
   parameter_meta {
